@@ -1,267 +1,37 @@
-/* --- VARIABLES Y RESET --- */
 :root {
-    --bg-main: #f4f7f6;      /* Fondo muy claro y limpio */
-    --text-main: #1a1a1a;
-    --text-muted: #666666;
-    --card-bg: #ffffff;
-    --accent-teal: #2dd4bf;  /* Color fresco para el botón principal */
-    --accent-gold: #fbbf24;  /* Toque dorado para el badge */
-    --border-color: #e5e7eb;
-    --shadow-subtle: 0 4px 6px rgba(0, 0, 0, 0.05);
-    --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    --font-family: 'DM Sans', sans-serif;
+    --bg: #f4f7f6; --text: #1a1a1a; --muted: #666; --accent: #2dd4bf;
+    --border: #e5e7eb; --card: #fff;
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-    font-family: var(--font-family);
-    background-color: var(--bg-main);
-    color: var(--text-main);
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-}
-
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); height: 100vh; display: flex; justify-content: center; align-items: center; }
 .hidden { display: none !important; }
 
-/* --- HOME SCREEN MINIMALISTA --- */
-#screen-home {
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-}
+/* Home */
+.home-content { text-align: center; }
+.home-badge { background: #fef3c7; color: #92400e; padding: 0.5rem 1rem; border-radius: 99px; font-size: 0.75rem; font-weight: 700; margin-bottom: 1rem; }
+.home-title { font-size: 3rem; margin-bottom: 2rem; }
+.mode-container { display: flex; gap: 1rem; justify-content: center; }
+.mode-card { background: var(--card); padding: 1.5rem; border-radius: 16px; width: 200px; cursor: pointer; border: 1px solid var(--border); transition: 0.2s; }
+.mode-card:hover { transform: translateY(-5px); border-color: var(--accent); }
 
-.home-badge {
-    display: inline-block;
-    background: #fef3c7; /* Fondo dorado muy suave */
-    color: #92400e;      /* Texto marrón/dorado */
-    padding: 0.5rem 1rem;
-    border-radius: 999px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    letter-spacing: 0.05em;
-}
+/* Game */
+.game-container { width: 90%; max-width: 500px; text-align: center; }
+.flag-wrapper { height: 200px; display: flex; align-items: center; justify-content: center; background: #eee; border-radius: 12px; margin-bottom: 1rem; overflow: hidden; border: 1px solid var(--border); }
+#flag-img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1rem; }
+.metric { background: var(--card); padding: 0.5rem; border-radius: 8px; border: 1px solid var(--border); }
+.metric-val { font-size: 1.2rem; font-weight: 700; }
 
-.home-title {
-    font-size: 3rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    letter-spacing: -0.025em;
-}
+/* Botones Iconos */
+.actions-area { display: flex; gap: 2rem; justify-content: center; }
+.btn-icon { width: 60px; height: 60px; border-radius: 50%; border: none; cursor: pointer; color: white; font-size: 1.5rem; transition: 0.2s; }
+.btn-cancel { background: #ef4444; }
+.btn-confirm { background: #10b981; }
+.btn-icon:active { transform: scale(0.9); }
 
-.home-subtitle {
-    color: var(--text-muted);
-    font-size: 1.125rem;
-    margin-bottom: 3rem;
-    font-weight: 400;
-}
-
-/* Contenedor de modos (Flexbox para centrar) */
-.mode-container {
-    display: flex;
-    gap: 1.5rem;
-    justify-content: center;
-    max-width: 700px;
-    margin: 0 auto;
-}
-
-.mode-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    padding: 2rem;
-    width: 250px;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-    box-shadow: var(--shadow-subtle);
-}
-
-.mode-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-card);
-    border-color: var(--accent-teal);
-}
-
-.mode-card-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-.mode-card-title { font-weight: 700; font-size: 1.25rem; margin-bottom: 0.25rem; }
-.mode-card-desc { color: var(--text-muted); font-size: 0.875rem; font-weight: 400; }
-
-/* --- GAME SCREEN --- */
-#screen-game {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
-
-.game-container {
-    width: 90%;
-    max-width: 600px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.game-header {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
-.back-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: #ffffff;
-    border: 1px solid var(--border-color);
-    padding: 8px 15px;
-    border-radius: 12px;
-    color: var(--text-muted);
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.back-btn:hover {
-    background: #f1f5f9;
-    color: var(--text-main);
-    transform: translateX(-3px);
-}
-
-.game-mode-label {
-    font-weight: 700; font-size: 0.8rem;
-    letter-spacing: 0.1em; color: var(--text-muted);
-}
-
-/* Marcadores Grilla */
-.score-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 1rem; width: 100%; margin-bottom: 1.5rem;
-}
-.metric {
-    background: var(--card-bg); padding: 1rem;
-    border-radius: 12px; text-align: center;
-    border: 1px solid var(--border-color);
-}
-.metric-val { font-size: 1.5rem; font-weight: 700; }
-.metric-lbl { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; text-transform: uppercase; }
-
-/* Tarjeta Principal de Juego */
-.game-card {
-    background: var(--card-bg);
-    width: 100%;
-    padding: 2rem;
-    border-radius: 20px;
-    box-shadow: var(--shadow-card);
-    border: 1px solid var(--border-color);
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Centra todo dentro de la tarjeta */
-}
-
-/* =======================================================
-   !!! ARREGLO DE LA BANDERA !!!
-   Esta sección asegura que la bandera nunca sea gigante
-   y siempre esté perfectamente centrada.
-   ======================================================= */
-.flag-wrapper {
-    width: 100%;
-    height: 220px; /* Crucial: define el alto máximo visual */
-    display: flex; /* Flexbox para centrar horizontal y verticalmente */
-    justify-content: center;
-    align-items: center;
-    overflow: hidden; /* Corta si se sale (aunque object-fit lo previene) */
-    border-radius: 12px;
-    background: #edf2f7; /* Un fondo gris sutil para banderas con bordes blancos */
-    margin-bottom: 1.5rem;
-    border: 1px solid var(--border-color);
-}
-
-#flag-img {
-    max-width: 100%; /* No se deforma horizontalmente */
-    max-height: 100%; /* No se deforma verticalmente, encaja en wrapper */
-    object-fit: contain; /* Crucial: escala la imagen manteniendo proporción, *encajando* */
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-/* ======================================================= */
-
-/* Progreso */
-.progress-container {
-    width: 100%; height: 6px; background: var(--border-color);
-    border-radius: 999px; overflow: hidden; margin-bottom: 1.5rem;
-}
-.progress-bar { height: 100%; background: var(--accent-teal); border-radius: 999px; transition: width 0.3s ease; }
-
-/* Feedback */
-.feedback {
-    width: 100%; padding: 0.75rem; border-radius: 8px;
-    text-align: center; font-weight: 500; font-size: 0.9rem; margin-bottom: 1rem;
-}
-.feedback.correct { background: #d1fae5; color: #065f46; }
-.feedback.wrong { background: #fee2e2; color: #991b1b; }
-
-/* Inputs y Botones */
-.input-area { width: 100%; margin-bottom: 1.5rem; }
-.input-group { margin-bottom: 1rem; }
-.input-group label { display: block; font-size: 0.8rem; color: var(--text-muted); font-weight: 500; margin-bottom: 0.35rem; text-align: left; }
-.input-group input {
-    width: 100%; padding: 0.75rem 1rem; border-radius: 10px;
-    border: 1px solid var(--border-color); font-family: var(--font-family);
-    font-size: 1rem; background: #f9fafb;
-}
-.input-group input:focus { outline: 2px solid var(--accent-teal); border-color: transparent; }
-
-/* --- NUEVOS BOTONES DE ICONOS --- */
-.actions-area {
-    display: flex;
-    gap: 2.5rem; /* Espacio entre los círculos */
-    justify-content: center;
-    width: 100%;
-    margin-top: 1rem;
-}
-
-.btn-icon {
-    width: 65px;
-    height: 65px;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    font-size: 1.6rem;
-    color: white;
-}
-
-.btn-icon:hover {
-    transform: translateY(-3px);
-}
-
-.btn-icon:active {
-    transform: scale(0.92);
-}
-
-/* Estilo para la X Roja */
-.btn-cancel {
-    background: #ef4444;
-    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);
-}
-.btn-cancel:hover { background: #dc2626; }
-
-/* Estilo para el Check Verde */
-.btn-confirm {
-    background: #10b981;
-    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
-}
-.btn-confirm:hover { background: #059669; }
-
-.icon { font-weight: bold; pointer-events: none; }
+/* Stats */
+.stats-scroll-area { max-height: 400px; overflow-y: auto; text-align: left; background: var(--card); padding: 1rem; border-radius: 12px; margin-bottom: 1rem; }
+.stat-card { border-bottom: 1px solid var(--border); padding: 1rem 0; }
+.stat-card h3 { color: var(--accent); margin-bottom: 0.5rem; }
+.sub-stat { font-size: 0.85rem; color: var(--muted); display: flex; justify-content: space-between; margin-bottom: 2px; }
+.btn-main { background: var(--accent); color: white; border: none; padding: 1rem 2rem; border-radius: 12px; cursor: pointer; width: 100%; font-weight: 700; }

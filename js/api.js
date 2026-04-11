@@ -6,7 +6,24 @@ const COUNTRY_ALIASES = {
     "Congo": ["Republica Democratica del Congo", "RD Congo", "Congo Belga"],
     "Estados Unidos": ["EEUU", "EE. UU.", "Estados Unidos de America", "USA"],
     "Países Bajos": ["Holanda"],
-    "Chequia": ["República Checa"]
+    "Chequia": ["República Checa", "Republica Checa"],
+    "Reino Unido": ["Gran Bretaña", "UK", "United Kingdom"],
+    "Vaticano": ["Ciudad del Vaticano"],
+    "San Marino": ["San Marino"],
+    "Republica Eslovaquia": ["Eslovaquia", "Slovakia"],
+    "Granades": ["Granada"],
+    "Moldavia": ["Moldova"],
+    "Macedonia del Norte": ["Macedonia", "North Macedonia"],
+    "Sierra Leone": ["Sierra Leona"],
+    "Timor Oriental": ["Timor Leste", "Timor"],
+    "Brunei": ["Brunei Darussalam"],
+    "Islas Faroe": ["Islas Feroe", "Faroes"],
+    "Islas Malvinas": ["Malvinas", "Falkland Islands"],
+    "Islas Salomón": ["Salomón", "Solomon Islands"],
+    "Djibouti": ["Yibuti"],
+    "Guinea-Bisáu": ["Guinea-Bisáu", "Guinea Bissau"],
+    "Guinea Ecuatorial": ["Guinea Ecuatorial", "Equatorial Guinea"],
+
 };
 
 // Diccionario para capitales en español/latinoamérica
@@ -55,32 +72,21 @@ const CAPITAL_ALIASES = {
 
 export async function fetchCountries() {
     try {
-        const response = await fetch('https://restcountries.com/v3.1/all?fields=name,translations,capital,flags');
+        const response = await fetch('https://restcountries.com/v3.1/all?fields=name,translations,capital,flags,region,subregion');
         const data = await response.json();
         
         return data.map(c => {
-            const nameSpa = c.translations?.spa?.common || c.name.common;
-            const cleanName = nameSpa.split('(')[0].trim();
-            
-            // Lógica para País
-            const countryValidNames = [cleanName];
-            if (COUNTRY_ALIASES[cleanName]) countryValidNames.push(...COUNTRY_ALIASES[cleanName]);
-
-            // Lógica para Capital
-            const rawCapital = c.capital?.[0] ? c.capital[0].split('(')[0].trim() : '';
-            const capitalValidNames = [rawCapital];
-            if (CAPITAL_ALIASES[rawCapital]) capitalValidNames.push(...CAPITAL_ALIASES[rawCapital]);
-
+            const name = (c.translations?.spa?.common || c.name.common).split('(')[0].trim();
+            const cap = c.capital?.[0] ? c.capital[0].split('(')[0].trim() : '';
             return {
-                name: cleanName,
-                allNames: countryValidNames,
-                capital: rawCapital,
-                allCapitals: capitalValidNames, // Guardamos la lista de capitales válidas
-                flag: c.flags?.svg || ''
+                name,
+                allNames: [name, ...(COUNTRY_ALIASES[name] || [])],
+                capital: cap,
+                allCapitals: [cap], 
+                flag: c.flags?.svg || '',
+                region: c.region || 'Otros',
+                subregion: c.subregion || 'Otras'
             };
         });
-    } catch (err) {
-        console.error("Error cargando países:", err);
-        return [];
-    }
+    } catch (e) { return []; }
 }
