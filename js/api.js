@@ -20,7 +20,8 @@ const CAPITAL_ALIASES = {
     "Prague": ["Praga"],
     "Rome": ["Roma"],
     "Lisbon": ["Lisboa"],
-    "Copenhagen": ["Copenhague"]
+    "Copenhagen": ["Copenhague"],
+    "Sucre": ["La Paz"]
 };
 
 export async function fetchCountries() {
