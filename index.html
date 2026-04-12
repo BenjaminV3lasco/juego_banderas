@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="css/style.css">
     </head>
 <body>
-
+ 
 <div id="screen-home">
     <div class="home-content">
         
@@ -30,7 +30,7 @@
         </div>
     </div>
 </div>
-
+ 
 <div id="screen-game" class="hidden">
     <div class="game-container">
         <div class="game-header">
@@ -78,7 +78,17 @@
         </div>
     </div>
 </div>
-
+ 
+<div id="screen-stats" class="hidden">
+    <div class="stats-container">
+        <h1 class="stats-title">Estadísticas Totales</h1>
+        <div id="stats-global" class="stats-global-card"></div>
+        <div id="stats-regions" class="stats-regions"></div>
+        <div id="stats-capitals" class="region-card hidden"></div>
+        <button class="btn-play-again" onclick="location.reload()">Jugar de nuevo</button>
+    </div>
+</div>
+ 
 <script type="module" src="js/app.js"></script>
 </body>
 </html>
