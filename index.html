@@ -7,25 +7,28 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌎</text></svg>">
     
     <link rel="stylesheet" href="css/style.css">
-    </head>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
 <body>
  
 <div id="screen-home">
     <div class="home-content">
-        
         <h1 class="home-title">Juego de Banderas</h1>
         <p class="home-subtitle">Pon a prueba tu conocimiento geográfico</p>
         
         <div class="mode-container">
             <button class="mode-card" id="btn-mode-paises">
-                <div class="mode-card-icon">🏳️</div>
-                <div class="mode-card-title">Adivina el País</div>
-                <div class="mode-card-desc">Solo necesitas el nombre</div>
+                <div class="mode-card-text">
+                    <div class="mode-card-title">Adivina el País</div>
+                    <div class="mode-card-desc">Solo necesitas el nombre</div>
+                </div>
             </button>
+            
             <button class="mode-card" id="btn-mode-capitales">
-                <div class="mode-card-icon">🏛️</div>
-                <div class="mode-card-title">País y Capital</div>
-                <div class="mode-card-desc">El desafío completo</div>
+                <div class="mode-card-text">
+                    <div class="mode-card-title">País y Capital</div>
+                    <div class="mode-card-desc">El desafío completo</div>
+                </div>
             </button>
         </div>
     </div>
@@ -34,11 +37,11 @@
 <div id="screen-game" class="hidden">
     <div class="game-container">
         <div class="game-header">
-    <button class="back-btn" id="btn-home-back">
-        <span style="font-size: 1.2rem;">🏠</span> Inicio
-    </button>
-    <div class="game-mode-label" id="mode-label">PAÍSES</div>
-</div>
+            <button class="back-btn" id="btn-home-back">
+                <span></span> Inicio
+            </button>
+            <div class="game-mode-label" id="mode-label">PAÍSES</div>
+        </div>
         
         <div class="score-grid">
             <div class="metric"><div class="metric-val" id="score-correct">0</div><div class="metric-lbl">Correctas</div></div>
@@ -67,14 +70,13 @@
             </div>
             
             <div class="actions-area">
-    <button class="btn-icon btn-cancel" id="btn-skip" title="No la sé">
-        <span class="icon">✕</span>
-    </button>
-    
-    <button class="btn-icon btn-confirm" id="btn-check" title="Confirmar">
-        <span class="icon">✓</span>
-    </button>
-</div>
+                <button class="btn-icon btn-cancel" id="btn-skip" title="No la sé">
+                    <span class="icon">✕</span>
+                </button>
+                <button class="btn-icon btn-confirm" id="btn-check" title="Confirmar">
+                    <span class="icon">✓</span>
+                </button>
+            </div>
         </div>
     </div>
 </div>
