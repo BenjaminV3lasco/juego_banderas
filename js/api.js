@@ -44,6 +44,7 @@ const COUNTRY_ALIASES = {
     "Suazilandia": ["Eswatini"],
     "Republica Eslovaca": ["Eslovaquia"],
     "Republica Dominicana": ["RD"],
+    "Islas Tokelau": ["Tokelau", "Islas Tokelau"],
 };
  
 // Diccionario para capitales en español/latinoamérica
