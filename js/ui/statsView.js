@@ -128,6 +128,7 @@ export function renderStats(state) {
     document.getElementById('stats-global').innerHTML = `
         <div class="sg-number" style="color:${gColor}">${pct(state.score.correct, state.score.total)}</div>
         <div class="sg-label">Acierto global — ${state.score.correct} de ${state.score.total} países</div>
+        <div class="sg-time">Tiempo total: ${state.finalTime || '—'}</div>
         <div class="sg-bar-track">
             <div class="sg-bar-fill" style="width:${barWidth(state.score.correct, state.score.total)}%;background:${gColor}"></div>
         </div>`;

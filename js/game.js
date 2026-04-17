@@ -2,7 +2,7 @@
 //  Lógica del juego
 // ─────────────────────────────────────────────
  
-import { state, resetState, normalize } from './state.js';
+import { state, resetState, normalize, startTimer, stopTimer, getTimerValue } from './state.js';
 import { recordStat }                   from './stats.js';
 import { elements, showScreen, updateScore, showFeedback, renderStats } from './ui/ui.js';
  
@@ -17,6 +17,7 @@ export function startGame(mode) {
  
     showScreen('game');
     updateScore(state.score);
+    startTimer();
     renderQuestion();
 }
  
@@ -24,6 +25,8 @@ export function startGame(mode) {
  
 export function renderQuestion() {
     if (state.index >= state.countries.length) {
+        stopTimer();
+        state.finalTime = getTimerValue();
         renderStats(state);
         return;
     }

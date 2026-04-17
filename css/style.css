@@ -302,3 +302,24 @@ body {
     border-radius: 12px; cursor: pointer; width: 100%;
     font-weight: 700; font-size: 1rem; margin-top: 1rem;
 }
+/* ── Cronómetro ───────────────────────────── */
+.timer {
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.05em;
+    color: var(--text-main);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 0.5rem 1rem;
+    min-width: 72px;
+    text-align: center;
+    backdrop-filter: blur(8px);
+}
+ 
+.sg-time {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}

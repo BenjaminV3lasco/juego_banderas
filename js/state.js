@@ -1,3 +1,4 @@
+
 // ─────────────────────────────────────────────
 //  Estado global de la partida
 // ─────────────────────────────────────────────
@@ -25,3 +26,30 @@ export function resetState(mode) {
 // Quita tildes, espacios extra y pasa a minúsculas para comparar respuestas
 export const normalize = (s) =>
     s ? s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim() : '';
+// ── Cronómetro ────────────────────────────────
+export const timer = {
+    interval: null,
+    seconds:  0
+};
+ 
+export function startTimer() {
+    timer.seconds  = 0;
+    clearInterval(timer.interval);
+    const el = document.getElementById('game-timer');
+    timer.interval = setInterval(() => {
+        timer.seconds++;
+        const m = String(Math.floor(timer.seconds / 60)).padStart(2, '0');
+        const s = String(timer.seconds % 60).padStart(2, '0');
+        if (el) el.textContent = `${m}:${s}`;
+    }, 1000);
+}
+ 
+export function stopTimer() {
+    clearInterval(timer.interval);
+}
+ 
+export function getTimerValue() {
+    const m = String(Math.floor(timer.seconds / 60)).padStart(2, '0');
+    const s = String(timer.seconds % 60).padStart(2, '0');
+    return `${m}:${s}`;
+}
