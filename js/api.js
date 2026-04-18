@@ -23,7 +23,7 @@ const COUNTRY_ALIASES = {
     "Islas Malvinas": ["Malvinas", "Falkland Islands"],
     "Islas Salomón": ["Salomón", "Solomon Islands"],
     "Sierra Leone": ["Sierra Leona"],
-    "Kirguztán": ["Kirguistán", "Kirgizistán"],
+    "Kirguistán": ["Kirguistan", "Kirguizistán", "Kirguizistan", "Kyrgyzstan"],
     "Anguilla": ["Anguila"],
     "Islas Turks y Caicos": ["Turks y Caicos", "Islas Turcas y Caicos"],
     "Islas Vírgenes Británicas": ["Vírgenes Británicas", "Islas Vírgenes"],
