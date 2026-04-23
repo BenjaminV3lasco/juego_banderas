@@ -13,8 +13,12 @@ El juego ofrece dos niveles de desafío:
 
 El juego utiliza la API pública [REST Countries](https://restcountries.com/), que proporciona datos de 250 entidades geográficas:
 
--   **195 Estados Soberanos**: Países con reconocimiento internacional pleno.
--   **55 Territorios y Dependencias**: Banderas de islas, territorios de ultramar y regiones autónomas que, aunque no son estados independientes, poseen identidad propia.
+-   **195 Estados Soberanos**: Países reconocidos por la ONU (Organización de las Naciones Unidas).
+-   **55 Territorios y Dependencias**:
+-   Territorios de ultramar (Guadalupe, Reunión, Gibraltar, Groenlandia)
+-   Islas autónomas (Islas Feroe, Aruba, Curazao, Jersey)
+-   Territorios en disputa o de reconocimiento parcial (Islas Malvinas, Kosovo)
+-   Territorios deshabitados o de uso científico (Antártida, Islas Heard y McDonald)
 
 ## 📂 Estructura del Proyecto
 
