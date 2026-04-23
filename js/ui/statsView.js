@@ -108,31 +108,45 @@ function buildRegionHTML(key, data) {
         </div>`;
 }
 
-async function renderRanking() {
+// Variable para recordar qué pestaña está abierta
+let currentRankingMode = 'paises';
+
+async function renderRanking(initialMode = null) {
     const container = document.getElementById('stats-ranking');
     if (!container) return;
 
-    // Mostrar estado de carga
+    if (initialMode) currentRankingMode = initialMode;
+
+    // Estructura base con pestañas
     container.innerHTML = `
-        <h2 class="ranking-title">Ranking Global</h2>
-        <div class="ranking-list">
-            <div style="text-align:center; padding: 2rem; color: var(--text-muted); font-size: 0.9rem;">Cargando mejores puntuaciones...</div>
+        <div class="ranking-header">
+            <h2 class="ranking-title">Ranking Global</h2>
+            <div class="ranking-tabs">
+                <button class="rank-tab ${currentRankingMode === 'paises' ? 'active' : ''}" id="tab-paises">Países</button>
+                <button class="rank-tab ${currentRankingMode === 'capitales' ? 'active' : ''}" id="tab-capitales">País + Capital</button>
+            </div>
+        </div>
+        <div class="ranking-list" id="ranking-content">
+            <div style="text-align:center; padding: 2rem; color: var(--text-muted); font-size: 0.9rem;">Cargando...</div>
         </div>
     `;
 
-    const ranking = await getGlobalRanking();
+    // Listeners para las pestañas
+    document.getElementById('tab-paises').onclick = () => renderRanking('paises');
+    document.getElementById('tab-capitales').onclick = () => renderRanking('capitales');
 
-    if (ranking.length === 0) {
-        container.innerHTML = `
-            <h2 class="ranking-title">Ranking Global</h2>
-            <div class="ranking-list">
-                <div style="text-align:center; padding: 2rem; color: var(--text-muted); font-size: 0.9rem;">Aún no hay puntuaciones globales. ¡Sé el primero!</div>
-            </div>
-        `;
+    const content = document.getElementById('ranking-content');
+    const allData = await getGlobalRanking();
+    
+    // Filtrar los datos por el modo seleccionado
+    const filteredRanking = allData.filter(entry => entry.mode === currentRankingMode);
+
+    if (filteredRanking.length === 0) {
+        content.innerHTML = `<div style="text-align:center; padding: 2rem; color: var(--text-muted); font-size: 0.9rem;">No hay puntuaciones en este modo todavía.</div>`;
         return;
     }
 
-    const itemsHTML = ranking.map((entry, i) => {
+    content.innerHTML = filteredRanking.map((entry, i) => {
         let rankClass = '';
         if (i === 0) rankClass = 'gold';
         else if (i === 1) rankClass = 'silver';
@@ -148,7 +162,7 @@ async function renderRanking() {
             <div class="ranking-item">
                 <div class="rank-pos ${rankClass}">#${i + 1}</div>
                 <div class="rank-info">
-                    <div class="rank-mode">${entry.nickname} <span class="rank-mode-type">(${entry.mode === 'paises' ? 'Países' : 'P+C'})</span></div>
+                    <div class="rank-mode">${entry.nickname}</div>
                     <div class="rank-date">${dateStr}</div>
                 </div>
                 <div class="rank-score">${entry.correct}/${entry.total}</div>
@@ -156,11 +170,6 @@ async function renderRanking() {
             </div>
         `;
     }).join('');
-
-    container.innerHTML = `
-        <h2 class="ranking-title">Ranking Global</h2>
-        <div class="ranking-list">${itemsHTML}</div>
-    `;
 }
  
 // ── Acordeón ──────────────────────────────────
@@ -194,7 +203,7 @@ export function renderStats(state) {
         regionsContainer.classList.add('hidden');
         if (capEl) capEl.classList.add('hidden');
         if (restartBtn) restartBtn.classList.add('hidden');
-        renderRanking();
+        renderRanking('paises'); // Default al entrar desde inicio
         return;
     }
 
@@ -214,8 +223,8 @@ export function renderStats(state) {
             <div class="sg-bar-fill" style="width:${barWidth(state.score.correct, state.score.total)}%;background:${gColor}"></div>
         </div>`;
  
-    // Ranking histórico
-    renderRanking();
+    // Ranking histórico filtrado por el modo que acabas de jugar
+    renderRanking(state.mode);
  
     // Tarjetas por región (acordeón)
     regionsContainer.innerHTML = REGION_ORDER

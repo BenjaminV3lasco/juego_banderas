@@ -8,15 +8,12 @@ import { elements, showScreen, renderStats }    from './ui/ui.js';
 import { fetchCountries }                       from './services/api.js';
  
 async function init() {
-    // Carga los países desde la API antes de habilitar la UI
-    state.countries = await fetchCountries();
- 
     // Referencias a los modales
     const modalConfirm = document.getElementById('modal-confirm');
     const modalNick    = document.getElementById('modal-nickname');
     const inputNick    = document.getElementById('modal-input-nickname');
 
-    let pendingMode = null; // Guardamos el modo elegido para activarlo tras el modal
+    let pendingMode = null;
 
     const openNickModal = (mode) => {
         pendingMode = mode;
@@ -81,10 +78,18 @@ async function init() {
     document.getElementById('btn-check').onclick = checkAnswer;
     document.getElementById('btn-skip').onclick  = () => { if (!state.isWaiting) handleFailure(); };
  
-    // Confirmar con Enter en cualquiera de los dos inputs
+    // Confirmar con Enter
     [elements.inputCountry, elements.inputCapital].forEach(input => {
         if (input) input.onkeydown = (e) => { if (e.key === 'Enter' && !state.isWaiting) checkAnswer(); };
     });
+
+    // Cargar países en segundo plano sin bloquear la UI inicial
+    try {
+        state.countries = await fetchCountries();
+    } catch (err) {
+        console.error("Error al cargar países:", err);
+        alert("Hubo un problema al cargar los datos del mundo. Por favor, refresca la página.");
+    }
 }
  
 init();

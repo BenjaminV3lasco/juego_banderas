@@ -314,13 +314,49 @@ body {
     backdrop-filter: blur(8px);
 }
 
+.ranking-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
 .ranking-title {
     font-size: 1.1rem;
     font-weight: 700;
-    margin-bottom: 1rem;
+    margin-bottom: 0;
     color: var(--accent-teal);
     text-transform: uppercase;
     letter-spacing: 0.05em;
+}
+
+.ranking-tabs {
+    display: flex;
+    background: rgba(0,0,0,0.2);
+    padding: 4px;
+    border-radius: 10px;
+    border: 1px solid var(--glass-border);
+}
+
+.rank-tab {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 700;
+    transition: all 0.2s;
+    font-family: var(--font-family);
+}
+
+.rank-tab:hover { color: var(--text-main); }
+.rank-tab.active {
+    background: var(--accent-teal);
+    color: #0f172a;
 }
 
 .ranking-list {
