@@ -15,10 +15,10 @@ El juego utiliza la API pública [REST Countries](https://restcountries.com/), q
 
 -   **195 Estados Soberanos**: Países reconocidos por la ONU (Organización de las Naciones Unidas).
 -   **55 Territorios y Dependencias**:
--   Territorios de ultramar (Guadalupe, Reunión, Gibraltar, Groenlandia)
--   Islas autónomas (Islas Feroe, Aruba, Curazao, Jersey)
--   Territorios en disputa o de reconocimiento parcial (Islas Malvinas, Kosovo)
--   Territorios deshabitados o de uso científico (Antártida, Islas Heard y McDonald)
+-       Territorios de ultramar (Guadalupe, Reunión, Gibraltar, Groenlandia)
+-       Islas autónomas (Islas Feroe, Aruba, Curazao, Jersey)
+-       Territorios en disputa o de reconocimiento parcial (Islas Malvinas, Kosovo)
+-       Territorios deshabitados o de uso científico (Antártida, Islas Heard y McDonald)
 
 ## 📂 Estructura del Proyecto
 
