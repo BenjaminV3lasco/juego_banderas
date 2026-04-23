@@ -5,6 +5,7 @@
 import { state, resetState, normalize, startTimer, stopTimer, getTimerValue } from './state.js';
 import { recordStat }                   from './stats.js';
 import { elements, showScreen, updateScore, showFeedback, renderStats } from './ui/ui.js';
+import { saveGameResult } from './storage.js';
  
 // ── Arranque de partida ───────────────────────
  
@@ -27,6 +28,7 @@ export function renderQuestion() {
     if (state.index >= state.countries.length) {
         stopTimer();
         state.finalTime = getTimerValue();
+        saveGameResult(state);
         renderStats(state);
         return;
     }

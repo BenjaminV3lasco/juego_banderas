@@ -3,6 +3,7 @@
 // ─────────────────────────────────────────────
  
 import { elements } from './screens.js';
+import { getLocalRanking } from '../storage.js';
  
 // ── Traducciones ──────────────────────────────
  
@@ -105,6 +106,41 @@ function buildRegionHTML(key, data) {
             </div>
         </div>`;
 }
+
+function renderRanking() {
+    const ranking = getLocalRanking(); // Mostrar todo el historial
+    const container = document.getElementById('stats-ranking');
+    if (!container) return;
+
+    if (ranking.length === 0) {
+        container.innerHTML = '';
+        return;
+    }
+
+    const itemsHTML = ranking.map((entry, i) => {
+        let rankClass = '';
+        if (i === 0) rankClass = 'gold';
+        else if (i === 1) rankClass = 'silver';
+        else if (i === 2) rankClass = 'bronze';
+
+        return `
+            <div class="ranking-item">
+                <div class="rank-pos ${rankClass}">#${i + 1}</div>
+                <div class="rank-info">
+                    <div class="rank-mode">${entry.mode === 'paises' ? 'Países' : 'País + Capital'}</div>
+                    <div class="rank-date">${new Date(entry.date).toLocaleDateString()}</div>
+                </div>
+                <div class="rank-score">${entry.correct}/${entry.total}</div>
+                <div class="rank-time">${entry.time}</div>
+            </div>
+        `;
+    }).join('');
+
+    container.innerHTML = `
+        <h2 class="ranking-title">Ranking</h2>
+        <div class="ranking-list">${itemsHTML}</div>
+    `;
+}
  
 // ── Acordeón ──────────────────────────────────
  
@@ -120,12 +156,33 @@ function initAccordion() {
 // ── Función principal ─────────────────────────
  
 export function renderStats(state) {
+    elements.home.classList.add('hidden');
     elements.game.classList.add('hidden');
     elements.stats.classList.remove('hidden');
+
+    const globalCard = document.getElementById('stats-global');
+    const regionsContainer = document.getElementById('stats-regions');
+    const capEl = document.getElementById('stats-capitals');
+    const restartBtn = document.getElementById('btn-restart');
+
+    // Si no hay estado (se accede desde el inicio)
+    if (!state || !state.score.total) {
+        globalCard.classList.add('hidden');
+        regionsContainer.classList.add('hidden');
+        if (capEl) capEl.classList.add('hidden');
+        if (restartBtn) restartBtn.classList.add('hidden');
+        renderRanking();
+        return;
+    }
+
+    // Si hay estado, mostramos todo
+    globalCard.classList.remove('hidden');
+    regionsContainer.classList.remove('hidden');
+    if (restartBtn) restartBtn.classList.remove('hidden');
  
     // Tarjeta global
     const gColor = barColor(state.score.correct, state.score.total);
-    document.getElementById('stats-global').innerHTML = `
+    globalCard.innerHTML = `
         <div class="sg-number" style="color:${gColor}">${pct(state.score.correct, state.score.total)}</div>
         <div class="sg-label">Acierto global — ${state.score.correct} de ${state.score.total} países</div>
         <div class="sg-time">Tiempo total: ${state.finalTime || '—'}</div>
@@ -133,8 +190,11 @@ export function renderStats(state) {
             <div class="sg-bar-fill" style="width:${barWidth(state.score.correct, state.score.total)}%;background:${gColor}"></div>
         </div>`;
  
+    // Ranking histórico
+    renderRanking();
+ 
     // Tarjetas por región (acordeón)
-    document.getElementById('stats-regions').innerHTML = REGION_ORDER
+    regionsContainer.innerHTML = REGION_ORDER
         .filter(key => state.stats[key])
         .map(key    => buildRegionHTML(key, state.stats[key]))
         .join('');
@@ -142,7 +202,6 @@ export function renderStats(state) {
     initAccordion();
  
     // Tarjeta de capitales
-    const capEl = document.getElementById('stats-capitals');
     if (!capEl) return;
  
     if (state.mode === 'capitales') {

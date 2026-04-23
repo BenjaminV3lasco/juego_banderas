@@ -4,7 +4,7 @@
 // ─────────────────────────────────────────────
 import { state }                                from './state.js';
 import { startGame, checkAnswer, handleFailure } from './game.js';
-import { elements, showScreen }                 from './ui/ui.js';
+import { elements, showScreen, renderStats }                 from './ui/ui.js';
 import { fetchCountries }                       from './api.js';
  
 async function init() {
@@ -14,6 +14,7 @@ async function init() {
     // Selección de modo desde la pantalla de inicio
     document.getElementById('btn-mode-paises').onclick    = () => startGame('paises');
     document.getElementById('btn-mode-capitales').onclick = () => startGame('capitales');
+    document.getElementById('btn-show-ranking').onclick   = () => renderStats();
  
     // Botón volver al inicio
     const modal        = document.getElementById('modal-confirm');
@@ -32,6 +33,9 @@ async function init() {
     btnModalCancel.onclick = () => {
         modal.classList.add('hidden');
     };
+
+    // Botón reiniciar (después de terminar)
+    document.getElementById('btn-restart').onclick = () => startGame(state.mode);
 
     // Cerrar modal al hacer clic fuera del contenido
     modal.onclick = (e) => {

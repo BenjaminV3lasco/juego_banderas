@@ -11,7 +11,9 @@ export const state = {
     score:        { correct: 0, wrong: 0, total: 0 },
     stats:        {},                 // { region: { correct, total, subs: { subregion: {…} } } }
     capitalStats: { correct: 0, total: 0 },
-    isWaiting:    false
+    isWaiting:    false,
+    finalTime:    '',
+    seconds:      0
 };
  
 export function resetState(mode) {
@@ -21,6 +23,8 @@ export function resetState(mode) {
     state.capitalStats = { correct: 0, total: 0 };
     state.index        = 0;
     state.isWaiting    = false;
+    state.finalTime    = '';
+    state.seconds      = 0;
 }
  
 // Quita tildes, espacios extra y pasa a minúsculas para comparar respuestas
@@ -38,6 +42,7 @@ export function startTimer() {
     const el = document.getElementById('game-timer');
     timer.interval = setInterval(() => {
         timer.seconds++;
+        state.seconds = timer.seconds;
         const m = String(Math.floor(timer.seconds / 60)).padStart(2, '0');
         const s = String(timer.seconds % 60).padStart(2, '0');
         if (el) el.textContent = `${m}:${s}`;

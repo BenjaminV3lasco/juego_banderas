@@ -31,6 +31,7 @@ juego-banderas/
     ├── game.js         # Lógica central del ciclo de juego
     ├── state.js        # Gestión del estado de la partida y temporizador
     ├── stats.js        # Lógica de procesamiento de estadísticas
+    ├── storage.js      # Persistencia local (localStorage) del ranking
     └── ui/             # Módulos de interfaz de usuario
         ├── screens.js  # Control de navegación entre pantallas
         ├── statsView.js # Renderizado de resultados finales

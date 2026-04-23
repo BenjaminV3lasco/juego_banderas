@@ -31,6 +31,13 @@
                     <div class="mode-card-desc">El desafío completo</div>
                 </div>
             </button>
+            
+            <button class="mode-card" id="btn-show-ranking" style="margin-top: 1rem; border-color: var(--accent-gold);">
+                <div class="mode-card-text">
+                    <div class="mode-card-title" style="color: var(--accent-gold);">Ranking</div>
+                    <div class="mode-card-desc">Estadísticas Históricas</div>
+                </div>
+            </button>
         </div>
     </div>
 </div>
@@ -87,9 +94,13 @@
     <div class="stats-container">
         <h1 class="stats-title">Estadísticas Totales</h1>
         <div id="stats-global" class="stats-global-card"></div>
+        <div id="stats-ranking" class="ranking-card"></div>
         <div id="stats-regions" class="stats-regions"></div>
         <div id="stats-capitals" class="region-card hidden"></div>
-        <button class="btn-play-again" onclick="location.reload()">Jugar de nuevo</button>
+        <div class="stats-actions" style="display: flex; gap: 1rem;">
+            <button class="btn-play-again" style="background: var(--glass-bg); color: white; border: 1px solid var(--glass-border);" onclick="location.reload()">Inicio</button>
+            <button class="btn-play-again" id="btn-restart" style="flex: 2;">Jugar de nuevo</button>
+        </div>
     </div>
 </div>
  
