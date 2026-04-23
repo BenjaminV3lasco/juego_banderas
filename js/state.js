@@ -4,6 +4,7 @@
 // ─────────────────────────────────────────────
  
 export const state = {
+    nickname:     '',
     countries:    [],
     current:      null,
     index:        0,

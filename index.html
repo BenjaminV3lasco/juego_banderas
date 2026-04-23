@@ -116,5 +116,21 @@
         </div>
     </div>
 </div>
+
+<div id="modal-nickname" class="modal-overlay hidden">
+    <div class="modal-content" style="max-width: 450px;">
+        <h2 class="modal-title">¡Bienvenido!</h2>
+        <p class="modal-text">Para guardar tus estadísticas, ingresa un nickname o juega de forma anónima.</p>
+        
+        <div class="input-group" style="margin-bottom: 1.5rem;">
+            <input type="text" id="modal-input-nickname" placeholder="Tu nombre..." autocomplete="off" maxlength="15" style="text-align: center; border-color: var(--accent-teal); margin-bottom: 0;"/>
+        </div>
+
+        <div class="modal-actions" style="flex-direction: column; gap: 0.75rem;">
+            <button class="btn-modal btn-modal-confirm" id="btn-modal-nick-confirm" style="width: 100%; background: var(--success);">Jugar con Nickname</button>
+            <button class="btn-modal btn-modal-cancel" id="btn-modal-nick-anon" style="width: 100%; border: none; background: rgba(255,255,255,0.05);">Jugar como Anónimo</button>
+        </div>
+    </div>
+</div>
 </body>
 </html>

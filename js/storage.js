@@ -12,6 +12,7 @@ export function saveGameResult(gameData) {
     const history = getLocalRanking();
     
     const entry = {
+        nickname: gameData.nickname || 'Anónimo',
         date: new Date().toISOString(),
         mode: gameData.mode,
         correct: gameData.score.correct,

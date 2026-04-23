@@ -127,7 +127,7 @@ function renderRanking() {
             <div class="ranking-item">
                 <div class="rank-pos ${rankClass}">#${i + 1}</div>
                 <div class="rank-info">
-                    <div class="rank-mode">${entry.mode === 'paises' ? 'Países' : 'País + Capital'}</div>
+                    <div class="rank-mode">${entry.nickname} <span class="rank-mode-type">(${entry.mode === 'paises' ? 'Países' : 'P+C'})</span></div>
                     <div class="rank-date">${new Date(entry.date).toLocaleDateString()}</div>
                 </div>
                 <div class="rank-score">${entry.correct}/${entry.total}</div>
