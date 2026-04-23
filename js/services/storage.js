@@ -2,10 +2,12 @@
 //  Gestión de almacenamiento local (localStorage)
 // ─────────────────────────────────────────────
 
+import { saveGlobalRanking } from './firebase.js';
+
 const STORAGE_KEY = 'juego_banderas_ranking';
 
 /**
- * Guarda el resultado de una partida en el ranking local.
+ * Guarda el resultado de una partida en local y en la nube.
  * @param {Object} gameData - Datos de la partida finalizada.
  */
 export function saveGameResult(gameData) {
@@ -23,16 +25,16 @@ export function saveGameResult(gameData) {
 
     history.push(entry);
     
-    // Ordenar: Primero por más aciertos, luego por menos tiempo
+    // Ordenar localmente
     history.sort((a, b) => {
-        if (b.correct !== a.correct) {
-            return b.correct - a.correct;
-        }
+        if (b.correct !== a.correct) return b.correct - a.correct;
         return a.seconds - b.seconds;
     });
 
-    // Guardar solo los top 10 o todos (por ahora todos para no perder info)
     localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+
+    // Guardar en la nube (Firebase)
+    saveGlobalRanking(gameData);
 }
 
 /**

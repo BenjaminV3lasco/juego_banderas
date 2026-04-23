@@ -2,10 +2,10 @@
 //  app.js — punto de entrada
 //  Solo registra eventos e inicializa la app
 // ─────────────────────────────────────────────
-import { state }                                from './state.js';
-import { startGame, checkAnswer, handleFailure } from './game.js';
-import { elements, showScreen, renderStats }                 from './ui/ui.js';
-import { fetchCountries }                       from './api.js';
+import { state }                                from './core/state.js';
+import { startGame, checkAnswer, handleFailure } from './core/game.js';
+import { elements, showScreen, renderStats }    from './ui/ui.js';
+import { fetchCountries }                       from './services/api.js';
  
 async function init() {
     // Carga los países desde la API antes de habilitar la UI

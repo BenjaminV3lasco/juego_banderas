@@ -3,7 +3,8 @@
 // ─────────────────────────────────────────────
  
 import { elements } from './screens.js';
-import { getLocalRanking } from '../storage.js';
+import { getLocalRanking } from '../services/storage.js';
+import { getGlobalRanking } from '../services/firebase.js';
  
 // ── Traducciones ──────────────────────────────
  
@@ -107,13 +108,27 @@ function buildRegionHTML(key, data) {
         </div>`;
 }
 
-function renderRanking() {
-    const ranking = getLocalRanking(); // Mostrar todo el historial
+async function renderRanking() {
     const container = document.getElementById('stats-ranking');
     if (!container) return;
 
+    // Mostrar estado de carga
+    container.innerHTML = `
+        <h2 class="ranking-title">Ranking Global</h2>
+        <div class="ranking-list">
+            <div style="text-align:center; padding: 2rem; color: var(--text-muted); font-size: 0.9rem;">Cargando mejores puntuaciones...</div>
+        </div>
+    `;
+
+    const ranking = await getGlobalRanking();
+
     if (ranking.length === 0) {
-        container.innerHTML = '';
+        container.innerHTML = `
+            <h2 class="ranking-title">Ranking Global</h2>
+            <div class="ranking-list">
+                <div style="text-align:center; padding: 2rem; color: var(--text-muted); font-size: 0.9rem;">Aún no hay puntuaciones globales. ¡Sé el primero!</div>
+            </div>
+        `;
         return;
     }
 
@@ -123,12 +138,18 @@ function renderRanking() {
         else if (i === 1) rankClass = 'silver';
         else if (i === 2) rankClass = 'bronze';
 
+        let dateStr = '—';
+        if (entry.date) {
+            const d = entry.date.toDate ? entry.date.toDate() : new Date(entry.date);
+            dateStr = d.toLocaleDateString();
+        }
+
         return `
             <div class="ranking-item">
                 <div class="rank-pos ${rankClass}">#${i + 1}</div>
                 <div class="rank-info">
                     <div class="rank-mode">${entry.nickname} <span class="rank-mode-type">(${entry.mode === 'paises' ? 'Países' : 'P+C'})</span></div>
-                    <div class="rank-date">${new Date(entry.date).toLocaleDateString()}</div>
+                    <div class="rank-date">${dateStr}</div>
                 </div>
                 <div class="rank-score">${entry.correct}/${entry.total}</div>
                 <div class="rank-time">${entry.time}</div>
@@ -137,7 +158,7 @@ function renderRanking() {
     }).join('');
 
     container.innerHTML = `
-        <h2 class="ranking-title">Ranking</h2>
+        <h2 class="ranking-title">Ranking Global</h2>
         <div class="ranking-list">${itemsHTML}</div>
     `;
 }
@@ -160,6 +181,7 @@ export function renderStats(state) {
     elements.game.classList.add('hidden');
     elements.stats.classList.remove('hidden');
 
+    const mainTitle = document.getElementById('stats-main-title');
     const globalCard = document.getElementById('stats-global');
     const regionsContainer = document.getElementById('stats-regions');
     const capEl = document.getElementById('stats-capitals');
@@ -167,6 +189,7 @@ export function renderStats(state) {
 
     // Si no hay estado (se accede desde el inicio)
     if (!state || !state.score.total) {
+        if (mainTitle) mainTitle.textContent = 'Ranking Global';
         globalCard.classList.add('hidden');
         regionsContainer.classList.add('hidden');
         if (capEl) capEl.classList.add('hidden');
@@ -176,6 +199,7 @@ export function renderStats(state) {
     }
 
     // Si hay estado, mostramos todo
+    if (mainTitle) mainTitle.textContent = '¡Partida Completada!';
     globalCard.classList.remove('hidden');
     regionsContainer.classList.remove('hidden');
     if (restartBtn) restartBtn.classList.remove('hidden');

@@ -4,8 +4,8 @@
  
 import { state, resetState, normalize, startTimer, stopTimer, getTimerValue } from './state.js';
 import { recordStat }                   from './stats.js';
-import { elements, showScreen, updateScore, showFeedback, renderStats } from './ui/ui.js';
-import { saveGameResult } from './storage.js';
+import { elements, showScreen, updateScore, showFeedback, renderStats } from '../ui/ui.js';
+import { saveGameResult } from '../services/storage.js';
  
 // ── Arranque de partida ───────────────────────
  
