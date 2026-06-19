@@ -107,10 +107,21 @@ const CAPITAL_ALIASES = {
  
 };
  
+const COUNTRIES_URL = new URL('../data/countries.json', import.meta.url);
+
 export async function fetchCountries() {
     try {
-        const response = await fetch('https://restcountries.com/v3.1/all?fields=name,translations,capital,flags,region,subregion');
+        const response = await fetch(COUNTRIES_URL);
+
+        if (!response.ok) {
+            throw new Error(`No se pudo cargar countries.json: estado ${response.status}`);
+        }
+
         const data = await response.json();
+
+        if (!Array.isArray(data)) {
+            throw new Error('countries.json tiene un formato inesperado');
+        }
         
         return data.map(c => {
             const nameSpa = c.translations?.spa?.common || c.name.common;
@@ -137,6 +148,6 @@ export async function fetchCountries() {
         });
     } catch (err) {
         console.error("Error cargando países:", err);
-        return [];
+        throw err;
     }
 }

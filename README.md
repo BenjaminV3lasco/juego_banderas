@@ -8,7 +8,7 @@ Un juego web interactivo diseñado para poner a prueba tus conocimientos de geog
 * **Frontend:** HTML5, CSS3 (con diseño modular y Glassmorphism), Vanilla JavaScript (ES6+).
 * **Backend:** Firebase (Firestore Database) para el ranking mundial en tiempo real.
 * **Hosting:** Firebase Hosting.
-* **Datos:** Integración con la API pública de REST Countries.
+* **Datos:** Dataset local basado en `mledoze/countries` y banderas SVG servidas desde FlagCDN.
 
 ## 🏆 Ranking Mundial (Salón de la Fama)
 El juego cuenta con un sistema de ranking global conectado a la nube. Los jugadores pueden competir por entrar en el podio (Oro, Plata y Bronce) basándose en sus aciertos y velocidad. El ranking se actualiza automáticamente al finalizar cada partida.
@@ -22,7 +22,9 @@ El juego ofrece dos niveles de desafío:
 
 ## 🚩 ¿De dónde salen las 250 banderas?
 
-Los datos del juego se obtienen en tiempo real desde [REST Countries](https://restcountries.com/). La API devuelve un total aproximado de 250 entidades, clasificadas de la siguiente manera:
+Los datos del juego se cargan desde `js/data/countries.json`, un dataset local generado a partir de [mledoze/countries](https://github.com/mledoze/countries). Esto evita depender en tiempo real de REST Countries, cuyo endpoint legacy fue deprecado y puede fallar por redirecciones/CORS en el navegador.
+
+Las imágenes de las banderas se sirven como SVG desde [FlagCDN](https://flagcdn.com/), usando el código ISO de cada país. El dataset incluye un total aproximado de 250 entidades, clasificadas de la siguiente manera:
 
 - **195 Estados Soberanos**: Países con reconocimiento pleno por la ONU.
 - **55 Territorios y Dependencias**: Incluye regiones de ultramar, territorios autónomos (Groenlandia, Aruba, Gibraltar) y zonas en disputa o bases científicas.
@@ -39,6 +41,7 @@ juego-banderas/
 ├── js/
 │   ├── app.js          # Punto de entrada y orquestador de eventos
 │   ├── core/           # Lógica central (juego, estado, estadísticas)
+│   ├── data/           # Dataset local de países y URLs de banderas
 │   ├── services/       # Conexiones externas (API, LocalStorage, Firebase)
 │   └── ui/             # Interfaz de usuario (pantallas y ranking)
 ├── firebase.json       # Configuración de despliegue de Firebase
