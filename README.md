@@ -23,15 +23,24 @@ npm run build      # build optimizado de producción
 npm run start      # ejecutar el build de producción
 ```
 
-## Supabase
+## Conectar Supabase
 
-El juego funciona localmente sin configurar Supabase. Para habilitarlo más adelante:
+El juego funciona sin Supabase, pero puede guardar automáticamente cada resultado completado.
 
-1. Creá un proyecto en Supabase.
-2. Copiá `.env.example` como `.env.local`.
-3. Completá `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+1. Creá un proyecto en [Supabase](https://supabase.com/dashboard).
+2. Abrí **SQL Editor**, copiá el contenido de `supabase/migrations/001_create_game_results.sql` y ejecutalo.
+3. En **Project Settings → API Keys**, copiá la URL del proyecto y la clave `publishable`. Una clave `anon` de un proyecto anterior también es compatible.
+4. Copiá `.env.example` como `.env.local`.
+5. Completá las variables:
 
-El cliente está centralizado en `lib/supabase/client.ts` y devuelve `null` mientras no existan credenciales.
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://tu-proyecto.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_tu-clave
+```
+
+6. Reiniciá `npm run dev` después de modificar `.env.local`.
+
+La migración activa Row Level Security: visitantes anónimos pueden insertar resultados, pero no leer toda la tabla. El cliente está centralizado en `lib/supabase/client.ts`; si faltan las credenciales devuelve `null` y el juego continúa sin persistencia.
 
 ## Estructura nueva
 
@@ -43,13 +52,14 @@ app/
 lib/
 ├── game.ts           # tipos, modos y helpers del juego
 └── supabase/
-    └── client.ts     # cliente opcional de Supabase
+    ├── client.ts     # cliente opcional de Supabase
+    └── results.ts    # persistencia de partidas terminadas
 public/
 └── data/
     └── countries.json
+supabase/
+└── migrations/       # esquema SQL y políticas RLS
 ```
-
-Las carpetas `css/` y `js/`, junto con `index.html` y los archivos de Firebase, pertenecen a la versión anterior. Next.js no los utiliza; se conservan temporalmente como referencia hasta confirmar la eliminación definitiva del legado.
 
 ## Estado de la migración
 
@@ -58,7 +68,7 @@ Las carpetas `css/` y `js/`, junto con `index.html` y los archivos de Firebase, 
 - Diseño responsive inspirado en un hub de juegos diarios.
 - Dataset local, sin dependencia de una API externa.
 - Seis modos trasladados como configuración desacoplada.
-- Preparación para Supabase sin obligar a configurar credenciales.
+- Persistencia opcional de resultados en Supabase.
 - Build estático de la página principal verificado.
 
-La siguiente etapa será definir los modos definitivos y el modelo de datos de intentos antes de activar Supabase.
+La siguiente etapa será definir los modos definitivos y ampliar las métricas necesarias para dificultad adaptativa.
