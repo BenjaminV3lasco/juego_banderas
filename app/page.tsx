@@ -4,7 +4,7 @@ import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { CountryDetective } from "@/app/components/CountryDetective";
 import { addDailyOutcome, DailyRecord, EMPTY_DAILY_RECORD, getDailyCountry, getDailyStreak, getTodayKey, readDailyRecord } from "@/lib/daily";
-import { Country, GameMode, mapCountries, MODES, normalize, RawCountry, shuffle } from "@/lib/game";
+import { Country, GameMode, getCountryDisplayName, mapCountries, MODES, normalize, RawCountry, shuffle } from "@/lib/game";
 import { Language, UI_TEXT } from "@/lib/i18n";
 import { saveGameResult } from "@/lib/supabase/results";
 
@@ -103,7 +103,7 @@ export default function Home() {
     const ok = countryOk && capitalOk;
     if (mode?.daily) setDailyRecord((record) => addDailyOutcome(record, `${todayKey}:${mode.id}`, ok ? "correct" : "wrong"));
     setScore((value) => ({ ...value, [ok ? "correct" : "wrong"]: value[ok ? "correct" : "wrong"] + 1 }));
-    const countryName = language === "en" ? current.englishName : current.name;
+    const countryName = getCountryDisplayName(current, language);
     setFeedback({ text: ok ? text.correct : `${countryName}${mode?.asksCapital ? ` — ${current.capital}` : ""}`, ok });
     window.setTimeout(nextQuestion, ok ? 850 : 1400);
   }

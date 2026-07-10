@@ -48,7 +48,16 @@ export const MODES: GameMode[] = [
 ];
 
 export const normalize = (value: string) =>
-  value.toLocaleLowerCase("es").normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+  value.toLocaleLowerCase("es")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[.'’()\-]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+export function getCountryDisplayName(country: Country, language: "es" | "en") {
+  return language === "es" ? country.name : country.englishName;
+}
 
 export function mapCountries(data: RawCountry[]): Country[] {
   return data.map((country) => {

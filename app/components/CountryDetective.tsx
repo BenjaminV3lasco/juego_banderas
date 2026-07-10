@@ -2,7 +2,7 @@
 
 import { FormEvent, useMemo, useState } from "react";
 import type { Country } from "@/lib/game";
-import { normalize } from "@/lib/game";
+import { getCountryDisplayName, normalize } from "@/lib/game";
 import type { Language } from "@/lib/i18n";
 
 type Category = "region" | "subregion" | "capitalInitial";
@@ -31,8 +31,8 @@ export function CountryDetective({ target, countries, language, onResolved, onCo
     return countries
       .filter((country) => country.acceptedNames.some((name) => normalize(name).includes(query)))
       .sort((a, b) => {
-        const aName = language === "es" ? a.name : a.englishName;
-        const bName = language === "es" ? b.name : b.englishName;
+        const aName = getCountryDisplayName(a, language);
+        const bName = getCountryDisplayName(b, language);
         const aStarts = normalize(aName).startsWith(query) ? 0 : 1;
         const bStarts = normalize(bName).startsWith(query) ? 0 : 1;
         return aStarts - bStarts || aName.localeCompare(bName, language);
@@ -84,7 +84,7 @@ export function CountryDetective({ target, countries, language, onResolved, onCo
     }
   }
 
-  const targetName = language === "es" ? target.name : target.englishName;
+  const targetName = getCountryDisplayName(target, language);
 
   return <section className="detective-shell">
     <div className="detective-heading"><div className="mystery-icon">?</div><h1>{copy.title}</h1><div className="lives" aria-label={`${lives} lives`}>{Array.from({ length: 3 }, (_, index) => <span className={index >= lives ? "lost" : ""} key={index}>⚽</span>)}</div></div>
@@ -105,7 +105,7 @@ export function CountryDetective({ target, countries, language, onResolved, onCo
         <div className="country-autocomplete">
           <input value={guess} onChange={(event) => { setGuess(event.target.value); setSuggestionsVisible(true); }} onFocus={() => setSuggestionsVisible(true)} placeholder={copy.guess} autoComplete="off" role="combobox" aria-autocomplete="list" aria-controls="country-suggestions" aria-expanded={suggestionsVisible && Boolean(matchingCountries.length)} />
           {suggestionsVisible && matchingCountries.length > 0 && <div className="country-suggestions" id="country-suggestions" role="listbox">{matchingCountries.map((country) => {
-            const name = language === "es" ? country.name : country.englishName;
+            const name = getCountryDisplayName(country, language);
             return <button type="button" role="option" aria-selected="false" key={country.englishName} onClick={() => { setGuess(name); setSuggestionsVisible(false); }}>{name}</button>;
           })}</div>}
         </div>
