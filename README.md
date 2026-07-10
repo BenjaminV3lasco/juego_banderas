@@ -28,7 +28,12 @@ npm run start      # ejecutar el build de producción
 El juego funciona sin Supabase, pero puede guardar automáticamente cada resultado completado.
 
 1. Creá un proyecto en [Supabase](https://supabase.com/dashboard).
-2. Abrí **SQL Editor**, copiá el contenido de `supabase/migrations/001_create_game_results.sql` y ejecutalo.
+2. Abrí **SQL Editor** y ejecutá las migraciones en orden:
+
+```text
+supabase/migrations/001_create_game_results.sql
+supabase/migrations/002_add_historical_ranking.sql
+```
 3. En **Project Settings → API Keys**, copiá la URL del proyecto y la clave `publishable`. Una clave `anon` de un proyecto anterior también es compatible.
 4. Copiá `.env.example` como `.env.local`.
 5. Completá las variables:

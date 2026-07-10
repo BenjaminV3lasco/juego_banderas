@@ -99,10 +99,29 @@ const COUNTRY_ALIASES: Record<string, string[]> = {
   "Thailand": ["Tailandia", "Siam"],
 };
 
+const NON_SOVEREIGN_COUNTRIES = new Set([
+  "American Samoa", "Anguilla", "Antarctica", "Aruba", "Åland Islands",
+  "Bermuda", "Bouvet Island", "British Indian Ocean Territory", "British Virgin Islands",
+  "Caribbean Netherlands", "Cayman Islands", "Christmas Island", "Cocos (Keeling) Islands",
+  "Cook Islands", "Curaçao", "Falkland Islands", "Faroe Islands", "French Guiana",
+  "French Polynesia", "French Southern and Antarctic Lands", "Gibraltar", "Greenland",
+  "Guadeloupe", "Guam", "Guernsey", "Heard Island and McDonald Islands", "Hong Kong",
+  "Isle of Man", "Jersey", "Kosovo", "Macau", "Martinique", "Mayotte", "Montserrat",
+  "New Caledonia", "Niue", "Norfolk Island", "Northern Mariana Islands", "Pitcairn Islands",
+  "Puerto Rico", "Réunion", "Saint Barthélemy", "Saint Helena, Ascension and Tristan da Cunha",
+  "Saint Martin", "Sint Maarten", "South Georgia", "Svalbard and Jan Mayen", "Taiwan",
+  "Tokelau", "Turks and Caicos Islands", "United States Minor Outlying Islands",
+  "United States Virgin Islands", "Wallis and Futuna", "Western Sahara",
+]);
+
 export function getSpanishCountryName(englishName: string, datasetName: string) {
   return SPANISH_NAME_OVERRIDES[englishName] || datasetName.split("(")[0].trim();
 }
 
 export function getCountryAliases(englishName: string) {
   return COUNTRY_ALIASES[englishName] || [];
+}
+
+export function isSovereignCountry(englishName: string) {
+  return !NON_SOVEREIGN_COUNTRIES.has(englishName);
 }
