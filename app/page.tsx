@@ -38,7 +38,7 @@ export default function Home() {
     if (savedResult.current === resultKey) return;
     savedResult.current = resultKey;
     void saveGameResult({ mode: mode.id, correct: score.correct, wrong: score.wrong }).catch((error: unknown) => {
-      console.error("No se pudo guardar el resultado en Supabase", error);
+      console.warn("No se pudo guardar el resultado en Supabase", error);
     });
   }, [mode, score.correct, score.wrong, screen, totalAnswered]);
 

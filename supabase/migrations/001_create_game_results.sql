@@ -9,6 +9,11 @@ create table if not exists public.game_results (
 
 alter table public.game_results enable row level security;
 
+grant insert on table public.game_results to anon, authenticated;
+
+drop policy if exists "anyone can submit game results"
+on public.game_results;
+
 create policy "anyone can submit game results"
 on public.game_results
 for insert
