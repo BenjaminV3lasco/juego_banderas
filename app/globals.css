@@ -42,3 +42,46 @@ footer { border-top:1px solid var(--cyan); background:#041e2a; padding:40px max(
 .result-wrap { min-height:calc(100vh - 55px); display:grid; place-items:center; padding:24px; }.result-card { width:min(440px,100%); border:1px solid #15506a; border-radius:12px; background:#06202c; text-align:center; padding:48px 30px; }.eyebrow { color:var(--cyan); font-size:.7rem; letter-spacing:.16em; font-weight:700; }.result-card h1 { color:var(--yellow); font-size:5rem; line-height:1.1; margin:14px 0; }.result-card p { color:#b7c3c9; }.result-actions { display:grid; gap:10px; margin-top:28px; }.result-actions .secondary { background:#17313d; color:white; }
 @media(max-width:720px){.mode-grid{grid-template-columns:repeat(2,1fr)}.hub{padding-top:30px}.hub h1{margin-bottom:30px}.topbar{padding:0 12px}.logo{font-size:1.45rem}.score-pill{height:36px;min-width:68px;font-size:.95rem}.top-actions .daily-counter{display:none}.main-menu{padding-top:35px}.menu-option{grid-template-columns:52px 1fr auto;padding:17px;gap:13px}.menu-option .menu-icon{width:50px;height:50px;font-size:1.5rem}.intro-card{margin:28px auto;padding:24px;grid-template-columns:1fr;gap:22px}.intro-visual{min-height:150px}.intro-content h1{font-size:1.65rem}.question-controls{grid-template-columns:1fr}.clue-board{min-height:220px}.detective-heading h1{display:none}.mystery-icon{width:52px;height:60px;font-size:2rem}.ranking-shell{margin-top:30px}.ranking-heading{align-items:stretch;flex-direction:column}.ranking-row{grid-template-columns:35px minmax(90px,1fr) 65px 65px}.ranking-row>*:last-child{display:none}footer{grid-template-columns:1fr;text-align:center}footer nav{justify-content:center}}
 @media(max-width:390px){.mode-card{height:200px}.mode-preview{height:144px}.game-shell{padding-top:25px}.question-card{padding:14px}.flag-stage{height:185px}.wordle-row{gap:3px}.wordle-board{gap:3px}.wordle-cell{border-width:1px}.keyboard-row{gap:3px}.keyboard-row button{min-width:27px;height:40px;padding:0 5px;font-size:.72rem}.keyboard-row .wide-key{min-width:48px}}
+
+/* Polished interactions and completed daily reviews */
+body { background:radial-gradient(circle at 50% -20%,#073448 0,#00111a 38%); }
+.mode-card.completed { opacity:.82; cursor:pointer; border-color:#1d6b55; }
+.mode-card.completed::after { content:"✓"; position:absolute; inset:0; margin:auto; width:38px; height:38px; display:grid; place-items:center; border:4px solid #00130d; border-radius:50%; background:var(--green); color:#001b12; font-size:1.2rem; font-weight:900; box-shadow:0 0 0 3px #38d18d44,0 7px 20px #0008; }
+.question-controls select { appearance:none; padding-right:34px; background-image:linear-gradient(45deg,transparent 50%,#17313d 50%),linear-gradient(135deg,#17313d 50%,transparent 50%); background-position:calc(100% - 15px) 50%,calc(100% - 10px) 50%; background-size:5px 5px,5px 5px; background-repeat:no-repeat; cursor:pointer; }
+.mode-dropdown { position:relative; width:min(260px,100%); }
+.mode-dropdown-trigger { width:100%; min-height:44px; display:flex; justify-content:space-between; align-items:center; gap:12px; border:1px solid #315563; border-radius:10px; background:linear-gradient(180deg,#0d3140,#08232f); color:white; padding:10px 13px; cursor:pointer; box-shadow:0 7px 20px #0003; }
+.mode-dropdown-trigger i { color:var(--cyan); font-size:1.1rem; font-style:normal; transition:transform .18s; }
+.mode-dropdown.open .mode-dropdown-trigger { border-color:var(--cyan); }
+.mode-dropdown.open .mode-dropdown-trigger i { transform:rotate(180deg); }
+.mode-dropdown-menu { position:absolute; z-index:30; top:calc(100% + 7px); left:0; right:0; overflow:hidden; border:1px solid #2a596b; border-radius:11px; background:#061f2b; box-shadow:0 20px 45px #000b; animation:dropdownIn .16s ease-out; transform-origin:top; }
+.mode-dropdown-menu button { width:100%; display:grid; grid-template-columns:25px 1fr auto; align-items:center; gap:8px; border:0; border-bottom:1px solid #163541; background:transparent; color:#dce6ea; padding:10px 12px; text-align:left; cursor:pointer; font-size:.78rem; }
+.mode-dropdown-menu button:last-child { border:0; }
+.mode-dropdown-menu button:hover,.mode-dropdown-menu button.selected { background:#10445a; color:white; }
+.mode-dropdown-menu button b { color:var(--green); }
+.daily-review-page { min-height:100vh; background:#00111a; }
+.daily-review-card { width:min(520px,calc(100% - 24px)); margin:55px auto 80px; border:1px solid #256078; border-radius:18px; background:linear-gradient(155deg,#082b39,#041923); padding:38px; text-align:center; box-shadow:0 25px 70px #0007; animation:resultIn .45s cubic-bezier(.2,.8,.2,1); }
+.review-status { display:inline-flex; border-radius:99px; padding:6px 11px; font-size:.66rem; font-weight:900; letter-spacing:.1em; }
+.review-status.correct { color:#72e8b5; background:#123b2e; }
+.review-status.wrong { color:#ff8295; background:#421a26; }
+.daily-review-card h1 { margin:15px 0 22px; font-size:1.75rem; }
+.review-flag { height:210px; display:grid; place-items:center; border:1px solid #1c4858; border-radius:12px; background:#00131c; overflow:hidden; }
+.review-flag img { max-width:82%; max-height:82%; object-fit:contain; filter:drop-shadow(0 10px 18px #0008); animation:flagReveal .6s .15s both; }
+.daily-review-card h2 { margin-top:17px; font-size:1.35rem; }
+.review-streak { width:max-content; margin:14px auto 0; border:1px solid #6b5012; border-radius:99px; background:#382a09; color:#ffd451; padding:7px 12px; font-size:.78rem; font-weight:700; }
+.daily-review-card>button { margin-top:22px; border:0; border-radius:8px; background:var(--cyan); color:#001820; padding:11px 18px; font-weight:800; cursor:pointer; }
+
+@keyframes pageIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+@keyframes cardIn { from { opacity:0; transform:translateY(22px) scale(.97); } to { opacity:1; transform:none; } }
+@keyframes dropdownIn { from { opacity:0; transform:translateY(-6px) scaleY(.96); } to { opacity:1; transform:none; } }
+@keyframes resultIn { from { opacity:0; transform:translateY(18px) scale(.94); } to { opacity:1; transform:none; } }
+@keyframes flagReveal { from { opacity:0; transform:scale(.72) rotate(-3deg); filter:blur(8px); } to { opacity:1; transform:none; } }
+@keyframes clueIn { from { opacity:0; transform:translateX(-15px); } to { opacity:1; transform:none; } }
+@keyframes tileReveal { 0% { transform:rotateX(0); } 50% { transform:rotateX(90deg); } 100% { transform:rotateX(0); } }
+.main-menu,.hub,.ranking-shell,.player-card,.intro-card,.game-shell,.detective-shell,.wordle-shell { animation:pageIn .38s ease-out both; }
+.menu-option,.mode-card { animation:cardIn .42s cubic-bezier(.2,.75,.2,1) both; }
+.menu-option:nth-child(2),.mode-card:nth-child(2){animation-delay:.05s}.menu-option:nth-child(3),.mode-card:nth-child(3){animation-delay:.1s}.mode-card:nth-child(4){animation-delay:.15s}.mode-card:nth-child(5){animation-delay:.2s}.mode-card:nth-child(6){animation-delay:.25s}.mode-card:nth-child(7){animation-delay:.3s}.mode-card:nth-child(8){animation-delay:.35s}
+.feedback,.clue-row { animation:clueIn .25s ease-out; }
+.wordle-cell.correct,.wordle-cell.present,.wordle-cell.absent { animation:tileReveal .5s ease; }
+.detective-reveal,.wordle-reveal,.result-card { animation:resultIn .42s cubic-bezier(.2,.8,.2,1); }
+.detective-reveal img,.wordle-reveal img { animation:flagReveal .55s .12s both; }
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-delay:0ms!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}

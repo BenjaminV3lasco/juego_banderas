@@ -10,7 +10,7 @@ import { Country, GameMode, getCountryDisplayName, mapCountries, MODES, normaliz
 import { Language, UI_TEXT } from "@/lib/i18n";
 import { saveGameResult } from "@/lib/supabase/results";
 
-type Screen = "menu" | "hub" | "player" | "ranking" | "intro" | "game" | "detective" | "wordle" | "results";
+type Screen = "menu" | "hub" | "player" | "ranking" | "intro" | "game" | "detective" | "wordle" | "results" | "dailyReview";
 type Score = { correct: number; wrong: number };
 type Player = { nickname: string; isGuest: boolean };
 
@@ -74,21 +74,32 @@ export default function Home() {
   }
 
   function openMode(selected: GameMode) {
-    if (selected.daily && isDailyCompleted(selected.id)) return;
+    if (selected.daily && isDailyCompleted(selected.id)) {
+      const outcome = dailyRecord.outcomes[`${todayKey}:${selected.id}`] || dailyRecord.outcomes[todayKey];
+      setMode(selected);
+      setGameLanguage(language);
+      setQuestions([getDailyCountry(getEligiblePool(selected), `${todayKey}:${selected.id}`)]);
+      setScore(outcome === "correct" ? { correct: 1, wrong: 0 } : { correct: 0, wrong: 1 });
+      setScreen("dailyReview");
+      return;
+    }
     setMode(selected);
     setScreen("intro");
   }
 
-  function startGame(selected: GameMode) {
-    if (selected.daily && isDailyCompleted(selected.id)) return;
+  function getEligiblePool(selected: GameMode) {
     const basePool = selected.sovereignOnly ? countries.filter((country) => country.sovereign) : countries;
     const regionalPool = selected.region ? basePool.filter((country) => country.region === selected.region) : basePool;
-    const eligiblePool = selected.customGame === "wordle"
-      ? regionalPool.filter((country) => {
-          const length = normalize(getCountryDisplayName(country, language)).replace(/\s/g, "").length;
-          return length >= 4 && length <= 12;
-        })
-      : regionalPool;
+    if (selected.customGame !== "wordle") return regionalPool;
+    return regionalPool.filter((country) => [country.name, country.englishName].every((countryName) => {
+      const length = normalize(countryName).replace(/\s/g, "").length;
+      return length >= 4 && length <= 12;
+    }));
+  }
+
+  function startGame(selected: GameMode) {
+    if (selected.daily && isDailyCompleted(selected.id)) return;
+    const eligiblePool = getEligiblePool(selected);
     const dailySeed = `${todayKey}:${selected.id}`;
     const pool = selected.daily ? [getDailyCountry(eligiblePool, dailySeed)] : shuffle(eligiblePool);
     setMode(selected);
@@ -236,6 +247,16 @@ export default function Home() {
     </main>;
   }
 
+  if (screen === "dailyReview" && mode && current) {
+    const correct = score.correct > 0;
+    const countryName = getCountryDisplayName(current, language);
+    const streak = getDailyStreak(dailyRecord, mode.id);
+    return <main className="daily-review-page">
+      <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} />
+      <section className="daily-review-card"><span className={`review-status ${correct ? "correct" : "wrong"}`}>{language === "es" ? (correct ? "DESAFÍO SUPERADO" : "DESAFÍO NO SUPERADO") : (correct ? "CHALLENGE COMPLETED" : "CHALLENGE MISSED")}</span><h1>{mode.copy[language].title}</h1><div className="review-flag">{/* eslint-disable-next-line @next/next/no-img-element */}<img src={current.flag} alt={countryName} /></div><h2>{countryName}</h2>{streak > 0 && <div className="review-streak">🔥 {streak} {language === "es" ? "días de racha" : "day streak"}</div>}<button onClick={returnToHub}>{text.viewModes}</button></section>
+    </main>;
+  }
+
   if (screen === "hub") {
     const visibleModes = MODES.filter((item) => hubCategory === "daily" ? item.daily : !item.daily);
     return <main className="home-page">
@@ -245,7 +266,7 @@ export default function Home() {
       const completed = item.daily && isDailyCompleted(item.id);
       const streak = item.customGame ? getDailyStreak(dailyRecord, item.id) : 0;
       const badge = item.customGame ? (streak ? `${streak} 🔥` : completed ? undefined : item.badge) : item.badge;
-      return <button className={`mode-card ${completed ? "completed" : ""}`} key={item.id} onClick={() => openMode(item)} disabled={!countries.length || completed}>
+      return <button className={`mode-card ${completed ? "completed" : ""}`} key={item.id} onClick={() => openMode(item)} disabled={!countries.length}>
         {badge && <span className={`badge ${item.id === "capitals" ? "yellow" : ""}`}>{badge}</span>}
         <div className={`mode-preview ${item.flags.length === 4 ? "four" : ""}`}>{item.flags.map((flag, flagIndex) => <span key={`${flag}-${flagIndex}`}>{flag}</span>)}</div>
         <div className="play-band"><strong>{completed ? text.completed : text.play}</strong><small>{copy.title}</small></div>

@@ -8,6 +8,7 @@ import { getHistoricalRanking, RankingEntry } from "@/lib/supabase/results";
 export function HistoricalRanking({ language, modes }: { language: Language; modes: GameMode[] }) {
   const [entries, setEntries] = useState<RankingEntry[]>([]);
   const [selectedMode, setSelectedMode] = useState<ModeId>(modes[0]?.id || "world");
+  const [menuOpen, setMenuOpen] = useState(false);
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   const copy = language === "es"
     ? { title: "Ranking histórico", loading: "Cargando ranking...", empty: "Todavía no hay partidas completas en este modo.", error: "No se pudo cargar el ranking. Revisá que la migración 002 esté aplicada.", player: "Jugador", score: "Resultado", accuracy: "Precisión", date: "Fecha" }
@@ -26,8 +27,10 @@ export function HistoricalRanking({ language, modes }: { language: Language; mod
     .sort((a, b) => (b.correct / b.total) - (a.correct / a.total) || b.correct - a.correct || new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
     .slice(0, 50), [entries, selectedMode]);
 
+  const selectedModeLabel = modes.find((mode) => mode.id === selectedMode)?.copy[language].title || "";
+
   return <section className="ranking-shell">
-    <div className="ranking-heading"><h1>{copy.title}</h1><select value={selectedMode} onChange={(event) => setSelectedMode(event.target.value as ModeId)}>{modes.map((mode) => <option value={mode.id} key={mode.id}>{mode.copy[language].title}</option>)}</select></div>
+    <div className="ranking-heading"><h1>{copy.title}</h1><div className={`mode-dropdown ${menuOpen ? "open" : ""}`}><button className="mode-dropdown-trigger" onClick={() => setMenuOpen((open) => !open)} aria-haspopup="listbox" aria-expanded={menuOpen}><span>{selectedModeLabel}</span><i>⌄</i></button>{menuOpen && <div className="mode-dropdown-menu" role="listbox">{modes.map((mode) => <button role="option" aria-selected={mode.id === selectedMode} className={mode.id === selectedMode ? "selected" : ""} onClick={() => { setSelectedMode(mode.id); setMenuOpen(false); }} key={mode.id}><span>{mode.flags[0]}</span>{mode.copy[language].title}{mode.id === selectedMode && <b>✓</b>}</button>)}</div>}</div></div>
     {status === "loading" && <div className="ranking-message">{copy.loading}</div>}
     {status === "error" && <div className="ranking-message error">{copy.error}</div>}
     {status === "ready" && !ranking.length && <div className="ranking-message">{copy.empty}</div>}
