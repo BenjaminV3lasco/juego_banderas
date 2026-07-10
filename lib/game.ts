@@ -1,4 +1,4 @@
-export type ModeId = "world" | "capitals" | "americas" | "europe" | "asia" | "africa";
+export type ModeId = "daily" | "world" | "capitals" | "americas" | "europe" | "asia" | "africa";
 
 export type RawCountry = {
   name: { common: string };
@@ -26,9 +26,11 @@ export type GameMode = {
   badge?: string;
   region?: string;
   asksCapital?: boolean;
+  daily?: boolean;
 };
 
 export const MODES: GameMode[] = [
+  { id: "daily", title: "Bandera del día", kicker: "DIARIO", description: "Una bandera. Un intento cada día.", flags: ["📅", "🚩"], badge: "NUEVO", daily: true },
   { id: "world", title: "Adiviná el país", kicker: "MUNDO", description: "Todas las banderas, un solo reto.", flags: ["🌎", "🌍", "🌏"], badge: "POPULAR" },
   { id: "capitals", title: "País + Capital", kicker: "EXPERTO", description: "Reconocé la bandera y su capital.", flags: ["🇦🇷", "📍"], badge: "DOBLE RETO", asksCapital: true },
   { id: "americas", title: "América", kicker: "REGIÓN", description: "Del Ártico a Tierra del Fuego.", flags: ["🇦🇷", "🇧🇷", "🇨🇦", "🇲🇽"], region: "Americas" },
