@@ -44,8 +44,9 @@ async function init() {
     };
 
     // Selección de modo desde la pantalla de inicio
-    document.getElementById('btn-mode-paises').onclick    = () => openNickModal('paises');
-    document.getElementById('btn-mode-capitales').onclick = () => openNickModal('capitales');
+    document.querySelectorAll('[data-mode]').forEach(button => {
+        button.onclick = () => openNickModal(button.dataset.mode);
+    });
     document.getElementById('btn-show-ranking').onclick   = () => renderStats();
  
     // Botón volver al inicio

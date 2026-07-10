@@ -6,6 +6,7 @@
 export const state = {
     nickname:     '',
     countries:    [],
+    questionPool: [],
     current:      null,
     index:        0,
     mode:         'paises',           // 'paises' | 'capitales'
@@ -19,6 +20,7 @@ export const state = {
  
 export function resetState(mode) {
     state.mode         = mode;
+    state.questionPool = [];
     state.score        = { correct: 0, wrong: 0, total: 0 };
     state.stats        = {};
     state.capitalStats = { correct: 0, total: 0 };

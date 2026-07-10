@@ -13,33 +13,22 @@
 <body>
  
 <div id="screen-home">
-    <div class="home-content">
-        <h1 class="home-title">Juego de Banderas</h1>
-        <p class="home-subtitle">Pon a prueba tu conocimiento geográfico</p>
-        
+    <header class="site-header"><div class="header-inner">
+        <div class="brand-mark" aria-label="Mundo Quiz"><span>MUNDO</span>QUIZ</div>
+        <button class="ranking-shortcut" id="btn-show-ranking"><span>♛</span><span>Ranking</span></button>
+    </div></header>
+    <main class="home-content">
+        <div class="home-heading"><span class="eyebrow">DESAFÍO GEOGRÁFICO</span><h1 class="home-title">Elegí tu próximo desafío</h1><p class="home-subtitle">¿Cuánto conocés del mundo? Seleccioná un modo y demostralo.</p></div>
         <div class="mode-container">
-            <button class="mode-card" id="btn-mode-paises">
-                <div class="mode-card-text">
-                    <div class="mode-card-title">Adivina el País</div>
-                    <div class="mode-card-desc">Solo necesitas el nombre</div>
-                </div>
-            </button>
-            
-            <button class="mode-card" id="btn-mode-capitales">
-                <div class="mode-card-text">
-                    <div class="mode-card-title">País y Capital</div>
-                    <div class="mode-card-desc">El desafío completo</div>
-                </div>
-            </button>
-            
-            <button class="mode-card" id="btn-show-ranking" style="border-color: var(--accent-gold);">
-                <div class="mode-card-text">
-                    <div class="mode-card-title" style="color: var(--accent-gold);">Ranking</div>
-                    <div class="mode-card-desc">Estadísticas Históricas</div>
-                </div>
-            </button>
+            <button class="mode-card featured" data-mode="paises" id="btn-mode-paises"><span class="mode-badge">POPULAR</span><div class="mode-visual world-visual"><span>🌎</span><span>🌍</span><span>🌏</span></div><div class="mode-card-text"><div class="mode-card-kicker">MUNDO</div><div class="mode-card-title">Adiviná el país</div><div class="mode-card-desc">Todas las banderas, un solo reto.</div></div><span class="mode-play">JUGAR <b>→</b></span></button>
+            <button class="mode-card" data-mode="capitales" id="btn-mode-capitales"><span class="mode-badge new">DOBLE RETO</span><div class="mode-visual capital-visual"><span>🇦🇷</span><i>+</i><span>📍</span></div><div class="mode-card-text"><div class="mode-card-kicker">EXPERTO</div><div class="mode-card-title">País + Capital</div><div class="mode-card-desc">Reconocé la bandera y su capital.</div></div><span class="mode-play">JUGAR <b>→</b></span></button>
+            <button class="mode-card" data-mode="america" id="btn-mode-america"><div class="mode-visual flag-grid"><span>🇦🇷</span><span>🇧🇷</span><span>🇨🇦</span><span>🇲🇽</span></div><div class="mode-card-text"><div class="mode-card-kicker">REGIÓN</div><div class="mode-card-title">América</div><div class="mode-card-desc">Del Ártico a Tierra del Fuego.</div></div><span class="mode-play">JUGAR <b>→</b></span></button>
+            <button class="mode-card" data-mode="europa" id="btn-mode-europa"><div class="mode-visual flag-grid"><span>🇪🇸</span><span>🇫🇷</span><span>🇮🇹</span><span>🇩🇪</span></div><div class="mode-card-text"><div class="mode-card-kicker">REGIÓN</div><div class="mode-card-title">Europa</div><div class="mode-card-desc">Un clásico para conocedores.</div></div><span class="mode-play">JUGAR <b>→</b></span></button>
+            <button class="mode-card" data-mode="asia" id="btn-mode-asia"><div class="mode-visual flag-grid"><span>🇯🇵</span><span>🇮🇳</span><span>🇰🇷</span><span>🇹🇭</span></div><div class="mode-card-text"><div class="mode-card-kicker">REGIÓN</div><div class="mode-card-title">Asia</div><div class="mode-card-desc">El continente más desafiante.</div></div><span class="mode-play">JUGAR <b>→</b></span></button>
+            <button class="mode-card" data-mode="africa" id="btn-mode-africa"><div class="mode-visual flag-grid"><span>🇿🇦</span><span>🇪🇬</span><span>🇰🇪</span><span>🇬🇭</span></div><div class="mode-card-text"><div class="mode-card-kicker">REGIÓN</div><div class="mode-card-title">África</div><div class="mode-card-desc">Colores, historia y 54 países.</div></div><span class="mode-play">JUGAR <b>→</b></span></button>
         </div>
-    </div>
+    </main>
+    <footer class="home-footer"><span>6 modos de juego</span><span>•</span><span>Más de 240 banderas</span></footer>
 </div>
  
 <div id="screen-game" class="hidden">

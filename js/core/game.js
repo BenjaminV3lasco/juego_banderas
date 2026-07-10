@@ -11,10 +11,14 @@ import { saveGameResult } from '../services/storage.js';
  
 export function startGame(mode) {
     resetState(mode);
-    state.countries.sort(() => Math.random() - 0.5);
+    const regionByMode = { america: 'Americas', europa: 'Europe', asia: 'Asia', africa: 'Africa' };
+    const region = regionByMode[mode];
+    state.questionPool = (region ? state.countries.filter(country => country.region === region) : [...state.countries])
+        .sort(() => Math.random() - 0.5);
  
-    elements.rowCapital.classList.toggle('hidden', mode === 'paises');
-    document.getElementById('mode-label').textContent = mode.toUpperCase();
+    elements.rowCapital.classList.toggle('hidden', mode !== 'capitales');
+    const labels = { paises: 'Mundo', capitales: 'País + Capital', america: 'América', europa: 'Europa', asia: 'Asia', africa: 'África' };
+    document.getElementById('mode-label').textContent = labels[mode] || mode;
  
     showScreen('game');
     updateScore(state.score);
@@ -25,7 +29,7 @@ export function startGame(mode) {
 // ── Ciclo de preguntas ────────────────────────
  
 export function renderQuestion() {
-    if (state.index >= state.countries.length) {
+    if (state.index >= state.questionPool.length) {
         stopTimer();
         state.finalTime = getTimerValue();
         saveGameResult(state);
@@ -33,7 +37,7 @@ export function renderQuestion() {
         return;
     }
  
-    state.current   = state.countries[state.index];
+    state.current   = state.questionPool[state.index];
     state.isWaiting = false;
  
     elements.flagImg.src          = state.current.flag;
@@ -42,7 +46,7 @@ export function renderQuestion() {
     elements.feedback.classList.add('hidden');
  
     const bar = document.getElementById('progress-fill');
-    if (bar) bar.style.width = `${(state.index / state.countries.length) * 100}%`;
+    if (bar) bar.style.width = `${(state.index / state.questionPool.length) * 100}%`;
 }
  
 // ── Evaluación de respuesta ───────────────────
