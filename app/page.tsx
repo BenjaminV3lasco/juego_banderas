@@ -1,17 +1,21 @@
 "use client";
 
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
-import { addDailyOutcome, DailyRecord, EMPTY_DAILY_RECORD, getDailyCountry, getTodayKey, readDailyRecord } from "@/lib/daily";
+import Image from "next/image";
+import { CountryDetective } from "@/app/components/CountryDetective";
+import { addDailyOutcome, DailyRecord, EMPTY_DAILY_RECORD, getDailyCountry, getDailyStreak, getTodayKey, readDailyRecord } from "@/lib/daily";
 import { Country, GameMode, mapCountries, MODES, normalize, RawCountry, shuffle } from "@/lib/game";
+import { Language, UI_TEXT } from "@/lib/i18n";
 import { saveGameResult } from "@/lib/supabase/results";
 
-type Screen = "home" | "game" | "results";
+type Screen = "home" | "intro" | "game" | "detective" | "results";
 type Score = { correct: number; wrong: number };
 
 export default function Home() {
   const [countries, setCountries] = useState<Country[]>([]);
   const [screen, setScreen] = useState<Screen>("home");
   const [mode, setMode] = useState<GameMode | null>(null);
+  const [language, setLanguage] = useState<Language>("es");
   const [questions, setQuestions] = useState<Country[]>([]);
   const [index, setIndex] = useState(0);
   const [countryAnswer, setCountryAnswer] = useState("");
@@ -21,9 +25,14 @@ export default function Home() {
   const [dailyRecord, setDailyRecord] = useState<DailyRecord>(EMPTY_DAILY_RECORD);
   const savedResult = useRef<string | null>(null);
   const todayKey = getTodayKey();
+  const text = UI_TEXT[language];
 
   useEffect(() => {
-    const frame = window.requestAnimationFrame(() => setDailyRecord(readDailyRecord()));
+    const frame = window.requestAnimationFrame(() => {
+      setDailyRecord(readDailyRecord());
+      const storedLanguage = localStorage.getItem("mundoquiz_language");
+      if (storedLanguage === "es" || storedLanguage === "en") setLanguage(storedLanguage);
+    });
     fetch("/data/countries.json")
       .then((response) => response.json())
       .then((data: RawCountry[]) => setCountries(mapCountries(data)))
@@ -31,12 +40,10 @@ export default function Home() {
     return () => window.cancelAnimationFrame(frame);
   }, []);
 
-  const dailyCompleted = Boolean(dailyRecord.outcomes[todayKey]);
-
+  const isDailyCompleted = (modeId: string) => Boolean(dailyRecord.outcomes[`${todayKey}:${modeId}`] || (modeId === "daily" && dailyRecord.outcomes[todayKey]));
   const current = questions[index];
   const totalAnswered = score.correct + score.wrong;
   const progress = questions.length ? (index / questions.length) * 100 : 0;
-
   const resultPercent = useMemo(() => totalAnswered ? Math.round((score.correct / totalAnswered) * 100) : 0, [score, totalAnswered]);
 
   useEffect(() => {
@@ -49,10 +56,25 @@ export default function Home() {
     });
   }, [mode, score.correct, score.wrong, screen, totalAnswered]);
 
+  function toggleLanguage() {
+    setLanguage((currentLanguage) => {
+      const nextLanguage = currentLanguage === "es" ? "en" : "es";
+      localStorage.setItem("mundoquiz_language", nextLanguage);
+      return nextLanguage;
+    });
+  }
+
+  function openMode(selected: GameMode) {
+    if (selected.daily && isDailyCompleted(selected.id)) return;
+    setMode(selected);
+    setScreen("intro");
+  }
+
   function startGame(selected: GameMode) {
-    if (selected.daily && dailyCompleted) return;
+    if (selected.daily && isDailyCompleted(selected.id)) return;
     const regionalPool = selected.region ? countries.filter((country) => country.region === selected.region) : countries;
-    const pool = selected.daily ? [getDailyCountry(countries, todayKey)] : shuffle(regionalPool);
+    const dailySeed = selected.customGame === "detective" ? `${todayKey}:detective` : `${todayKey}:flag`;
+    const pool = selected.daily ? [getDailyCountry(countries, dailySeed)] : shuffle(regionalPool);
     setMode(selected);
     setQuestions(pool.filter(Boolean));
     setIndex(0);
@@ -61,7 +83,7 @@ export default function Home() {
     setCountryAnswer("");
     setCapitalAnswer("");
     savedResult.current = null;
-    setScreen("game");
+    setScreen(selected.customGame === "detective" ? "detective" : "game");
   }
 
   function nextQuestion() {
@@ -75,54 +97,102 @@ export default function Home() {
   function submitAnswer(event: FormEvent) {
     event.preventDefault();
     if (!current || feedback) return;
-    const countryOk = normalize(countryAnswer) === normalize(current.name);
+    const normalizedAnswer = normalize(countryAnswer);
+    const countryOk = current.acceptedNames.some((name) => normalize(name) === normalizedAnswer);
     const capitalOk = !mode?.asksCapital || normalize(capitalAnswer) === normalize(current.capital);
     const ok = countryOk && capitalOk;
-    if (mode?.daily) {
-      setDailyRecord((record) => addDailyOutcome(record, todayKey, ok ? "correct" : "wrong"));
-    }
+    if (mode?.daily) setDailyRecord((record) => addDailyOutcome(record, `${todayKey}:${mode.id}`, ok ? "correct" : "wrong"));
     setScore((value) => ({ ...value, [ok ? "correct" : "wrong"]: value[ok ? "correct" : "wrong"] + 1 }));
-    setFeedback({ text: ok ? "¡Correcto!" : `${current.name}${mode?.asksCapital ? ` — ${current.capital}` : ""}`, ok });
+    const countryName = language === "en" ? current.englishName : current.name;
+    setFeedback({ text: ok ? text.correct : `${countryName}${mode?.asksCapital ? ` — ${current.capital}` : ""}`, ok });
     window.setTimeout(nextQuestion, ok ? 850 : 1400);
   }
 
+  function resolveDetective(correct: boolean) {
+    setDailyRecord((record) => addDailyOutcome(record, `${todayKey}:detective`, correct ? "correct" : "wrong"));
+    setScore(correct ? { correct: 1, wrong: 0 } : { correct: 0, wrong: 1 });
+  }
+
+  if (screen === "intro" && mode) {
+    const copy = mode.copy[language];
+    return <main className="intro-page">
+      <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={() => setScreen("home")} backLabel={text.back} />
+      <section className="intro-card">
+        <div className={`intro-visual ${mode.flags.length === 4 ? "four" : ""}`}>{mode.flags.map((flag, flagIndex) => <span key={`${flag}-${flagIndex}`}>{flag}</span>)}</div>
+        <div className="intro-content">
+          <span className="intro-kicker">{mode.kicker}</span>
+          <h1>{copy.title}</h1>
+          <p>{copy.description}</p>
+          <h2>{text.howToPlay}</h2>
+          <ul>{copy.rules.map((rule) => <li key={rule}>{rule}</li>)}</ul>
+          <button className="start-game" onClick={() => startGame(mode)}>{text.start}</button>
+        </div>
+      </section>
+    </main>;
+  }
+
   if (screen === "game" && mode && current) {
+    const copy = mode.copy[language];
     return <main className="game-page">
-      <header className="topbar"><button className="back-button" onClick={() => setScreen("home")}>← Inicio</button><div className="logo"><span>MUNDO</span>QUIZ</div><DailyCounter record={dailyRecord} align="right" /></header>
+      <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={() => setScreen("home")} backLabel={text.back} />
       <section className="game-shell">
-        <div className="game-meta"><span>{mode.title}</span><span className="round-score"><b>{score.correct}</b><i>–</i><em>{score.wrong}</em></span><span>{index + 1} / {questions.length}</span></div>
+        <div className="game-meta"><span>{copy.title}</span><span className="round-score"><b>{score.correct}</b><i>–</i><em>{score.wrong}</em></span><span>{index + 1} / {questions.length}</span></div>
         <div className="progress"><span style={{ width: `${progress}%` }} /></div>
         <article className="question-card">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <div className="flag-stage"><img src={current.flag} alt="Bandera a identificar" /></div>
+          <div className="flag-stage"><img src={current.flag} alt={language === "es" ? "Bandera a identificar" : "Flag to identify"} /></div>
           <form onSubmit={submitAnswer}>
-            <label htmlFor="country">¿Qué país es?</label>
-            <input id="country" value={countryAnswer} onChange={(event) => setCountryAnswer(event.target.value)} autoFocus autoComplete="off" placeholder="Escribí el país..." />
-            {mode.asksCapital && <><label htmlFor="capital">¿Cuál es su capital?</label><input id="capital" value={capitalAnswer} onChange={(event) => setCapitalAnswer(event.target.value)} autoComplete="off" placeholder="Escribí la capital..." /></>}
+            <label htmlFor="country">{text.countryQuestion}</label>
+            <input id="country" value={countryAnswer} onChange={(event) => setCountryAnswer(event.target.value)} autoFocus autoComplete="off" placeholder={text.countryPlaceholder} />
+            {mode.asksCapital && <><label htmlFor="capital">{text.capitalQuestion}</label><input id="capital" value={capitalAnswer} onChange={(event) => setCapitalAnswer(event.target.value)} autoComplete="off" placeholder={text.capitalPlaceholder} /></>}
             {feedback && <div className={`feedback ${feedback.ok ? "ok" : "bad"}`}>{feedback.text}</div>}
-            <div className="game-actions"><button type="button" className="skip" onClick={() => { setCountryAnswer(""); submitAnswer({ preventDefault() {} } as FormEvent); }}>NO SÉ</button><button type="submit" className="confirm">CONFIRMAR</button></div>
+            <div className="game-actions"><button type="button" className="skip" onClick={() => { setCountryAnswer(""); submitAnswer({ preventDefault() {} } as FormEvent); }}>{text.skip}</button><button type="submit" className="confirm">{text.confirm}</button></div>
           </form>
         </article>
       </section>
     </main>;
   }
 
+  if (screen === "detective" && mode && current) {
+    return <main className="game-page">
+      <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={() => setScreen("home")} backLabel={text.back} />
+      <CountryDetective target={current} countries={countries} language={language} onResolved={resolveDetective} onContinue={() => setScreen("results")} />
+    </main>;
+  }
+
   if (screen === "results" && mode) {
-    return <main className="result-page"><div className="result-card"><span className="eyebrow">{mode.daily ? "DESAFÍO DIARIO COMPLETADO" : "PARTIDA COMPLETADA"}</span><h1>{resultPercent}%</h1><p>{score.correct} respuestas correctas de {totalAnswered}</p><div className="result-actions">{!mode.daily && <button onClick={() => startGame(mode)}>JUGAR DE NUEVO</button>}<button className="secondary" onClick={() => setScreen("home")}>VER MODOS</button></div></div></main>;
+    return <main className="result-page">
+      <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} />
+      <div className="result-wrap"><div className="result-card"><span className="eyebrow">{mode.daily ? text.dailyCompleted : text.gameCompleted}</span><h1>{resultPercent}%</h1><p>{score.correct} {text.correctAnswers} {totalAnswered}</p><div className="result-actions">{!mode.daily && <button onClick={() => startGame(mode)}>{text.playAgain}</button>}<button className="secondary" onClick={() => setScreen("home")}>{text.viewModes}</button></div></div></div>
+    </main>;
   }
 
   return <main className="home-page">
-    <header className="topbar"><DailyCounter record={dailyRecord} /><div className="logo"><span>MUNDO</span>QUIZ</div><div className="header-dot">◎</div></header>
-    <section className="hub"><h1>Elegí el juego que querés jugar</h1><div className="mode-grid">{MODES.map((item) => <button className={`mode-card ${item.daily && dailyCompleted ? "completed" : ""}`} key={item.id} onClick={() => startGame(item)} disabled={!countries.length || (item.daily && dailyCompleted)}>
-      {item.badge && <span className={`badge ${item.id === "capitals" ? "yellow" : ""}`}>{item.badge}</span>}
-      <div className={`mode-preview ${item.flags.length === 4 ? "four" : ""}`}>{item.flags.map((flag, flagIndex) => <span key={`${flag}-${flagIndex}`}>{flag}</span>)}</div>
-      <div className="play-band"><strong>{item.daily && dailyCompleted ? "COMPLETADO" : "JUGAR"}</strong><small>{item.title}</small></div>
-    </button>)}</div></section>
-    <section className="about"><h2>Un mundo de desafíos</h2><p>Aprendé geografía jugando. Nuevos modos, estadísticas y desafíos diarios llegarán muy pronto.</p></section>
-    <footer><div className="logo footer-logo"><span>MUNDO</span>QUIZ</div><p>Juegos de geografía para aprender todos los días.</p><nav><a href="#top">Juegos</a><a href="#about">Acerca de</a><a href="https://github.com" target="_blank" rel="noreferrer">GitHub</a></nav></footer>
+    <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} />
+    <section className="hub"><h1>{text.chooseGame}</h1><div className="mode-grid">{MODES.map((item) => {
+      const copy = item.copy[language];
+      const completed = item.daily && isDailyCompleted(item.id);
+      const streak = item.id === "detective" ? getDailyStreak(dailyRecord, "detective") : 0;
+      const badge = item.id === "detective" ? (streak ? `${streak} 🔥` : completed ? undefined : item.badge) : item.badge;
+      return <button className={`mode-card ${completed ? "completed" : ""}`} key={item.id} onClick={() => openMode(item)} disabled={!countries.length || completed}>
+        {badge && <span className={`badge ${item.id === "capitals" ? "yellow" : ""}`}>{badge}</span>}
+        <div className={`mode-preview ${item.flags.length === 4 ? "four" : ""}`}>{item.flags.map((flag, flagIndex) => <span key={`${flag}-${flagIndex}`}>{flag}</span>)}</div>
+        <div className="play-band"><strong>{completed ? text.completed : text.play}</strong><small>{copy.title}</small></div>
+      </button>;
+    })}</div></section>
+    <section className="about" id="about"><h2>{text.aboutTitle}</h2><p>{text.aboutText}</p></section>
+    <footer><div className="logo footer-logo"><span>MUNDO</span>QUIZ</div><p>{text.footerText}</p><nav><a href="#top">{text.games}</a><a href="#about">{text.about}</a><a href="https://github.com" target="_blank" rel="noreferrer">GitHub</a></nav></footer>
   </main>;
 }
 
-function DailyCounter({ record, align = "left" }: { record: DailyRecord; align?: "left" | "right" }) {
-  return <div className={`score-pill daily-counter ${align === "right" ? "align-right" : ""}`} title="Resultados de desafíos diarios"><b>{record.correct}</b><i>–</i><em>{record.wrong}</em></div>;
+function AppHeader({ language, dailyRecord, onLanguage, onBack, backLabel }: { language: Language; dailyRecord: DailyRecord; onLanguage: () => void; onBack?: () => void; backLabel?: string }) {
+  return <header className="topbar" id="top">
+    {onBack ? <button className="back-button" onClick={onBack}>← {backLabel}</button> : <DailyCounter record={dailyRecord} language={language} />}
+    <div className="logo"><span>MUNDO</span>QUIZ</div>
+    <div className="top-actions">{onBack && <DailyCounter record={dailyRecord} language={language} />}<button className="language-button" onClick={onLanguage} aria-label="Change language"><Image src={language === "es" ? "/flags/es.svg" : "/flags/gb.svg"} alt="" width={24} height={16} /> <span>{language === "es" ? "ES" : "EN"}</span></button></div>
+  </header>;
+}
+
+function DailyCounter({ record, language }: { record: DailyRecord; language: Language }) {
+  return <div className="score-pill daily-counter" title={UI_TEXT[language].dailyScore}><b>{record.correct}</b><i>–</i><em>{record.wrong}</em></div>;
 }

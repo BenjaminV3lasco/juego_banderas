@@ -58,3 +58,16 @@ export function addDailyOutcome(record: DailyRecord, dateKey: string, outcome: D
   localStorage.setItem(DAILY_RECORD_KEY, JSON.stringify(next));
   return next;
 }
+
+export function getDailyStreak(record: DailyRecord, challenge: string, today = new Date()) {
+  let streak = 0;
+  const cursor = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const todayOutcome = record.outcomes[`${getTodayKey(cursor)}:${challenge}`];
+  if (!todayOutcome) cursor.setDate(cursor.getDate() - 1);
+
+  while (record.outcomes[`${getTodayKey(cursor)}:${challenge}`] === "correct") {
+    streak += 1;
+    cursor.setDate(cursor.getDate() - 1);
+  }
+  return streak;
+}
