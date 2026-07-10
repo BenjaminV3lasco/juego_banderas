@@ -3,12 +3,13 @@
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { CountryDetective } from "@/app/components/CountryDetective";
+import { CountryWordle } from "@/app/components/CountryWordle";
 import { addDailyOutcome, DailyRecord, EMPTY_DAILY_RECORD, getDailyCountry, getDailyStreak, getTodayKey, readDailyRecord } from "@/lib/daily";
 import { Country, GameMode, getCountryDisplayName, mapCountries, MODES, normalize, RawCountry, shuffle } from "@/lib/game";
 import { Language, UI_TEXT } from "@/lib/i18n";
 import { saveGameResult } from "@/lib/supabase/results";
 
-type Screen = "home" | "intro" | "game" | "detective" | "results";
+type Screen = "home" | "intro" | "game" | "detective" | "wordle" | "results";
 type Score = { correct: number; wrong: number };
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
   const [screen, setScreen] = useState<Screen>("home");
   const [mode, setMode] = useState<GameMode | null>(null);
   const [language, setLanguage] = useState<Language>("es");
+  const [gameLanguage, setGameLanguage] = useState<Language>("es");
   const [questions, setQuestions] = useState<Country[]>([]);
   const [index, setIndex] = useState(0);
   const [countryAnswer, setCountryAnswer] = useState("");
@@ -73,9 +75,16 @@ export default function Home() {
   function startGame(selected: GameMode) {
     if (selected.daily && isDailyCompleted(selected.id)) return;
     const regionalPool = selected.region ? countries.filter((country) => country.region === selected.region) : countries;
-    const dailySeed = selected.customGame === "detective" ? `${todayKey}:detective` : `${todayKey}:flag`;
-    const pool = selected.daily ? [getDailyCountry(countries, dailySeed)] : shuffle(regionalPool);
+    const eligiblePool = selected.customGame === "wordle"
+      ? regionalPool.filter((country) => {
+          const length = normalize(getCountryDisplayName(country, language)).replace(/\s/g, "").length;
+          return length >= 4 && length <= 12;
+        })
+      : regionalPool;
+    const dailySeed = `${todayKey}:${selected.id}`;
+    const pool = selected.daily ? [getDailyCountry(eligiblePool, dailySeed)] : shuffle(eligiblePool);
     setMode(selected);
+    setGameLanguage(language);
     setQuestions(pool.filter(Boolean));
     setIndex(0);
     setScore({ correct: 0, wrong: 0 });
@@ -83,7 +92,7 @@ export default function Home() {
     setCountryAnswer("");
     setCapitalAnswer("");
     savedResult.current = null;
-    setScreen(selected.customGame === "detective" ? "detective" : "game");
+    setScreen(selected.customGame || "game");
   }
 
   function nextQuestion() {
@@ -108,8 +117,8 @@ export default function Home() {
     window.setTimeout(nextQuestion, ok ? 850 : 1400);
   }
 
-  function resolveDetective(correct: boolean) {
-    setDailyRecord((record) => addDailyOutcome(record, `${todayKey}:detective`, correct ? "correct" : "wrong"));
+  function resolveCustomDaily(modeId: string, correct: boolean) {
+    setDailyRecord((record) => addDailyOutcome(record, `${todayKey}:${modeId}`, correct ? "correct" : "wrong"));
     setScore(correct ? { correct: 1, wrong: 0 } : { correct: 0, wrong: 1 });
   }
 
@@ -156,7 +165,14 @@ export default function Home() {
   if (screen === "detective" && mode && current) {
     return <main className="game-page">
       <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={() => setScreen("home")} backLabel={text.back} />
-      <CountryDetective target={current} countries={countries} language={language} onResolved={resolveDetective} onContinue={() => setScreen("results")} />
+      <CountryDetective target={current} countries={countries} language={language} onResolved={(correct) => resolveCustomDaily("detective", correct)} onContinue={() => setScreen("results")} />
+    </main>;
+  }
+
+  if (screen === "wordle" && mode && current) {
+    return <main className="game-page">
+      <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={() => setScreen("home")} backLabel={text.back} />
+      <CountryWordle target={current} countries={countries} language={gameLanguage} onResolved={(correct) => resolveCustomDaily("wordle", correct)} onContinue={() => setScreen("results")} />
     </main>;
   }
 
@@ -172,8 +188,8 @@ export default function Home() {
     <section className="hub"><h1>{text.chooseGame}</h1><div className="mode-grid">{MODES.map((item) => {
       const copy = item.copy[language];
       const completed = item.daily && isDailyCompleted(item.id);
-      const streak = item.id === "detective" ? getDailyStreak(dailyRecord, "detective") : 0;
-      const badge = item.id === "detective" ? (streak ? `${streak} 🔥` : completed ? undefined : item.badge) : item.badge;
+      const streak = item.customGame ? getDailyStreak(dailyRecord, item.id) : 0;
+      const badge = item.customGame ? (streak ? `${streak} 🔥` : completed ? undefined : item.badge) : item.badge;
       return <button className={`mode-card ${completed ? "completed" : ""}`} key={item.id} onClick={() => openMode(item)} disabled={!countries.length || completed}>
         {badge && <span className={`badge ${item.id === "capitals" ? "yellow" : ""}`}>{badge}</span>}
         <div className={`mode-preview ${item.flags.length === 4 ? "four" : ""}`}>{item.flags.map((flag, flagIndex) => <span key={`${flag}-${flagIndex}`}>{flag}</span>)}</div>

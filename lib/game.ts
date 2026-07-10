@@ -1,6 +1,6 @@
 import { getCountryAliases, getSpanishCountryName } from "@/lib/country-names";
 
-export type ModeId = "daily" | "detective" | "world" | "capitals" | "americas" | "europe" | "asia" | "africa";
+export type ModeId = "daily" | "detective" | "wordle" | "world" | "capitals" | "americas" | "europe" | "asia" | "africa";
 
 export type RawCountry = {
   name: { common: string };
@@ -29,7 +29,7 @@ export type GameMode = {
   region?: string;
   asksCapital?: boolean;
   daily?: boolean;
-  customGame?: "detective";
+  customGame?: "detective" | "wordle";
   copy: {
     es: { title: string; description: string; rules: string[] };
     en: { title: string; description: string; rules: string[] };
@@ -39,6 +39,7 @@ export type GameMode = {
 export const MODES: GameMode[] = [
   { id: "daily", kicker: "DAILY", flags: ["📅", "🚩"], badge: "NEW", daily: true, copy: { es: { title: "Bandera del día", description: "Una nueva bandera cada día para poner a prueba tu constancia.", rules: ["Tenés un solo intento por día.", "Un acierto suma al contador verde; un error, al rojo.", "La misma bandera aparece para toda la comunidad."] }, en: { title: "Flag of the day", description: "A new flag every day to test your consistency.", rules: ["You get one attempt per day.", "A correct answer adds to green; a miss adds to red.", "The same flag appears for the whole community."] } } },
   { id: "detective", kicker: "MYSTERY", flags: ["❓", "🕵️"], badge: "NEW", daily: true, customGame: "detective", copy: { es: { title: "Adiviná el país", description: "Descubrí el país misterioso haciendo preguntas antes de arriesgar tu respuesta.", rules: ["Podés hacer hasta 10 preguntas de sí o no.", "Tenés tres intentos para adivinar el país.", "Si acertás, revelás la bandera y sumás al contador diario."] }, en: { title: "Guess the country", description: "Discover the mystery country by asking questions before risking your answer.", rules: ["You can ask up to 10 yes-or-no questions.", "You have three attempts to guess the country.", "A correct answer reveals the flag and adds to your daily score."] } } },
+  { id: "wordle", kicker: "WORDLE", flags: ["🟩", "🟨", "⬛"], badge: "NEW", daily: true, customGame: "wordle", copy: { es: { title: "País Wordle", description: "Adiviná el país letra por letra en seis intentos o menos.", rules: ["Verde: letra correcta en el lugar correcto.", "Amarillo: la letra está, pero en otra posición.", "Gris: la letra no forma parte del país."] }, en: { title: "Country Wordle", description: "Guess the country letter by letter in six tries or fewer.", rules: ["Green: correct letter in the correct position.", "Yellow: the letter exists but belongs elsewhere.", "Gray: the letter is not part of the country."] } } },
   { id: "world", kicker: "WORLD", flags: ["🌎", "🌍", "🌏"], badge: "POPULAR", copy: { es: { title: "Adiviná el país", description: "Recorré el planeta identificando banderas de todo el mundo.", rules: ["Escribí el país que corresponde a cada bandera.", "Podés saltar una respuesta si no la sabés.", "Tus resultados ayudan a medir la dificultad real."] }, en: { title: "Guess the country", description: "Travel the planet by identifying flags from around the world.", rules: ["Type the country that matches each flag.", "You can skip an answer when you don't know it.", "Your results help us measure real difficulty."] } } },
   { id: "capitals", kicker: "EXPERT", flags: ["🇦🇷", "📍"], badge: "DOUBLE", asksCapital: true, copy: { es: { title: "País + Capital", description: "El desafío completo: reconocé la bandera y recordá su capital.", rules: ["Ambas respuestas deben ser correctas.", "Los errores muestran el país y la capital.", "Este modo aporta datos para futuros niveles."] }, en: { title: "Country + Capital", description: "The complete challenge: identify the flag and remember its capital.", rules: ["Both answers must be correct.", "Wrong answers reveal the country and capital.", "This mode provides data for future levels."] } } },
   { id: "americas", kicker: "REGION", flags: ["🇦🇷", "🇧🇷", "🇨🇦", "🇲🇽"], region: "Americas", copy: { es: { title: "América", description: "Banderas desde el Ártico hasta Tierra del Fuego.", rules: ["Solo aparecen países y territorios de América.", "Escribí el nombre del país.", "Completá la región para ver tu porcentaje final."] }, en: { title: "Americas", description: "Flags from the Arctic all the way to Tierra del Fuego.", rules: ["Only countries and territories from the Americas appear.", "Type the country name.", "Complete the region to see your final score."] } } },
