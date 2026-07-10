@@ -1,7 +1,8 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { Country, GameMode, mapCountries, MODES, normalize, RawCountry, shuffle } from "@/lib/game";
+import { saveGameResult } from "@/lib/supabase/results";
 
 type Screen = "home" | "game" | "results";
 type Score = { correct: number; wrong: number };
@@ -16,6 +17,7 @@ export default function Home() {
   const [capitalAnswer, setCapitalAnswer] = useState("");
   const [score, setScore] = useState<Score>({ correct: 0, wrong: 0 });
   const [feedback, setFeedback] = useState<{ text: string; ok: boolean } | null>(null);
+  const savedResult = useRef<string | null>(null);
 
   useEffect(() => {
     fetch("/data/countries.json")
@@ -30,6 +32,16 @@ export default function Home() {
 
   const resultPercent = useMemo(() => totalAnswered ? Math.round((score.correct / totalAnswered) * 100) : 0, [score, totalAnswered]);
 
+  useEffect(() => {
+    if (screen !== "results" || !mode || !totalAnswered) return;
+    const resultKey = `${mode.id}:${score.correct}:${score.wrong}`;
+    if (savedResult.current === resultKey) return;
+    savedResult.current = resultKey;
+    void saveGameResult({ mode: mode.id, correct: score.correct, wrong: score.wrong }).catch((error: unknown) => {
+      console.error("No se pudo guardar el resultado en Supabase", error);
+    });
+  }, [mode, score.correct, score.wrong, screen, totalAnswered]);
+
   function startGame(selected: GameMode) {
     const pool = selected.region ? countries.filter((country) => country.region === selected.region) : countries;
     setMode(selected);
@@ -39,6 +51,7 @@ export default function Home() {
     setFeedback(null);
     setCountryAnswer("");
     setCapitalAnswer("");
+    savedResult.current = null;
     setScreen("game");
   }
 
@@ -87,7 +100,7 @@ export default function Home() {
   }
 
   return <main className="home-page">
-    <header className="topbar"><div className="score-pill"><b>9</b><i>–</i><em>4</em></div><div className="logo"><span>MUNDO</span>QUIZ</div><div className="header-dot">◎</div></header>
+    <header className="topbar"><div className="score-pill"><b>0</b><i>–</i><em>0</em></div><div className="logo"><span>MUNDO</span>QUIZ</div><div className="header-dot">◎</div></header>
     <section className="hub"><h1>Elegí el juego que querés jugar</h1><div className="mode-grid">{MODES.map((item) => <button className="mode-card" key={item.id} onClick={() => startGame(item)} disabled={!countries.length}>
       {item.badge && <span className={`badge ${item.id === "capitals" ? "yellow" : ""}`}>{item.badge}</span>}
       <div className={`mode-preview ${item.flags.length === 4 ? "four" : ""}`}>{item.flags.map((flag, flagIndex) => <span key={`${flag}-${flagIndex}`}>{flag}</span>)}</div>
