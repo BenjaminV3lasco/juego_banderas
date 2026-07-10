@@ -1,59 +1,64 @@
-# Juego de Banderas 🌍
+# MundoQuiz
 
-Un juego web interactivo diseñado para poner a prueba tus conocimientos de geografía a través de las banderas del mundo.
+Plataforma de juegos de geografía construida con Next.js, React y TypeScript. La aplicación reutiliza un dataset local de 250 países y está preparada para incorporar Supabase cuando se agreguen perfiles, métricas, rankings y dificultad adaptativa.
 
-**[🎮 ¡Jugar ahora en Firebase!](https://juego-banderas-497b1.web.app)**
+## Ejecutar localmente
 
-## 🛠️ Stack Tecnológico
-* **Frontend:** HTML5, CSS3 (con diseño modular y Glassmorphism), Vanilla JavaScript (ES6+).
-* **Backend:** Firebase (Firestore Database) para el ranking mundial en tiempo real.
-* **Hosting:** Firebase Hosting.
-* **Datos:** Dataset local basado en `mledoze/countries` y banderas SVG servidas desde FlagCDN.
+Requisitos: Node.js 20 o superior.
 
-## 🏆 Ranking Mundial (Salón de la Fama)
-El juego cuenta con un sistema de ranking global conectado a la nube. Los jugadores pueden competir por entrar en el podio (Oro, Plata y Bronce) basándose en sus aciertos y velocidad. El ranking se actualiza automáticamente al finalizar cada partida.
-
-## 🎮 Modalidades de Juego
-
-El juego ofrece dos niveles de desafío:
-
-1.  **Adivina el País**: Modalidad estándar donde debes identificar el país por su bandera.
-2.  **País y Capital**: El desafío máximo. Debes acertar tanto el nombre del país como su capital.
-
-## 🚩 ¿De dónde salen las 250 banderas?
-
-Los datos del juego se cargan desde `js/data/countries.json`, un dataset local generado a partir de [mledoze/countries](https://github.com/mledoze/countries). Esto evita depender en tiempo real de REST Countries, cuyo endpoint legacy fue deprecado y puede fallar por redirecciones/CORS en el navegador.
-
-Las imágenes de las banderas se sirven como SVG desde [FlagCDN](https://flagcdn.com/), usando el código ISO de cada país. El dataset incluye un total aproximado de 250 entidades, clasificadas de la siguiente manera:
-
-- **195 Estados Soberanos**: Países con reconocimiento pleno por la ONU.
-- **55 Territorios y Dependencias**: Incluye regiones de ultramar, territorios autónomos (Groenlandia, Aruba, Gibraltar) y zonas en disputa o bases científicas.
-
-## 📂 Estructura del Proyecto
-
-El código está organizado de forma modular para facilitar su mantenimiento:
-
-```text
-juego-banderas/
-├── index.html          # Estructura principal y contenedores de pantallas
-├── css/
-│   └── style.css       # Estilos visuales y diseño responsive
-├── js/
-│   ├── app.js          # Punto de entrada y orquestador de eventos
-│   ├── core/           # Lógica central (juego, estado, estadísticas)
-│   ├── data/           # Dataset local de países y URLs de banderas
-│   ├── services/       # Conexiones externas (API, LocalStorage, Firebase)
-│   └── ui/             # Interfaz de usuario (pantallas y ranking)
-├── firebase.json       # Configuración de despliegue de Firebase
-├── .firebaserc         # Referencia al proyecto de Firebase Cloud
-└── README.md           # Documentación del proyecto
+```bash
+npm install
+npm run dev
 ```
 
-## ✨ Características Principales
+Abrí [http://localhost:3000](http://localhost:3000).
 
--   **Normalización Inteligente**: Acepta variantes con/sin tildes y abreviaturas comunes (ej. "EEUU").
--   **Estadísticas Detalladas**: Desglose por regiones y subregiones geográficas con feedback visual (verde/amarillo/rojo).
--   **Diseño Dark Premium**: Interfaz moderna con efectos de desenfoque (Glassmorphism) y adaptada a móviles.
+## Comandos
 
----
-¡Disfruta aprendiendo sobre el mundo y sus banderas!
+```bash
+npm run dev        # servidor de desarrollo
+npm run typecheck  # validación de TypeScript
+npm run lint       # análisis estático
+npm run build      # build optimizado de producción
+npm run start      # ejecutar el build de producción
+```
+
+## Supabase
+
+El juego funciona localmente sin configurar Supabase. Para habilitarlo más adelante:
+
+1. Creá un proyecto en Supabase.
+2. Copiá `.env.example` como `.env.local`.
+3. Completá `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+
+El cliente está centralizado en `lib/supabase/client.ts` y devuelve `null` mientras no existan credenciales.
+
+## Estructura nueva
+
+```text
+app/
+├── globals.css       # sistema visual global
+├── layout.tsx        # layout y metadatos
+└── page.tsx          # hub, partida y resultados
+lib/
+├── game.ts           # tipos, modos y helpers del juego
+└── supabase/
+    └── client.ts     # cliente opcional de Supabase
+public/
+└── data/
+    └── countries.json
+```
+
+Las carpetas `css/` y `js/`, junto con `index.html` y los archivos de Firebase, pertenecen a la versión anterior. Next.js no los utiliza; se conservan temporalmente como referencia hasta confirmar la eliminación definitiva del legado.
+
+## Estado de la migración
+
+- Next.js con App Router.
+- React y TypeScript estricto.
+- Diseño responsive inspirado en un hub de juegos diarios.
+- Dataset local, sin dependencia de una API externa.
+- Seis modos trasladados como configuración desacoplada.
+- Preparación para Supabase sin obligar a configurar credenciales.
+- Build estático de la página principal verificado.
+
+La siguiente etapa será definir los modos definitivos y el modelo de datos de intentos antes de activar Supabase.
