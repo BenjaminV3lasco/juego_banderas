@@ -4,6 +4,12 @@ MundoQuiz es una plataforma web de juegos de geografía con desafíos diarios y 
 
 La aplicación combina partidas breves para jugar una vez al día con recorridos completos que registran resultados, tiempos y posiciones en un ranking histórico. Está disponible en español e inglés y adapta los nombres de países, capitales y regiones al idioma elegido.
 
+## Inspiración y créditos
+
+MundoQuiz está inspirado en [Futbol11](https://futbol11.com), una plataforma popular de desafíos diarios sobre fútbol. La organización del menú, el concepto de ofrecer varios minijuegos diarios y parte del enfoque visual sirvieron como referencia para trasladar esa experiencia al aprendizaje de geografía.
+
+Este proyecto es una adaptación independiente, no oficial y sin afiliación con Futbol11. Todo el contenido, las reglas relacionadas con geografía, la implementación y la identidad de MundoQuiz fueron desarrollados específicamente para esta aplicación.
+
 ## Características principales
 
 - Desafíos diarios con resultado, racha y contador de aciertos y errores.
