@@ -8,6 +8,7 @@ const SPANISH_NAME_OVERRIDES: Record<string, string> = {
   "Caribbean Netherlands": "Caribe Neerlandés",
   "Pitcairn Islands": "Islas Pitcairn",
   "Macau": "Macao",
+  "Botswana": "Botsuana",
 };
 
 const COUNTRY_ALIASES: Record<string, string[]> = {
@@ -97,6 +98,7 @@ const COUNTRY_ALIASES: Record<string, string[]> = {
   "Sierra Leone": ["Sierra Leona"],
   "Sri Lanka": ["Ceilán", "Ceylon"],
   "Thailand": ["Tailandia", "Siam"],
+  "Botswana": ["Botsuana"],
 };
 
 const NON_SOVEREIGN_COUNTRIES = new Set([

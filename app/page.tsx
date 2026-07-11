@@ -14,6 +14,7 @@ import { Language, UI_TEXT } from "@/lib/i18n";
 import { saveGameResult } from "@/lib/supabase/results";
 import { filterCountriesByDifficulty } from "@/lib/difficulty";
 import { createGameSessionId, saveCompetitiveAnswerEvent } from "@/lib/supabase/answer-events";
+import { LoadingState } from "@/app/components/LoadingState";
 
 type Screen = "menu" | "hub" | "player" | "ranking" | "intro" | "game" | "detective" | "wordle" | "dailyGame" | "countryMap" | "neighbours" | "results" | "dailyReview";
 type Score = { correct: number; wrong: number };
@@ -417,7 +418,7 @@ function getModeCopy(mode: GameMode, language: Language) {
 }
 
 function ScreenLoader({ language }: { language: Language }) {
-  return <main className="screen-loader" role="status" aria-live="polite"><div className="loader-brand"><div className="loader-orbit"><span /></div><div className="logo"><span>MUNDO</span>QUIZ</div><p>{language === "es" ? "Preparando el desafío…" : "Preparing the challenge…"}</p><div className="loader-bar"><i /></div></div></main>;
+  return <main className="screen-loader"><LoadingState fullscreen label={language === "es" ? "Preparando el desafío…" : "Preparing the challenge…"} /></main>;
 }
 
 function ExitConfirmation({ language, onCancel, onConfirm }: { language: Language; onCancel: () => void; onConfirm: () => void }) {

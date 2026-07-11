@@ -8,7 +8,8 @@ const ES: Record<string, string> = {
   Caribbean: "Caribe", "Central America": "América Central", "North America": "América del Norte", "South America": "América del Sur",
   "Central Asia": "Asia Central", "Eastern Asia": "Asia Oriental", "South-Eastern Asia": "Sudeste Asiático",
   "Southern Asia": "Asia del Sur", "Western Asia": "Asia Occidental",
-  "Eastern Europe": "Europa Oriental", "Northern Europe": "Europa del Norte", "Southern Europe": "Europa del Sur", "Western Europe": "Europa Occidental",
+  "Central Europe": "Europa Central", "Eastern Europe": "Europa Oriental", "Northern Europe": "Europa del Norte",
+  "Southeast Europe": "Europa Sudoriental", "Southern Europe": "Europa del Sur", "Western Europe": "Europa Occidental",
   Australia: "Australia", "Australia and New Zealand": "Australia y Nueva Zelanda",
   Melanesia: "Melanesia", Micronesia: "Micronesia", Polynesia: "Polinesia",
 };
