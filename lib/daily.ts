@@ -14,7 +14,7 @@ export const EMPTY_DAILY_RECORD: DailyRecord = {
   outcomes: {},
 };
 
-export const DAILY_RECORD_KEY = "mundoquiz_daily_record";
+export const DAILY_RECORD_KEY = "mundoquiz_daily_record_v2";
 
 export function getTodayKey(date = new Date()) {
   const year = date.getFullYear();
