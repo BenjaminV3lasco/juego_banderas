@@ -16,7 +16,7 @@ import { filterCountriesByDifficulty } from "@/lib/difficulty";
 import { createGameSessionId, saveCompetitiveAnswerEvent } from "@/lib/supabase/answer-events";
 import { LoadingState } from "@/app/components/LoadingState";
 
-type Screen = "menu" | "hub" | "player" | "ranking" | "intro" | "game" | "detective" | "wordle" | "dailyGame" | "countryMap" | "neighbours" | "results" | "dailyReview";
+type Screen = "menu" | "hub" | "about" | "player" | "ranking" | "intro" | "game" | "detective" | "wordle" | "dailyGame" | "countryMap" | "neighbours" | "results" | "dailyReview";
 type Score = { correct: number; wrong: number };
 type Player = { nickname: string; isGuest: boolean };
 
@@ -246,6 +246,10 @@ export default function Home() {
   }
 
   function handleLogoNavigation() {
+    if (screen === "about") {
+      setScreen("hub");
+      return;
+    }
     if (["intro", "game", "detective", "wordle", "dailyGame", "countryMap", "neighbours", "results", "dailyReview"].includes(screen)) {
       returnToHub();
       return;
@@ -372,9 +376,15 @@ export default function Home() {
         <div className="play-band"><strong>{completed ? text.completed : text.play}</strong><small>{copy.title}</small></div>
       </button>;
     })}</div></section>
-    <section className="about" id="about"><h2>{text.aboutTitle}</h2><p>{text.aboutText}</p></section>
-    <footer><div className="logo footer-logo"><span>MUNDO</span>QUIZ</div><p>{text.footerText}</p><nav><a href="#top">{text.games}</a><a href="#about">{text.about}</a><a href="https://github.com/BenjaminV3lasco" target="_blank" rel="noreferrer">GitHub</a></nav></footer>
+    <footer><div className="logo footer-logo"><span>MUNDO</span>QUIZ</div><p>{text.footerText}</p><nav><a href="#top">{text.games}</a><button type="button" onClick={() => navigateTo("about")}>{text.about}</button><a href="https://github.com/BenjaminV3lasco" target="_blank" rel="noreferrer">GitHub</a></nav></footer>
   </main>;
+  }
+
+  if (screen === "about") {
+    return <main className="about-page">
+      <AppHeader onHome={handleLogoNavigation} language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={() => setScreen("hub")} backLabel={text.back} showCounter={hubCategory === "daily"} />
+      <AboutSection language={language} />
+    </main>;
   }
 
   return <main className="menu-page">
@@ -393,6 +403,45 @@ function AppHeader({ language, dailyRecord, onLanguage, onHome, onBack, backLabe
     <button type="button" className="logo-home-button" onClick={onHome} aria-label={language === "es" ? "Volver a los juegos" : "Back to games"}><div className="logo"><span>MUNDO</span>QUIZ</div></button>
     <div className="top-actions">{onBack && showCounter && <DailyCounter record={dailyRecord} language={language} />}<button className="language-button" onClick={onLanguage} aria-label="Change language"><Image src={language === "es" ? "/flags/es.svg" : "/flags/gb.svg"} alt="" width={24} height={16} /> <span>{language === "es" ? "ES" : "EN"}</span></button></div>
   </header>;
+}
+
+function AboutSection({ language }: { language: Language }) {
+  const copy = language === "es" ? {
+    eyebrow: "ACERCA DEL PROYECTO",
+    title: "Geografía para jugar, aprender y volver cada día",
+    intro: "MundoQuiz reúne desafíos breves y modos competitivos para aprender países, banderas, capitales, fronteras y ubicaciones de una manera entretenida.",
+    purposeTitle: "Qué es MundoQuiz",
+    purposeText: "Una plataforma bilingüe de minijuegos geográficos con partidas diarias, rachas, dificultades y rankings para distintos niveles de conocimiento.",
+    inspirationTitle: "Nuestra inspiración",
+    inspirationText: "La idea del hub y los desafíos diarios está inspirada en Futbol11, adaptando ese formato al mundo de la geografía.",
+    evolutionTitle: "Un juego que aprende",
+    evolutionText: "Las respuestas competitivas se registran de forma anónima para estudiar qué países resultan más fáciles o difíciles y mejorar los niveles futuros.",
+    visit: "Conocer Futbol11",
+  } : {
+    eyebrow: "ABOUT THE PROJECT",
+    title: "Geography to play, learn and return to every day",
+    intro: "MundoQuiz brings together short challenges and competitive modes to learn countries, flags, capitals, borders and locations in an entertaining way.",
+    purposeTitle: "What MundoQuiz is",
+    purposeText: "A bilingual geography minigame platform with daily games, streaks, difficulty levels and rankings for different levels of knowledge.",
+    inspirationTitle: "Our inspiration",
+    inspirationText: "The game hub and daily challenge concept are inspired by Futbol11, adapting that format to the world of geography.",
+    evolutionTitle: "A game that learns",
+    evolutionText: "Competitive answers are recorded anonymously to understand which countries are easier or harder and improve future difficulty levels.",
+    credit: "MundoQuiz is an independent, unofficial project and is not affiliated with Futbol11.",
+    visit: "Visit Futbol11",
+  };
+
+  return <section className="about" id="about">
+    <span className="about-eyebrow">{copy.eyebrow}</span>
+    <h2>{copy.title}</h2>
+    <p className="about-intro">{copy.intro}</p>
+    <div className="about-grid">
+      <article><span aria-hidden="true">01</span><h3>{copy.purposeTitle}</h3><p>{copy.purposeText}</p></article>
+      <article><span aria-hidden="true">02</span><h3>{copy.inspirationTitle}</h3><p>{copy.inspirationText}</p><a href="https://futbol11.com" target="_blank" rel="noreferrer">{copy.visit} ↗</a></article>
+      <article><span aria-hidden="true">03</span><h3>{copy.evolutionTitle}</h3><p>{copy.evolutionText}</p></article>
+    </div>
+    <small>{copy.credit}</small>
+  </section>;
 }
 
 function DailyCounter({ record, language }: { record: DailyRecord; language: Language }) {
