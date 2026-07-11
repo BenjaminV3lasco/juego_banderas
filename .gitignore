@@ -76,3 +76,6 @@ out/
 .env.local
 server.out.log
 server.err.log
+
+# Reproducible ML training artifacts (generated with npm run ml:generate)
+ml/data/*.csv

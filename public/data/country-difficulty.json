@@ -1,0 +1,5261 @@
+{
+  "metadata": {
+    "source": "synthetic",
+    "seed": 20260711,
+    "eventsPerCountryMode": 40,
+    "totalEvents": 40000,
+    "warning": "Cold-start synthetic prior; do not interpret as observed player performance."
+  },
+  "countries": {
+    "ABW": {
+      "name": "Aruba",
+      "scores": {
+        "flag": 0.4037,
+        "capital": 0.6196,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.775,
+        "map": 0.525,
+        "neighbour": 0.625
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "AFG": {
+      "name": "Afganistán",
+      "scores": {
+        "flag": 0.4124,
+        "capital": 0.5647,
+        "map": 0.4525,
+        "neighbour": 0.4218
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.65,
+        "map": 0.375,
+        "neighbour": 0.4
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "normal"
+      }
+    },
+    "AGO": {
+      "name": "Angola",
+      "scores": {
+        "flag": 0.4211,
+        "capital": 0.6022,
+        "map": 0.4957,
+        "neighbour": 0.4935
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.65,
+        "map": 0.4,
+        "neighbour": 0.525
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "AIA": {
+      "name": "Anguilla",
+      "scores": {
+        "flag": 0.4208,
+        "capital": 0.6097,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.5,
+        "map": 0.525,
+        "neighbour": 0.575
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "ALA": {
+      "name": "Alandia",
+      "scores": {
+        "flag": 0.3963,
+        "capital": 0.5935,
+        "map": 0.5694,
+        "neighbour": 0.6716
+      },
+      "observedSyntheticScores": {
+        "flag": 0.325,
+        "capital": 0.675,
+        "map": 0.5,
+        "neighbour": 0.775
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "ALB": {
+      "name": "Albania",
+      "scores": {
+        "flag": 0.3526,
+        "capital": 0.5359,
+        "map": 0.4364,
+        "neighbour": 0.4383
+      },
+      "observedSyntheticScores": {
+        "flag": 0.3,
+        "capital": 0.675,
+        "map": 0.35,
+        "neighbour": 0.4
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "normal"
+      }
+    },
+    "AND": {
+      "name": "Andorra",
+      "scores": {
+        "flag": 0.3526,
+        "capital": 0.6166,
+        "map": 0.4547,
+        "neighbour": 0.4871
+      },
+      "observedSyntheticScores": {
+        "flag": 0.375,
+        "capital": 0.575,
+        "map": 0.4,
+        "neighbour": 0.5
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "hard",
+        "map": "easy",
+        "neighbour": "hard"
+      }
+    },
+    "ARE": {
+      "name": "Emiratos Árabes Unidos",
+      "scores": {
+        "flag": 0.3049,
+        "capital": 0.4439,
+        "map": 0.3586,
+        "neighbour": 0.396
+      },
+      "observedSyntheticScores": {
+        "flag": 0.325,
+        "capital": 0.425,
+        "map": 0.475,
+        "neighbour": 0.35
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "ARG": {
+      "name": "Argentina",
+      "scores": {
+        "flag": 0.1469,
+        "capital": 0.3385,
+        "map": 0.2311,
+        "neighbour": 0.2327
+      },
+      "observedSyntheticScores": {
+        "flag": 0.075,
+        "capital": 0.25,
+        "map": 0.2,
+        "neighbour": 0.175
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "ARM": {
+      "name": "Armenia",
+      "scores": {
+        "flag": 0.3954,
+        "capital": 0.585,
+        "map": 0.4709,
+        "neighbour": 0.4704
+      },
+      "observedSyntheticScores": {
+        "flag": 0.4,
+        "capital": 0.625,
+        "map": 0.525,
+        "neighbour": 0.35
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "normal"
+      }
+    },
+    "ASM": {
+      "name": "Samoa Americana",
+      "scores": {
+        "flag": 0.5456,
+        "capital": 0.6728,
+        "map": 0.6492,
+        "neighbour": 0.7369
+      },
+      "observedSyntheticScores": {
+        "flag": 0.575,
+        "capital": 0.575,
+        "map": 0.875,
+        "neighbour": 0.7
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "ATA": {
+      "name": "Antártida",
+      "scores": {
+        "flag": 0.4908,
+        "capital": 0.6141,
+        "map": 0.631,
+        "neighbour": 0.7222
+      },
+      "observedSyntheticScores": {
+        "flag": 0.625,
+        "capital": 0.7,
+        "map": 0.525,
+        "neighbour": 0.675
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "ATF": {
+      "name": "Tierras Australes y Antárticas Francesas",
+      "scores": {
+        "flag": 0.5547,
+        "capital": 0.7153,
+        "map": 0.631,
+        "neighbour": 0.7222
+      },
+      "observedSyntheticScores": {
+        "flag": 0.625,
+        "capital": 0.7,
+        "map": 0.575,
+        "neighbour": 0.75
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "ATG": {
+      "name": "Antigua y Barbuda",
+      "scores": {
+        "flag": 0.4613,
+        "capital": 0.6196,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.675,
+        "map": 0.6,
+        "neighbour": 0.7
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "AUS": {
+      "name": "Australia",
+      "scores": {
+        "flag": 0.2332,
+        "capital": 0.41,
+        "map": 0.4167,
+        "neighbour": 0.536
+      },
+      "observedSyntheticScores": {
+        "flag": 0.2,
+        "capital": 0.375,
+        "map": 0.275,
+        "neighbour": 0.5
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "hard"
+      }
+    },
+    "AUT": {
+      "name": "Austria",
+      "scores": {
+        "flag": 0.2103,
+        "capital": 0.385,
+        "map": 0.2791,
+        "neighbour": 0.2398
+      },
+      "observedSyntheticScores": {
+        "flag": 0.075,
+        "capital": 0.375,
+        "map": 0.175,
+        "neighbour": 0.225
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "AZE": {
+      "name": "Azerbaiyán",
+      "scores": {
+        "flag": 0.4124,
+        "capital": 0.5545,
+        "map": 0.4617,
+        "neighbour": 0.446
+      },
+      "observedSyntheticScores": {
+        "flag": 0.55,
+        "capital": 0.475,
+        "map": 0.45,
+        "neighbour": 0.6
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "normal"
+      }
+    },
+    "BDI": {
+      "name": "Burundi",
+      "scores": {
+        "flag": 0.4269,
+        "capital": 0.6022,
+        "map": 0.5049,
+        "neighbour": 0.5179
+      },
+      "observedSyntheticScores": {
+        "flag": 0.475,
+        "capital": 0.575,
+        "map": 0.6,
+        "neighbour": 0.675
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "BEL": {
+      "name": "Bélgica",
+      "scores": {
+        "flag": 0.2103,
+        "capital": 0.4051,
+        "map": 0.3105,
+        "neighbour": 0.3204
+      },
+      "observedSyntheticScores": {
+        "flag": 0.225,
+        "capital": 0.275,
+        "map": 0.3,
+        "neighbour": 0.35
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "BEN": {
+      "name": "Benín",
+      "scores": {
+        "flag": 0.4154,
+        "capital": 0.6315,
+        "map": 0.4957,
+        "neighbour": 0.4935
+      },
+      "observedSyntheticScores": {
+        "flag": 0.4,
+        "capital": 0.65,
+        "map": 0.425,
+        "neighbour": 0.55
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "hard",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "BFA": {
+      "name": "Burkina Faso",
+      "scores": {
+        "flag": 0.45,
+        "capital": 0.6506,
+        "map": 0.4772,
+        "neighbour": 0.4446
+      },
+      "observedSyntheticScores": {
+        "flag": 0.675,
+        "capital": 0.775,
+        "map": 0.675,
+        "neighbour": 0.35
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "normal",
+        "neighbour": "normal"
+      }
+    },
+    "BGD": {
+      "name": "Bangladesh",
+      "scores": {
+        "flag": 0.4124,
+        "capital": 0.5647,
+        "map": 0.4893,
+        "neighbour": 0.5194
+      },
+      "observedSyntheticScores": {
+        "flag": 0.3,
+        "capital": 0.45,
+        "map": 0.55,
+        "neighbour": 0.45
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "easy",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "BGR": {
+      "name": "Bulgaria",
+      "scores": {
+        "flag": 0.358,
+        "capital": 0.5256,
+        "map": 0.4273,
+        "neighbour": 0.4142
+      },
+      "observedSyntheticScores": {
+        "flag": 0.3,
+        "capital": 0.4,
+        "map": 0.475,
+        "neighbour": 0.4
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "normal"
+      }
+    },
+    "BHR": {
+      "name": "Bahrein",
+      "scores": {
+        "flag": 0.4405,
+        "capital": 0.6016,
+        "map": 0.6029,
+        "neighbour": 0.6994
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.725,
+        "map": 0.7,
+        "neighbour": 0.725
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "normal",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "BHS": {
+      "name": "Bahamas",
+      "scores": {
+        "flag": 0.4151,
+        "capital": 0.5798,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.375,
+        "capital": 0.525,
+        "map": 0.75,
+        "neighbour": 0.725
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "BIH": {
+      "name": "Bosnia y Herzegovina",
+      "scores": {
+        "flag": 0.4139,
+        "capital": 0.5565,
+        "map": 0.4455,
+        "neighbour": 0.4626
+      },
+      "observedSyntheticScores": {
+        "flag": 0.45,
+        "capital": 0.625,
+        "map": 0.45,
+        "neighbour": 0.475
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "normal"
+      }
+    },
+    "BLM": {
+      "name": "San Bartolomé",
+      "scores": {
+        "flag": 0.4439,
+        "capital": 0.5998,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.575,
+        "capital": 0.45,
+        "map": 0.5,
+        "neighbour": 0.65
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "normal",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "SHN": {
+      "name": "Santa Elena, Ascensión y Tristán de Acuña",
+      "scores": {
+        "flag": 0.5484,
+        "capital": 0.6569,
+        "map": 0.6264,
+        "neighbour": 0.7185
+      },
+      "observedSyntheticScores": {
+        "flag": 0.55,
+        "capital": 0.625,
+        "map": 0.625,
+        "neighbour": 0.625
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "BLR": {
+      "name": "Bielorrusia",
+      "scores": {
+        "flag": 0.3745,
+        "capital": 0.5256,
+        "map": 0.4273,
+        "neighbour": 0.4142
+      },
+      "observedSyntheticScores": {
+        "flag": 0.4,
+        "capital": 0.55,
+        "map": 0.525,
+        "neighbour": 0.45
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "normal"
+      }
+    },
+    "BLZ": {
+      "name": "Belice",
+      "scores": {
+        "flag": 0.3652,
+        "capital": 0.5731,
+        "map": 0.4695,
+        "neighbour": 0.501
+      },
+      "observedSyntheticScores": {
+        "flag": 0.275,
+        "capital": 0.6,
+        "map": 0.35,
+        "neighbour": 0.65
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "BMU": {
+      "name": "Bermudas",
+      "scores": {
+        "flag": 0.4208,
+        "capital": 0.5998,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.4,
+        "capital": 0.575,
+        "map": 0.475,
+        "neighbour": 0.65
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "BOL": {
+      "name": "Bolivia",
+      "scores": {
+        "flag": 0.224,
+        "capital": 0.3913,
+        "map": 0.3155,
+        "neighbour": 0.3111
+      },
+      "observedSyntheticScores": {
+        "flag": 0.15,
+        "capital": 0.4,
+        "map": 0.4,
+        "neighbour": 0.325
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "BES": {
+      "name": "Caribe Neerlandés",
+      "scores": {
+        "flag": 0.4671,
+        "capital": 0.6196,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.575,
+        "map": 0.525,
+        "neighbour": 0.675
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "BRA": {
+      "name": "Brasil",
+      "scores": {
+        "flag": 0.1379,
+        "capital": 0.3107,
+        "map": 0.2113,
+        "neighbour": 0.1827
+      },
+      "observedSyntheticScores": {
+        "flag": 0.1,
+        "capital": 0.15,
+        "map": 0.225,
+        "neighbour": 0.075
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "BRB": {
+      "name": "Barbados",
+      "scores": {
+        "flag": 0.4208,
+        "capital": 0.6196,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.35,
+        "capital": 0.575,
+        "map": 0.5,
+        "neighbour": 0.65
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "BRN": {
+      "name": "Brunei",
+      "scores": {
+        "flag": 0.3898,
+        "capital": 0.6809,
+        "map": 0.4985,
+        "neighbour": 0.5438
+      },
+      "observedSyntheticScores": {
+        "flag": 0.45,
+        "capital": 0.6,
+        "map": 0.475,
+        "neighbour": 0.4
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "hard",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "BTN": {
+      "name": "Bután",
+      "scores": {
+        "flag": 0.3842,
+        "capital": 0.585,
+        "map": 0.4893,
+        "neighbour": 0.5194
+      },
+      "observedSyntheticScores": {
+        "flag": 0.45,
+        "capital": 0.65,
+        "map": 0.675,
+        "neighbour": 0.5
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "BVT": {
+      "name": "Isla Bouvet",
+      "scores": {
+        "flag": 0.4966,
+        "capital": 0.6141,
+        "map": 0.631,
+        "neighbour": 0.7222
+      },
+      "observedSyntheticScores": {
+        "flag": 0.4,
+        "capital": 0.4,
+        "map": 0.625,
+        "neighbour": 0.675
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "BWA": {
+      "name": "Botswana",
+      "scores": {
+        "flag": 0.4326,
+        "capital": 0.6218,
+        "map": 0.4957,
+        "neighbour": 0.4935
+      },
+      "observedSyntheticScores": {
+        "flag": 0.375,
+        "capital": 0.55,
+        "map": 0.575,
+        "neighbour": 0.55
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "CAF": {
+      "name": "República Centroafricana",
+      "scores": {
+        "flag": 0.5025,
+        "capital": 0.6022,
+        "map": 0.4772,
+        "neighbour": 0.4446
+      },
+      "observedSyntheticScores": {
+        "flag": 0.575,
+        "capital": 0.575,
+        "map": 0.525,
+        "neighbour": 0.3
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "normal"
+      }
+    },
+    "CAN": {
+      "name": "Canadá",
+      "scores": {
+        "flag": 0.1379,
+        "capital": 0.2928,
+        "map": 0.2592,
+        "neighbour": 0.3121
+      },
+      "observedSyntheticScores": {
+        "flag": 0.125,
+        "capital": 0.225,
+        "map": 0.325,
+        "neighbour": 0.4
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "CCK": {
+      "name": "Islas Cocos o Islas Keeling",
+      "scores": {
+        "flag": 0.58,
+        "capital": 0.6908,
+        "map": 0.6492,
+        "neighbour": 0.7369
+      },
+      "observedSyntheticScores": {
+        "flag": 0.625,
+        "capital": 0.625,
+        "map": 0.625,
+        "neighbour": 0.725
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "CHE": {
+      "name": "Suiza",
+      "scores": {
+        "flag": 0.2024,
+        "capital": 0.3654,
+        "map": 0.3025,
+        "neighbour": 0.2991
+      },
+      "observedSyntheticScores": {
+        "flag": 0.175,
+        "capital": 0.275,
+        "map": 0.275,
+        "neighbour": 0.35
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "CHL": {
+      "name": "Chile",
+      "scores": {
+        "flag": 0.2157,
+        "capital": 0.4216,
+        "map": 0.3319,
+        "neighbour": 0.3553
+      },
+      "observedSyntheticScores": {
+        "flag": 0.125,
+        "capital": 0.45,
+        "map": 0.35,
+        "neighbour": 0.45
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "CHN": {
+      "name": "China",
+      "scores": {
+        "flag": 0.1482,
+        "capital": 0.3215,
+        "map": 0.2254,
+        "neighbour": 0.1945
+      },
+      "observedSyntheticScores": {
+        "flag": 0.125,
+        "capital": 0.4,
+        "map": 0.275,
+        "neighbour": 0.15
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "CIV": {
+      "name": "Costa de Marfil",
+      "scores": {
+        "flag": 0.4616,
+        "capital": 0.66,
+        "map": 0.4864,
+        "neighbour": 0.469
+      },
+      "observedSyntheticScores": {
+        "flag": 0.325,
+        "capital": 0.6,
+        "map": 0.6,
+        "neighbour": 0.475
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "normal",
+        "neighbour": "normal"
+      }
+    },
+    "CMR": {
+      "name": "Camerún",
+      "scores": {
+        "flag": 0.4269,
+        "capital": 0.612,
+        "map": 0.4772,
+        "neighbour": 0.4446
+      },
+      "observedSyntheticScores": {
+        "flag": 0.45,
+        "capital": 0.525,
+        "map": 0.4,
+        "neighbour": 0.425
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "normal"
+      }
+    },
+    "COD": {
+      "name": "Congo (Rep. Dem.)",
+      "scores": {
+        "flag": 0.45,
+        "capital": 0.6218,
+        "map": 0.4588,
+        "neighbour": 0.3966
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.75,
+        "map": 0.35,
+        "neighbour": 0.475
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "COG": {
+      "name": "Congo",
+      "scores": {
+        "flag": 0.4154,
+        "capital": 0.6506,
+        "map": 0.4864,
+        "neighbour": 0.469
+      },
+      "observedSyntheticScores": {
+        "flag": 0.4,
+        "capital": 0.7,
+        "map": 0.525,
+        "neighbour": 0.575
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "hard",
+        "map": "normal",
+        "neighbour": "normal"
+      }
+    },
+    "COK": {
+      "name": "Islas Cook",
+      "scores": {
+        "flag": 0.5166,
+        "capital": 0.6543,
+        "map": 0.6492,
+        "neighbour": 0.7369
+      },
+      "observedSyntheticScores": {
+        "flag": 0.325,
+        "capital": 0.725,
+        "map": 0.65,
+        "neighbour": 0.75
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "COL": {
+      "name": "Colombia",
+      "scores": {
+        "flag": 0.2282,
+        "capital": 0.4014,
+        "map": 0.3155,
+        "neighbour": 0.3111
+      },
+      "observedSyntheticScores": {
+        "flag": 0.325,
+        "capital": 0.275,
+        "map": 0.35,
+        "neighbour": 0.35
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "COM": {
+      "name": "Comoras",
+      "scores": {
+        "flag": 0.4726,
+        "capital": 0.6283,
+        "map": 0.6264,
+        "neighbour": 0.7185
+      },
+      "observedSyntheticScores": {
+        "flag": 0.375,
+        "capital": 0.75,
+        "map": 0.55,
+        "neighbour": 0.85
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "CPV": {
+      "name": "Cabo Verde",
+      "scores": {
+        "flag": 0.4843,
+        "capital": 0.6186,
+        "map": 0.6264,
+        "neighbour": 0.7185
+      },
+      "observedSyntheticScores": {
+        "flag": 0.475,
+        "capital": 0.7,
+        "map": 0.65,
+        "neighbour": 0.75
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "CRI": {
+      "name": "Costa Rica",
+      "scores": {
+        "flag": 0.3818,
+        "capital": 0.5629,
+        "map": 0.4695,
+        "neighbour": 0.501
+      },
+      "observedSyntheticScores": {
+        "flag": 0.35,
+        "capital": 0.6,
+        "map": 0.375,
+        "neighbour": 0.575
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "CUB": {
+      "name": "Cuba",
+      "scores": {
+        "flag": 0.4037,
+        "capital": 0.5798,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.525,
+        "capital": 0.55,
+        "map": 0.45,
+        "neighbour": 0.625
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "CUW": {
+      "name": "Curazao",
+      "scores": {
+        "flag": 0.4151,
+        "capital": 0.6196,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.4,
+        "capital": 0.6,
+        "map": 0.4,
+        "neighbour": 0.7
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "CXR": {
+      "name": "Isla de Navidad",
+      "scores": {
+        "flag": 0.5398,
+        "capital": 0.7252,
+        "map": 0.6492,
+        "neighbour": 0.7369
+      },
+      "observedSyntheticScores": {
+        "flag": 0.45,
+        "capital": 0.825,
+        "map": 0.65,
+        "neighbour": 0.675
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "CYM": {
+      "name": "Islas Caimán",
+      "scores": {
+        "flag": 0.4381,
+        "capital": 0.6196,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.5,
+        "capital": 0.675,
+        "map": 0.625,
+        "neighbour": 0.65
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "CYP": {
+      "name": "Chipre",
+      "scores": {
+        "flag": 0.3906,
+        "capital": 0.5734,
+        "map": 0.5694,
+        "neighbour": 0.6716
+      },
+      "observedSyntheticScores": {
+        "flag": 0.35,
+        "capital": 0.575,
+        "map": 0.55,
+        "neighbour": 0.65
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "CZE": {
+      "name": "Chequia",
+      "scores": {
+        "flag": 0.2103,
+        "capital": 0.385,
+        "map": 0.3105,
+        "neighbour": 0.3204
+      },
+      "observedSyntheticScores": {
+        "flag": 0.25,
+        "capital": 0.3,
+        "map": 0.325,
+        "neighbour": 0.325
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "DEU": {
+      "name": "Alemania",
+      "scores": {
+        "flag": 0.1341,
+        "capital": 0.2787,
+        "map": 0.2012,
+        "neighbour": 0.1742
+      },
+      "observedSyntheticScores": {
+        "flag": 0.175,
+        "capital": 0.25,
+        "map": 0.175,
+        "neighbour": 0.15
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "DJI": {
+      "name": "Djibouti",
+      "scores": {
+        "flag": 0.4326,
+        "capital": 0.6218,
+        "map": 0.5049,
+        "neighbour": 0.5179
+      },
+      "observedSyntheticScores": {
+        "flag": 0.575,
+        "capital": 0.6,
+        "map": 0.525,
+        "neighbour": 0.5
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "DMA": {
+      "name": "Dominica",
+      "scores": {
+        "flag": 0.4208,
+        "capital": 0.5798,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.45,
+        "capital": 0.725,
+        "map": 0.8,
+        "neighbour": 0.55
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "DNK": {
+      "name": "Dinamarca",
+      "scores": {
+        "flag": 0.2185,
+        "capital": 0.4253,
+        "map": 0.3351,
+        "neighbour": 0.3885
+      },
+      "observedSyntheticScores": {
+        "flag": 0.325,
+        "capital": 0.425,
+        "map": 0.25,
+        "neighbour": 0.375
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "DOM": {
+      "name": "República Dominicana",
+      "scores": {
+        "flag": 0.4387,
+        "capital": 0.613,
+        "map": 0.4787,
+        "neighbour": 0.5254
+      },
+      "observedSyntheticScores": {
+        "flag": 0.475,
+        "capital": 0.675,
+        "map": 0.425,
+        "neighbour": 0.55
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "DZA": {
+      "name": "Argelia",
+      "scores": {
+        "flag": 0.4269,
+        "capital": 0.612,
+        "map": 0.468,
+        "neighbour": 0.4204
+      },
+      "observedSyntheticScores": {
+        "flag": 0.475,
+        "capital": 0.6,
+        "map": 0.525,
+        "neighbour": 0.625
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "normal"
+      }
+    },
+    "ECU": {
+      "name": "Ecuador",
+      "scores": {
+        "flag": 0.3707,
+        "capital": 0.5424,
+        "map": 0.4695,
+        "neighbour": 0.501
+      },
+      "observedSyntheticScores": {
+        "flag": 0.45,
+        "capital": 0.45,
+        "map": 0.4,
+        "neighbour": 0.5
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "EGY": {
+      "name": "Egipto",
+      "scores": {
+        "flag": 0.1695,
+        "capital": 0.3282,
+        "map": 0.2728,
+        "neighbour": 0.2847
+      },
+      "observedSyntheticScores": {
+        "flag": 0.225,
+        "capital": 0.325,
+        "map": 0.25,
+        "neighbour": 0.225
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "ERI": {
+      "name": "Eritrea",
+      "scores": {
+        "flag": 0.4269,
+        "capital": 0.6022,
+        "map": 0.5049,
+        "neighbour": 0.5179
+      },
+      "observedSyntheticScores": {
+        "flag": 0.325,
+        "capital": 0.475,
+        "map": 0.425,
+        "neighbour": 0.575
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "ESH": {
+      "name": "Sahara Occidental",
+      "scores": {
+        "flag": 0.4791,
+        "capital": 0.612,
+        "map": 0.5049,
+        "neighbour": 0.5179
+      },
+      "observedSyntheticScores": {
+        "flag": 0.575,
+        "capital": 0.625,
+        "map": 0.575,
+        "neighbour": 0.475
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "ESP": {
+      "name": "España",
+      "scores": {
+        "flag": 0.1285,
+        "capital": 0.2787,
+        "map": 0.2203,
+        "neighbour": 0.2227
+      },
+      "observedSyntheticScores": {
+        "flag": 0.175,
+        "capital": 0.225,
+        "map": 0.275,
+        "neighbour": 0.325
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "EST": {
+      "name": "Estonia",
+      "scores": {
+        "flag": 0.3526,
+        "capital": 0.5462,
+        "map": 0.4547,
+        "neighbour": 0.4871
+      },
+      "observedSyntheticScores": {
+        "flag": 0.35,
+        "capital": 0.5,
+        "map": 0.55,
+        "neighbour": 0.55
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "hard"
+      }
+    },
+    "ETH": {
+      "name": "Etiopía",
+      "scores": {
+        "flag": 0.4269,
+        "capital": 0.6411,
+        "map": 0.4772,
+        "neighbour": 0.4446
+      },
+      "observedSyntheticScores": {
+        "flag": 0.45,
+        "capital": 0.525,
+        "map": 0.55,
+        "neighbour": 0.4
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "hard",
+        "map": "normal",
+        "neighbour": "normal"
+      }
+    },
+    "FIN": {
+      "name": "Finlandia",
+      "scores": {
+        "flag": 0.2185,
+        "capital": 0.4051,
+        "map": 0.3186,
+        "neighbour": 0.3425
+      },
+      "observedSyntheticScores": {
+        "flag": 0.25,
+        "capital": 0.5,
+        "map": 0.45,
+        "neighbour": 0.45
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "FJI": {
+      "name": "Fiyi",
+      "scores": {
+        "flag": 0.4932,
+        "capital": 0.6353,
+        "map": 0.6492,
+        "neighbour": 0.7369
+      },
+      "observedSyntheticScores": {
+        "flag": 0.4,
+        "capital": 0.675,
+        "map": 0.6,
+        "neighbour": 0.8
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "FLK": {
+      "name": "Islas Malvinas",
+      "scores": {
+        "flag": 0.4497,
+        "capital": 0.5899,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.375,
+        "capital": 0.675,
+        "map": 0.65,
+        "neighbour": 0.6
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "normal",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "FRA": {
+      "name": "Francia",
+      "scores": {
+        "flag": 0.1312,
+        "capital": 0.2702,
+        "map": 0.2012,
+        "neighbour": 0.1742
+      },
+      "observedSyntheticScores": {
+        "flag": 0.1,
+        "capital": 0.225,
+        "map": 0.225,
+        "neighbour": 0.225
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "FRO": {
+      "name": "Islas Faroe",
+      "scores": {
+        "flag": 0.4133,
+        "capital": 0.5835,
+        "map": 0.5694,
+        "neighbour": 0.6716
+      },
+      "observedSyntheticScores": {
+        "flag": 0.525,
+        "capital": 0.625,
+        "map": 0.45,
+        "neighbour": 0.725
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "FSM": {
+      "name": "Micronesia",
+      "scores": {
+        "flag": 0.5224,
+        "capital": 0.6636,
+        "map": 0.6492,
+        "neighbour": 0.7369
+      },
+      "observedSyntheticScores": {
+        "flag": 0.525,
+        "capital": 0.675,
+        "map": 0.725,
+        "neighbour": 0.8
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "GAB": {
+      "name": "Gabón",
+      "scores": {
+        "flag": 0.4154,
+        "capital": 0.6411,
+        "map": 0.5049,
+        "neighbour": 0.5179
+      },
+      "observedSyntheticScores": {
+        "flag": 0.375,
+        "capital": 0.525,
+        "map": 0.475,
+        "neighbour": 0.5
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "hard",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "GBR": {
+      "name": "Reino Unido",
+      "scores": {
+        "flag": 0.1399,
+        "capital": 0.2787,
+        "map": 0.2476,
+        "neighbour": 0.3001
+      },
+      "observedSyntheticScores": {
+        "flag": 0.075,
+        "capital": 0.175,
+        "map": 0.275,
+        "neighbour": 0.45
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "GEO": {
+      "name": "Georgia",
+      "scores": {
+        "flag": 0.3954,
+        "capital": 0.585,
+        "map": 0.4709,
+        "neighbour": 0.4704
+      },
+      "observedSyntheticScores": {
+        "flag": 0.35,
+        "capital": 0.575,
+        "map": 0.3,
+        "neighbour": 0.5
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "normal"
+      }
+    },
+    "GGY": {
+      "name": "Guernsey",
+      "scores": {
+        "flag": 0.4019,
+        "capital": 0.6134,
+        "map": 0.5694,
+        "neighbour": 0.6716
+      },
+      "observedSyntheticScores": {
+        "flag": 0.4,
+        "capital": 0.625,
+        "map": 0.5,
+        "neighbour": 0.625
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "GHA": {
+      "name": "Ghana",
+      "scores": {
+        "flag": 0.4154,
+        "capital": 0.5922,
+        "map": 0.5049,
+        "neighbour": 0.5179
+      },
+      "observedSyntheticScores": {
+        "flag": 0.4,
+        "capital": 0.625,
+        "map": 0.6,
+        "neighbour": 0.625
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "GIB": {
+      "name": "Gibraltar",
+      "scores": {
+        "flag": 0.3635,
+        "capital": 0.5666,
+        "map": 0.4639,
+        "neighbour": 0.5116
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.525,
+        "map": 0.575,
+        "neighbour": 0.375
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "GIN": {
+      "name": "Guinea",
+      "scores": {
+        "flag": 0.4211,
+        "capital": 0.612,
+        "map": 0.4772,
+        "neighbour": 0.4446
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.65,
+        "map": 0.375,
+        "neighbour": 0.525
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "normal"
+      }
+    },
+    "GLP": {
+      "name": "Guadalupe",
+      "scores": {
+        "flag": 0.4266,
+        "capital": 0.6196,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.475,
+        "capital": 0.7,
+        "map": 0.45,
+        "neighbour": 0.675
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "GMB": {
+      "name": "Gambia",
+      "scores": {
+        "flag": 0.4211,
+        "capital": 0.6022,
+        "map": 0.5233,
+        "neighbour": 0.5665
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.55,
+        "map": 0.55,
+        "neighbour": 0.425
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "GNB": {
+      "name": "Guinea-Bisáu",
+      "scores": {
+        "flag": 0.45,
+        "capital": 0.6022,
+        "map": 0.5141,
+        "neighbour": 0.5423
+      },
+      "observedSyntheticScores": {
+        "flag": 0.45,
+        "capital": 0.725,
+        "map": 0.475,
+        "neighbour": 0.6
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "GNQ": {
+      "name": "Guinea Ecuatorial",
+      "scores": {
+        "flag": 0.4791,
+        "capital": 0.6022,
+        "map": 0.5141,
+        "neighbour": 0.5423
+      },
+      "observedSyntheticScores": {
+        "flag": 0.525,
+        "capital": 0.675,
+        "map": 0.625,
+        "neighbour": 0.575
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "GRC": {
+      "name": "Grecia",
+      "scores": {
+        "flag": 0.2063,
+        "capital": 0.385,
+        "map": 0.3105,
+        "neighbour": 0.3204
+      },
+      "observedSyntheticScores": {
+        "flag": 0.075,
+        "capital": 0.4,
+        "map": 0.3,
+        "neighbour": 0.25
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "GRD": {
+      "name": "Grenada",
+      "scores": {
+        "flag": 0.4151,
+        "capital": 0.6097,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.525,
+        "capital": 0.675,
+        "map": 0.65,
+        "neighbour": 0.7
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "GRL": {
+      "name": "Groenlandia",
+      "scores": {
+        "flag": 0.4381,
+        "capital": 0.5595,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.55,
+        "capital": 0.575,
+        "map": 0.65,
+        "neighbour": 0.65
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "easy",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "GTM": {
+      "name": "Guatemala",
+      "scores": {
+        "flag": 0.3818,
+        "capital": 0.6228,
+        "map": 0.4511,
+        "neighbour": 0.452
+      },
+      "observedSyntheticScores": {
+        "flag": 0.275,
+        "capital": 0.65,
+        "map": 0.45,
+        "neighbour": 0.625
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "hard",
+        "map": "easy",
+        "neighbour": "normal"
+      }
+    },
+    "GUF": {
+      "name": "Guayana Francesa",
+      "scores": {
+        "flag": 0.4157,
+        "capital": 0.5629,
+        "map": 0.4695,
+        "neighbour": 0.501
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.525,
+        "map": 0.35,
+        "neighbour": 0.5
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "easy",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "GUM": {
+      "name": "Guam",
+      "scores": {
+        "flag": 0.4932,
+        "capital": 0.6636,
+        "map": 0.6492,
+        "neighbour": 0.7369
+      },
+      "observedSyntheticScores": {
+        "flag": 0.525,
+        "capital": 0.625,
+        "map": 0.55,
+        "neighbour": 0.7
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "GUY": {
+      "name": "Guyana",
+      "scores": {
+        "flag": 0.3652,
+        "capital": 0.5932,
+        "map": 0.4603,
+        "neighbour": 0.4765
+      },
+      "observedSyntheticScores": {
+        "flag": 0.4,
+        "capital": 0.55,
+        "map": 0.5,
+        "neighbour": 0.525
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "normal",
+        "map": "easy",
+        "neighbour": "normal"
+      }
+    },
+    "HKG": {
+      "name": "Hong Kong",
+      "scores": {
+        "flag": 0.401,
+        "capital": 0.6532,
+        "map": 0.4985,
+        "neighbour": 0.5438
+      },
+      "observedSyntheticScores": {
+        "flag": 0.5,
+        "capital": 0.625,
+        "map": 0.4,
+        "neighbour": 0.675
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "hard",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "HMD": {
+      "name": "Islas Heard y McDonald",
+      "scores": {
+        "flag": 0.549,
+        "capital": 0.6141,
+        "map": 0.631,
+        "neighbour": 0.7222
+      },
+      "observedSyntheticScores": {
+        "flag": 0.575,
+        "capital": 0.525,
+        "map": 0.6,
+        "neighbour": 0.725
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "HND": {
+      "name": "Honduras",
+      "scores": {
+        "flag": 0.3762,
+        "capital": 0.6032,
+        "map": 0.4603,
+        "neighbour": 0.4765
+      },
+      "observedSyntheticScores": {
+        "flag": 0.35,
+        "capital": 0.75,
+        "map": 0.375,
+        "neighbour": 0.325
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "normal",
+        "map": "easy",
+        "neighbour": "normal"
+      }
+    },
+    "HRV": {
+      "name": "Croacia",
+      "scores": {
+        "flag": 0.2103,
+        "capital": 0.385,
+        "map": 0.3025,
+        "neighbour": 0.2991
+      },
+      "observedSyntheticScores": {
+        "flag": 0.25,
+        "capital": 0.55,
+        "map": 0.4,
+        "neighbour": 0.325
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "HTI": {
+      "name": "Haití",
+      "scores": {
+        "flag": 0.3597,
+        "capital": 0.613,
+        "map": 0.4787,
+        "neighbour": 0.5254
+      },
+      "observedSyntheticScores": {
+        "flag": 0.275,
+        "capital": 0.6,
+        "map": 0.525,
+        "neighbour": 0.525
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "hard",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "HUN": {
+      "name": "Hungría",
+      "scores": {
+        "flag": 0.2103,
+        "capital": 0.4051,
+        "map": 0.2868,
+        "neighbour": 0.2587
+      },
+      "observedSyntheticScores": {
+        "flag": 0.225,
+        "capital": 0.425,
+        "map": 0.325,
+        "neighbour": 0.25
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "IDN": {
+      "name": "Indonesia",
+      "scores": {
+        "flag": 0.2521,
+        "capital": 0.4336,
+        "map": 0.35,
+        "neighbour": 0.3726
+      },
+      "observedSyntheticScores": {
+        "flag": 0.175,
+        "capital": 0.5,
+        "map": 0.35,
+        "neighbour": 0.275
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "IMN": {
+      "name": "Isla de Man",
+      "scores": {
+        "flag": 0.4076,
+        "capital": 0.5734,
+        "map": 0.5694,
+        "neighbour": 0.6716
+      },
+      "observedSyntheticScores": {
+        "flag": 0.4,
+        "capital": 0.55,
+        "map": 0.4,
+        "neighbour": 0.65
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "IND": {
+      "name": "India",
+      "scores": {
+        "flag": 0.1482,
+        "capital": 0.3308,
+        "map": 0.239,
+        "neighbour": 0.2283
+      },
+      "observedSyntheticScores": {
+        "flag": 0.175,
+        "capital": 0.375,
+        "map": 0.225,
+        "neighbour": 0.15
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "IOT": {
+      "name": "Territorio Británico del Océano Índico",
+      "scores": {
+        "flag": 0.5484,
+        "capital": 0.6753,
+        "map": 0.6264,
+        "neighbour": 0.7185
+      },
+      "observedSyntheticScores": {
+        "flag": 0.6,
+        "capital": 0.6,
+        "map": 0.675,
+        "neighbour": 0.725
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "IRL": {
+      "name": "Irlanda",
+      "scores": {
+        "flag": 0.2103,
+        "capital": 0.385,
+        "map": 0.3351,
+        "neighbour": 0.3885
+      },
+      "observedSyntheticScores": {
+        "flag": 0.05,
+        "capital": 0.3,
+        "map": 0.375,
+        "neighbour": 0.35
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "IRN": {
+      "name": "Iran",
+      "scores": {
+        "flag": 0.3842,
+        "capital": 0.5749,
+        "map": 0.4433,
+        "neighbour": 0.398
+      },
+      "observedSyntheticScores": {
+        "flag": 0.375,
+        "capital": 0.675,
+        "map": 0.525,
+        "neighbour": 0.45
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "normal",
+        "map": "easy",
+        "neighbour": "normal"
+      }
+    },
+    "IRQ": {
+      "name": "Irak",
+      "scores": {
+        "flag": 0.3842,
+        "capital": 0.585,
+        "map": 0.4525,
+        "neighbour": 0.4218
+      },
+      "observedSyntheticScores": {
+        "flag": 0.35,
+        "capital": 0.55,
+        "map": 0.45,
+        "neighbour": 0.325
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "normal",
+        "map": "easy",
+        "neighbour": "normal"
+      }
+    },
+    "ISL": {
+      "name": "Islandia",
+      "scores": {
+        "flag": 0.4019,
+        "capital": 0.5935,
+        "map": 0.5694,
+        "neighbour": 0.6716
+      },
+      "observedSyntheticScores": {
+        "flag": 0.475,
+        "capital": 0.7,
+        "map": 0.55,
+        "neighbour": 0.575
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "ISR": {
+      "name": "Israel",
+      "scores": {
+        "flag": 0.2387,
+        "capital": 0.4542,
+        "map": 0.3332,
+        "neighbour": 0.3274
+      },
+      "observedSyntheticScores": {
+        "flag": 0.25,
+        "capital": 0.525,
+        "map": 0.2,
+        "neighbour": 0.375
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "ITA": {
+      "name": "Italia",
+      "scores": {
+        "flag": 0.1285,
+        "capital": 0.2619,
+        "map": 0.2138,
+        "neighbour": 0.2056
+      },
+      "observedSyntheticScores": {
+        "flag": 0.175,
+        "capital": 0.3,
+        "map": 0.2,
+        "neighbour": 0.3
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "JAM": {
+      "name": "Jamaica",
+      "scores": {
+        "flag": 0.4151,
+        "capital": 0.5998,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.5,
+        "capital": 0.625,
+        "map": 0.575,
+        "neighbour": 0.7
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "JEY": {
+      "name": "Jersey",
+      "scores": {
+        "flag": 0.3906,
+        "capital": 0.6134,
+        "map": 0.5694,
+        "neighbour": 0.6716
+      },
+      "observedSyntheticScores": {
+        "flag": 0.325,
+        "capital": 0.525,
+        "map": 0.45,
+        "neighbour": 0.6
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "JOR": {
+      "name": "Jordania",
+      "scores": {
+        "flag": 0.401,
+        "capital": 0.5647,
+        "map": 0.4617,
+        "neighbour": 0.446
+      },
+      "observedSyntheticScores": {
+        "flag": 0.35,
+        "capital": 0.575,
+        "map": 0.525,
+        "neighbour": 0.45
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "normal"
+      }
+    },
+    "JPN": {
+      "name": "Japón",
+      "scores": {
+        "flag": 0.1742,
+        "capital": 0.3276,
+        "map": 0.369,
+        "neighbour": 0.49
+      },
+      "observedSyntheticScores": {
+        "flag": 0.125,
+        "capital": 0.225,
+        "map": 0.35,
+        "neighbour": 0.45
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "hard"
+      }
+    },
+    "KAZ": {
+      "name": "Kazajistán",
+      "scores": {
+        "flag": 0.4124,
+        "capital": 0.5749,
+        "map": 0.4617,
+        "neighbour": 0.446
+      },
+      "observedSyntheticScores": {
+        "flag": 0.45,
+        "capital": 0.575,
+        "map": 0.375,
+        "neighbour": 0.425
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "easy",
+        "neighbour": "normal"
+      }
+    },
+    "KEN": {
+      "name": "Kenia",
+      "scores": {
+        "flag": 0.259,
+        "capital": 0.4617,
+        "map": 0.3559,
+        "neighbour": 0.3484
+      },
+      "observedSyntheticScores": {
+        "flag": 0.325,
+        "capital": 0.45,
+        "map": 0.2,
+        "neighbour": 0.3
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "KGZ": {
+      "name": "Kirguizistán",
+      "scores": {
+        "flag": 0.4238,
+        "capital": 0.585,
+        "map": 0.4709,
+        "neighbour": 0.4704
+      },
+      "observedSyntheticScores": {
+        "flag": 0.375,
+        "capital": 0.675,
+        "map": 0.425,
+        "neighbour": 0.475
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "normal"
+      }
+    },
+    "KHM": {
+      "name": "Camboya",
+      "scores": {
+        "flag": 0.3954,
+        "capital": 0.6049,
+        "map": 0.4801,
+        "neighbour": 0.4949
+      },
+      "observedSyntheticScores": {
+        "flag": 0.325,
+        "capital": 0.4,
+        "map": 0.525,
+        "neighbour": 0.55
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "KIR": {
+      "name": "Kiribati",
+      "scores": {
+        "flag": 0.5108,
+        "capital": 0.6996,
+        "map": 0.6492,
+        "neighbour": 0.7369
+      },
+      "observedSyntheticScores": {
+        "flag": 0.525,
+        "capital": 0.725,
+        "map": 0.825,
+        "neighbour": 0.75
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "KNA": {
+      "name": "San Cristóbal y Nieves",
+      "scores": {
+        "flag": 0.4846,
+        "capital": 0.6196,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.4,
+        "map": 0.675,
+        "neighbour": 0.7
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "KOR": {
+      "name": "Corea del Sur",
+      "scores": {
+        "flag": 0.1677,
+        "capital": 0.3033,
+        "map": 0.2752,
+        "neighbour": 0.3284
+      },
+      "observedSyntheticScores": {
+        "flag": 0.2,
+        "capital": 0.475,
+        "map": 0.3,
+        "neighbour": 0.425
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "UNK": {
+      "name": "Kosovo",
+      "scores": {
+        "flag": 0.3472,
+        "capital": 0.5565,
+        "map": 0.4364,
+        "neighbour": 0.4383
+      },
+      "observedSyntheticScores": {
+        "flag": 0.275,
+        "capital": 0.425,
+        "map": 0.525,
+        "neighbour": 0.6
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "normal"
+      }
+    },
+    "KWT": {
+      "name": "Kuwait",
+      "scores": {
+        "flag": 0.3898,
+        "capital": 0.6148,
+        "map": 0.4893,
+        "neighbour": 0.5194
+      },
+      "observedSyntheticScores": {
+        "flag": 0.35,
+        "capital": 0.55,
+        "map": 0.525,
+        "neighbour": 0.4
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "hard",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "LAO": {
+      "name": "Laos",
+      "scores": {
+        "flag": 0.3842,
+        "capital": 0.6049,
+        "map": 0.4617,
+        "neighbour": 0.446
+      },
+      "observedSyntheticScores": {
+        "flag": 0.4,
+        "capital": 0.8,
+        "map": 0.55,
+        "neighbour": 0.4
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "normal",
+        "map": "easy",
+        "neighbour": "normal"
+      }
+    },
+    "LBN": {
+      "name": "Líbano",
+      "scores": {
+        "flag": 0.3898,
+        "capital": 0.5749,
+        "map": 0.4893,
+        "neighbour": 0.5194
+      },
+      "observedSyntheticScores": {
+        "flag": 0.525,
+        "capital": 0.575,
+        "map": 0.55,
+        "neighbour": 0.5
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "LBR": {
+      "name": "Liberia",
+      "scores": {
+        "flag": 0.4269,
+        "capital": 0.6218,
+        "map": 0.5049,
+        "neighbour": 0.5179
+      },
+      "observedSyntheticScores": {
+        "flag": 0.4,
+        "capital": 0.675,
+        "map": 0.45,
+        "neighbour": 0.55
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "hard",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "LBY": {
+      "name": "Libia",
+      "scores": {
+        "flag": 0.4154,
+        "capital": 0.612,
+        "map": 0.4772,
+        "neighbour": 0.4446
+      },
+      "observedSyntheticScores": {
+        "flag": 0.375,
+        "capital": 0.75,
+        "map": 0.45,
+        "neighbour": 0.4
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "normal"
+      }
+    },
+    "LCA": {
+      "name": "Santa Lucía",
+      "scores": {
+        "flag": 0.4323,
+        "capital": 0.5998,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.525,
+        "capital": 0.725,
+        "map": 0.45,
+        "neighbour": 0.7
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "normal",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "LIE": {
+      "name": "Liechtenstein",
+      "scores": {
+        "flag": 0.3856,
+        "capital": 0.5256,
+        "map": 0.4547,
+        "neighbour": 0.4871
+      },
+      "observedSyntheticScores": {
+        "flag": 0.375,
+        "capital": 0.525,
+        "map": 0.55,
+        "neighbour": 0.55
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "hard"
+      }
+    },
+    "LKA": {
+      "name": "Sri Lanka",
+      "scores": {
+        "flag": 0.401,
+        "capital": 0.585,
+        "map": 0.4985,
+        "neighbour": 0.5438
+      },
+      "observedSyntheticScores": {
+        "flag": 0.475,
+        "capital": 0.4,
+        "map": 0.475,
+        "neighbour": 0.575
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "LSO": {
+      "name": "Lesotho",
+      "scores": {
+        "flag": 0.4269,
+        "capital": 0.6022,
+        "map": 0.5233,
+        "neighbour": 0.5665
+      },
+      "observedSyntheticScores": {
+        "flag": 0.525,
+        "capital": 0.6,
+        "map": 0.575,
+        "neighbour": 0.625
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "LTU": {
+      "name": "Lituania",
+      "scores": {
+        "flag": 0.358,
+        "capital": 0.5462,
+        "map": 0.4364,
+        "neighbour": 0.4383
+      },
+      "observedSyntheticScores": {
+        "flag": 0.35,
+        "capital": 0.675,
+        "map": 0.45,
+        "neighbour": 0.45
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "normal"
+      }
+    },
+    "LUX": {
+      "name": "Luxemburgo",
+      "scores": {
+        "flag": 0.369,
+        "capital": 0.5768,
+        "map": 0.4455,
+        "neighbour": 0.4626
+      },
+      "observedSyntheticScores": {
+        "flag": 0.35,
+        "capital": 0.525,
+        "map": 0.475,
+        "neighbour": 0.275
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "normal",
+        "map": "easy",
+        "neighbour": "normal"
+      }
+    },
+    "LVA": {
+      "name": "Letonia",
+      "scores": {
+        "flag": 0.3526,
+        "capital": 0.5152,
+        "map": 0.4364,
+        "neighbour": 0.4383
+      },
+      "observedSyntheticScores": {
+        "flag": 0.3,
+        "capital": 0.45,
+        "map": 0.55,
+        "neighbour": 0.45
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "normal"
+      }
+    },
+    "MAC": {
+      "name": "Macao",
+      "scores": {
+        "flag": 0.3842,
+        "capital": 0.5545,
+        "map": 0.4985,
+        "neighbour": 0.5438
+      },
+      "observedSyntheticScores": {
+        "flag": 0.25,
+        "capital": 0.625,
+        "map": 0.6,
+        "neighbour": 0.575
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "MAF": {
+      "name": "Saint Martin",
+      "scores": {
+        "flag": 0.393,
+        "capital": 0.5629,
+        "map": 0.4787,
+        "neighbour": 0.5254
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.475,
+        "map": 0.55,
+        "neighbour": 0.575
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "easy",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "MAR": {
+      "name": "Marruecos",
+      "scores": {
+        "flag": 0.2779,
+        "capital": 0.441,
+        "map": 0.3732,
+        "neighbour": 0.3946
+      },
+      "observedSyntheticScores": {
+        "flag": 0.275,
+        "capital": 0.5,
+        "map": 0.325,
+        "neighbour": 0.35
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "MCO": {
+      "name": "Mónaco",
+      "scores": {
+        "flag": 0.3472,
+        "capital": 0.5359,
+        "map": 0.4639,
+        "neighbour": 0.5116
+      },
+      "observedSyntheticScores": {
+        "flag": 0.4,
+        "capital": 0.55,
+        "map": 0.525,
+        "neighbour": 0.7
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "MDA": {
+      "name": "Moldavia",
+      "scores": {
+        "flag": 0.358,
+        "capital": 0.5565,
+        "map": 0.4547,
+        "neighbour": 0.4871
+      },
+      "observedSyntheticScores": {
+        "flag": 0.275,
+        "capital": 0.6,
+        "map": 0.35,
+        "neighbour": 0.425
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "hard"
+      }
+    },
+    "MDG": {
+      "name": "Madagascar",
+      "scores": {
+        "flag": 0.4902,
+        "capital": 0.6844,
+        "map": 0.6264,
+        "neighbour": 0.7185
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.8,
+        "map": 0.5,
+        "neighbour": 0.575
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "MDV": {
+      "name": "Maldivas",
+      "scores": {
+        "flag": 0.4463,
+        "capital": 0.5816,
+        "map": 0.6029,
+        "neighbour": 0.6994
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.425,
+        "map": 0.65,
+        "neighbour": 0.725
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "normal",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "MEX": {
+      "name": "México",
+      "scores": {
+        "flag": 0.1379,
+        "capital": 0.3291,
+        "map": 0.2449,
+        "neighbour": 0.2707
+      },
+      "observedSyntheticScores": {
+        "flag": 0.05,
+        "capital": 0.275,
+        "map": 0.35,
+        "neighbour": 0.25
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "MHL": {
+      "name": "Islas Marshall",
+      "scores": {
+        "flag": 0.5398,
+        "capital": 0.6543,
+        "map": 0.6492,
+        "neighbour": 0.7369
+      },
+      "observedSyntheticScores": {
+        "flag": 0.55,
+        "capital": 0.5,
+        "map": 0.8,
+        "neighbour": 0.775
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "MKD": {
+      "name": "Macedonia del Norte",
+      "scores": {
+        "flag": 0.4082,
+        "capital": 0.5359,
+        "map": 0.4273,
+        "neighbour": 0.4142
+      },
+      "observedSyntheticScores": {
+        "flag": 0.4,
+        "capital": 0.5,
+        "map": 0.25,
+        "neighbour": 0.4
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "normal"
+      }
+    },
+    "MLI": {
+      "name": "Mali",
+      "scores": {
+        "flag": 0.4154,
+        "capital": 0.6022,
+        "map": 0.468,
+        "neighbour": 0.4204
+      },
+      "observedSyntheticScores": {
+        "flag": 0.375,
+        "capital": 0.475,
+        "map": 0.525,
+        "neighbour": 0.5
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "normal"
+      }
+    },
+    "MLT": {
+      "name": "Malta",
+      "scores": {
+        "flag": 0.385,
+        "capital": 0.5835,
+        "map": 0.5694,
+        "neighbour": 0.6716
+      },
+      "observedSyntheticScores": {
+        "flag": 0.5,
+        "capital": 0.625,
+        "map": 0.625,
+        "neighbour": 0.575
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "MMR": {
+      "name": "Myanmar",
+      "scores": {
+        "flag": 0.3954,
+        "capital": 0.6049,
+        "map": 0.4617,
+        "neighbour": 0.446
+      },
+      "observedSyntheticScores": {
+        "flag": 0.4,
+        "capital": 0.6,
+        "map": 0.5,
+        "neighbour": 0.55
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "easy",
+        "neighbour": "normal"
+      }
+    },
+    "MNE": {
+      "name": "Montenegro",
+      "scores": {
+        "flag": 0.369,
+        "capital": 0.5666,
+        "map": 0.4273,
+        "neighbour": 0.4142
+      },
+      "observedSyntheticScores": {
+        "flag": 0.35,
+        "capital": 0.7,
+        "map": 0.425,
+        "neighbour": 0.55
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "normal"
+      }
+    },
+    "MNG": {
+      "name": "Mongolia",
+      "scores": {
+        "flag": 0.401,
+        "capital": 0.6049,
+        "map": 0.4893,
+        "neighbour": 0.5194
+      },
+      "observedSyntheticScores": {
+        "flag": 0.4,
+        "capital": 0.55,
+        "map": 0.575,
+        "neighbour": 0.5
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "MNP": {
+      "name": "Islas Marianas del Norte",
+      "scores": {
+        "flag": 0.58,
+        "capital": 0.6543,
+        "map": 0.6492,
+        "neighbour": 0.7369
+      },
+      "observedSyntheticScores": {
+        "flag": 0.525,
+        "capital": 0.675,
+        "map": 0.7,
+        "neighbour": 0.625
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "MOZ": {
+      "name": "Mozambique",
+      "scores": {
+        "flag": 0.4442,
+        "capital": 0.6022,
+        "map": 0.4772,
+        "neighbour": 0.4446
+      },
+      "observedSyntheticScores": {
+        "flag": 0.45,
+        "capital": 0.475,
+        "map": 0.45,
+        "neighbour": 0.525
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "normal"
+      }
+    },
+    "MRT": {
+      "name": "Mauritania",
+      "scores": {
+        "flag": 0.4442,
+        "capital": 0.6411,
+        "map": 0.4957,
+        "neighbour": 0.4935
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.55,
+        "map": 0.575,
+        "neighbour": 0.475
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "MSR": {
+      "name": "Montserrat",
+      "scores": {
+        "flag": 0.4323,
+        "capital": 0.5998,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.475,
+        "capital": 0.525,
+        "map": 0.575,
+        "neighbour": 0.65
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "normal",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "MTQ": {
+      "name": "Martinica",
+      "scores": {
+        "flag": 0.4266,
+        "capital": 0.6389,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.325,
+        "capital": 0.65,
+        "map": 0.75,
+        "neighbour": 0.625
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "MUS": {
+      "name": "Mauricio",
+      "scores": {
+        "flag": 0.4785,
+        "capital": 0.6569,
+        "map": 0.6264,
+        "neighbour": 0.7185
+      },
+      "observedSyntheticScores": {
+        "flag": 0.375,
+        "capital": 0.75,
+        "map": 0.5,
+        "neighbour": 0.65
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "MWI": {
+      "name": "Malawi",
+      "scores": {
+        "flag": 0.4211,
+        "capital": 0.6218,
+        "map": 0.5049,
+        "neighbour": 0.5179
+      },
+      "observedSyntheticScores": {
+        "flag": 0.475,
+        "capital": 0.725,
+        "map": 0.45,
+        "neighbour": 0.6
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "hard",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "MYS": {
+      "name": "Malasia",
+      "scores": {
+        "flag": 0.3954,
+        "capital": 0.6245,
+        "map": 0.4801,
+        "neighbour": 0.4949
+      },
+      "observedSyntheticScores": {
+        "flag": 0.375,
+        "capital": 0.525,
+        "map": 0.575,
+        "neighbour": 0.45
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "hard",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "MYT": {
+      "name": "Mayotte",
+      "scores": {
+        "flag": 0.4726,
+        "capital": 0.6569,
+        "map": 0.6264,
+        "neighbour": 0.7185
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.7,
+        "map": 0.7,
+        "neighbour": 0.675
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "NAM": {
+      "name": "Namibia",
+      "scores": {
+        "flag": 0.4269,
+        "capital": 0.6218,
+        "map": 0.4957,
+        "neighbour": 0.4935
+      },
+      "observedSyntheticScores": {
+        "flag": 0.45,
+        "capital": 0.725,
+        "map": 0.675,
+        "neighbour": 0.5
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "hard",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "NCL": {
+      "name": "Nueva Caledonia",
+      "scores": {
+        "flag": 0.5456,
+        "capital": 0.6543,
+        "map": 0.6492,
+        "neighbour": 0.7369
+      },
+      "observedSyntheticScores": {
+        "flag": 0.625,
+        "capital": 0.55,
+        "map": 0.775,
+        "neighbour": 0.825
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "NER": {
+      "name": "Níger",
+      "scores": {
+        "flag": 0.4154,
+        "capital": 0.6022,
+        "map": 0.468,
+        "neighbour": 0.4204
+      },
+      "observedSyntheticScores": {
+        "flag": 0.35,
+        "capital": 0.6,
+        "map": 0.55,
+        "neighbour": 0.325
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "normal"
+      }
+    },
+    "NFK": {
+      "name": "Isla de Norfolk",
+      "scores": {
+        "flag": 0.5398,
+        "capital": 0.6728,
+        "map": 0.6492,
+        "neighbour": 0.7369
+      },
+      "observedSyntheticScores": {
+        "flag": 0.65,
+        "capital": 0.725,
+        "map": 0.675,
+        "neighbour": 0.8
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "NGA": {
+      "name": "Nigeria",
+      "scores": {
+        "flag": 0.2684,
+        "capital": 0.441,
+        "map": 0.3645,
+        "neighbour": 0.3712
+      },
+      "observedSyntheticScores": {
+        "flag": 0.35,
+        "capital": 0.5,
+        "map": 0.375,
+        "neighbour": 0.4
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "NIC": {
+      "name": "Nicaragua",
+      "scores": {
+        "flag": 0.3818,
+        "capital": 0.5629,
+        "map": 0.4695,
+        "neighbour": 0.501
+      },
+      "observedSyntheticScores": {
+        "flag": 0.275,
+        "capital": 0.6,
+        "map": 0.45,
+        "neighbour": 0.45
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "NIU": {
+      "name": "Niue",
+      "scores": {
+        "flag": 0.4932,
+        "capital": 0.6448,
+        "map": 0.6492,
+        "neighbour": 0.7369
+      },
+      "observedSyntheticScores": {
+        "flag": 0.55,
+        "capital": 0.7,
+        "map": 0.575,
+        "neighbour": 0.675
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "NLD": {
+      "name": "Países Bajos",
+      "scores": {
+        "flag": 0.2269,
+        "capital": 0.4152,
+        "map": 0.3268,
+        "neighbour": 0.3653
+      },
+      "observedSyntheticScores": {
+        "flag": 0.2,
+        "capital": 0.45,
+        "map": 0.4,
+        "neighbour": 0.4
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "NOR": {
+      "name": "Noruega",
+      "scores": {
+        "flag": 0.2103,
+        "capital": 0.3654,
+        "map": 0.3186,
+        "neighbour": 0.3425
+      },
+      "observedSyntheticScores": {
+        "flag": 0.175,
+        "capital": 0.325,
+        "map": 0.45,
+        "neighbour": 0.25
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "NPL": {
+      "name": "Nepal",
+      "scores": {
+        "flag": 0.3842,
+        "capital": 0.6049,
+        "map": 0.4893,
+        "neighbour": 0.5194
+      },
+      "observedSyntheticScores": {
+        "flag": 0.45,
+        "capital": 0.7,
+        "map": 0.575,
+        "neighbour": 0.625
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "NRU": {
+      "name": "Nauru",
+      "scores": {
+        "flag": 0.4932,
+        "capital": 0.6448,
+        "map": 0.6492,
+        "neighbour": 0.7369
+      },
+      "observedSyntheticScores": {
+        "flag": 0.5,
+        "capital": 0.625,
+        "map": 0.6,
+        "neighbour": 0.8
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "NZL": {
+      "name": "Nueva Zelanda",
+      "scores": {
+        "flag": 0.3626,
+        "capital": 0.5485,
+        "map": 0.5203,
+        "neighbour": 0.6297
+      },
+      "observedSyntheticScores": {
+        "flag": 0.375,
+        "capital": 0.475,
+        "map": 0.45,
+        "neighbour": 0.65
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "OMN": {
+      "name": "Omán",
+      "scores": {
+        "flag": 0.3842,
+        "capital": 0.5749,
+        "map": 0.4801,
+        "neighbour": 0.4949
+      },
+      "observedSyntheticScores": {
+        "flag": 0.35,
+        "capital": 0.55,
+        "map": 0.55,
+        "neighbour": 0.7
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "PAK": {
+      "name": "Pakistán",
+      "scores": {
+        "flag": 0.2475,
+        "capital": 0.4542,
+        "map": 0.3415,
+        "neighbour": 0.3497
+      },
+      "observedSyntheticScores": {
+        "flag": 0.3,
+        "capital": 0.55,
+        "map": 0.5,
+        "neighbour": 0.425
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "PAN": {
+      "name": "Panamá",
+      "scores": {
+        "flag": 0.3652,
+        "capital": 0.5932,
+        "map": 0.4695,
+        "neighbour": 0.501
+      },
+      "observedSyntheticScores": {
+        "flag": 0.375,
+        "capital": 0.525,
+        "map": 0.425,
+        "neighbour": 0.55
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "PCN": {
+      "name": "Islas Pitcairn",
+      "scores": {
+        "flag": 0.5398,
+        "capital": 0.6819,
+        "map": 0.6492,
+        "neighbour": 0.7369
+      },
+      "observedSyntheticScores": {
+        "flag": 0.475,
+        "capital": 0.75,
+        "map": 0.6,
+        "neighbour": 0.825
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "PER": {
+      "name": "Perú",
+      "scores": {
+        "flag": 0.2157,
+        "capital": 0.3814,
+        "map": 0.3155,
+        "neighbour": 0.3111
+      },
+      "observedSyntheticScores": {
+        "flag": 0.125,
+        "capital": 0.375,
+        "map": 0.375,
+        "neighbour": 0.25
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "PHL": {
+      "name": "Filipinas",
+      "scores": {
+        "flag": 0.4521,
+        "capital": 0.6016,
+        "map": 0.6029,
+        "neighbour": 0.6994
+      },
+      "observedSyntheticScores": {
+        "flag": 0.45,
+        "capital": 0.65,
+        "map": 0.625,
+        "neighbour": 0.65
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "normal",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "PLW": {
+      "name": "Palau",
+      "scores": {
+        "flag": 0.4932,
+        "capital": 0.6819,
+        "map": 0.6492,
+        "neighbour": 0.7369
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.7,
+        "map": 0.675,
+        "neighbour": 0.85
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "PNG": {
+      "name": "Papúa Nueva Guinea",
+      "scores": {
+        "flag": 0.5114,
+        "capital": 0.6758,
+        "map": 0.5479,
+        "neighbour": 0.5889
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.7,
+        "map": 0.4,
+        "neighbour": 0.7
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "POL": {
+      "name": "Polonia",
+      "scores": {
+        "flag": 0.2103,
+        "capital": 0.385,
+        "map": 0.2868,
+        "neighbour": 0.2587
+      },
+      "observedSyntheticScores": {
+        "flag": 0.3,
+        "capital": 0.325,
+        "map": 0.25,
+        "neighbour": 0.25
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "PRI": {
+      "name": "Puerto Rico",
+      "scores": {
+        "flag": 0.4323,
+        "capital": 0.5899,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.575,
+        "capital": 0.5,
+        "map": 0.475,
+        "neighbour": 0.625
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "normal",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "PRK": {
+      "name": "Corea del Norte",
+      "scores": {
+        "flag": 0.4296,
+        "capital": 0.6049,
+        "map": 0.4801,
+        "neighbour": 0.4949
+      },
+      "observedSyntheticScores": {
+        "flag": 0.45,
+        "capital": 0.4,
+        "map": 0.5,
+        "neighbour": 0.625
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "PRT": {
+      "name": "Portugal",
+      "scores": {
+        "flag": 0.1341,
+        "capital": 0.2787,
+        "map": 0.2476,
+        "neighbour": 0.3001
+      },
+      "observedSyntheticScores": {
+        "flag": 0.075,
+        "capital": 0.425,
+        "map": 0.225,
+        "neighbour": 0.325
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "PRY": {
+      "name": "Paraguay",
+      "scores": {
+        "flag": 0.2282,
+        "capital": 0.4216,
+        "map": 0.3319,
+        "neighbour": 0.3553
+      },
+      "observedSyntheticScores": {
+        "flag": 0.2,
+        "capital": 0.4,
+        "map": 0.3,
+        "neighbour": 0.225
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "PSE": {
+      "name": "Palestina",
+      "scores": {
+        "flag": 0.4067,
+        "capital": 0.595,
+        "map": 0.4801,
+        "neighbour": 0.4949
+      },
+      "observedSyntheticScores": {
+        "flag": 0.5,
+        "capital": 0.5,
+        "map": 0.475,
+        "neighbour": 0.575
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "PYF": {
+      "name": "Polinesia Francesa",
+      "scores": {
+        "flag": 0.5629,
+        "capital": 0.6636,
+        "map": 0.6492,
+        "neighbour": 0.7369
+      },
+      "observedSyntheticScores": {
+        "flag": 0.55,
+        "capital": 0.55,
+        "map": 0.575,
+        "neighbour": 0.8
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "QAT": {
+      "name": "Catar",
+      "scores": {
+        "flag": 0.3842,
+        "capital": 0.5545,
+        "map": 0.4985,
+        "neighbour": 0.5438
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.525,
+        "map": 0.5,
+        "neighbour": 0.65
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "REU": {
+      "name": "Reunión",
+      "scores": {
+        "flag": 0.4726,
+        "capital": 0.6661,
+        "map": 0.6264,
+        "neighbour": 0.7185
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.625,
+        "map": 0.475,
+        "neighbour": 0.675
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "ROU": {
+      "name": "Rumania",
+      "scores": {
+        "flag": 0.2103,
+        "capital": 0.4152,
+        "map": 0.3025,
+        "neighbour": 0.2991
+      },
+      "observedSyntheticScores": {
+        "flag": 0.25,
+        "capital": 0.525,
+        "map": 0.2,
+        "neighbour": 0.325
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "RUS": {
+      "name": "Rusia",
+      "scores": {
+        "flag": 0.1257,
+        "capital": 0.2787,
+        "map": 0.2012,
+        "neighbour": 0.1742
+      },
+      "observedSyntheticScores": {
+        "flag": 0.075,
+        "capital": 0.2,
+        "map": 0.2,
+        "neighbour": 0.125
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "RWA": {
+      "name": "Ruanda",
+      "scores": {
+        "flag": 0.4211,
+        "capital": 0.6022,
+        "map": 0.4957,
+        "neighbour": 0.4935
+      },
+      "observedSyntheticScores": {
+        "flag": 0.275,
+        "capital": 0.525,
+        "map": 0.4,
+        "neighbour": 0.375
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "SAU": {
+      "name": "Arabia Saudí",
+      "scores": {
+        "flag": 0.2612,
+        "capital": 0.4234,
+        "map": 0.3167,
+        "neighbour": 0.2849
+      },
+      "observedSyntheticScores": {
+        "flag": 0.25,
+        "capital": 0.425,
+        "map": 0.325,
+        "neighbour": 0.125
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "SDN": {
+      "name": "Sudán",
+      "scores": {
+        "flag": 0.4154,
+        "capital": 0.6218,
+        "map": 0.468,
+        "neighbour": 0.4204
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.575,
+        "map": 0.4,
+        "neighbour": 0.275
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "hard",
+        "map": "normal",
+        "neighbour": "normal"
+      }
+    },
+    "SEN": {
+      "name": "Senegal",
+      "scores": {
+        "flag": 0.4269,
+        "capital": 0.5922,
+        "map": 0.4864,
+        "neighbour": 0.469
+      },
+      "observedSyntheticScores": {
+        "flag": 0.45,
+        "capital": 0.6,
+        "map": 0.475,
+        "neighbour": 0.4
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "normal"
+      }
+    },
+    "SGP": {
+      "name": "Singapur",
+      "scores": {
+        "flag": 0.4463,
+        "capital": 0.631,
+        "map": 0.6029,
+        "neighbour": 0.6994
+      },
+      "observedSyntheticScores": {
+        "flag": 0.45,
+        "capital": 0.775,
+        "map": 0.55,
+        "neighbour": 0.75
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "SGS": {
+      "name": "Islas Georgias del Sur y Sandwich del Sur",
+      "scores": {
+        "flag": 0.5547,
+        "capital": 0.7153,
+        "map": 0.631,
+        "neighbour": 0.7222
+      },
+      "observedSyntheticScores": {
+        "flag": 0.6,
+        "capital": 0.65,
+        "map": 0.675,
+        "neighbour": 0.8
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "SJM": {
+      "name": "Islas Svalbard y Jan Mayen",
+      "scores": {
+        "flag": 0.4711,
+        "capital": 0.6231,
+        "map": 0.5694,
+        "neighbour": 0.6716
+      },
+      "observedSyntheticScores": {
+        "flag": 0.675,
+        "capital": 0.625,
+        "map": 0.675,
+        "neighbour": 0.65
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "SLB": {
+      "name": "Islas Salomón",
+      "scores": {
+        "flag": 0.534,
+        "capital": 0.6636,
+        "map": 0.6492,
+        "neighbour": 0.7369
+      },
+      "observedSyntheticScores": {
+        "flag": 0.575,
+        "capital": 0.5,
+        "map": 0.65,
+        "neighbour": 0.775
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "SLE": {
+      "name": "Sierra Leone",
+      "scores": {
+        "flag": 0.45,
+        "capital": 0.6218,
+        "map": 0.5141,
+        "neighbour": 0.5423
+      },
+      "observedSyntheticScores": {
+        "flag": 0.5,
+        "capital": 0.85,
+        "map": 0.55,
+        "neighbour": 0.65
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "SLV": {
+      "name": "El Salvador",
+      "scores": {
+        "flag": 0.3874,
+        "capital": 0.6032,
+        "map": 0.4695,
+        "neighbour": 0.501
+      },
+      "observedSyntheticScores": {
+        "flag": 0.325,
+        "capital": 0.55,
+        "map": 0.575,
+        "neighbour": 0.55
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "SMR": {
+      "name": "San Marino",
+      "scores": {
+        "flag": 0.3635,
+        "capital": 0.6264,
+        "map": 0.4639,
+        "neighbour": 0.5116
+      },
+      "observedSyntheticScores": {
+        "flag": 0.475,
+        "capital": 0.65,
+        "map": 0.475,
+        "neighbour": 0.4
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "hard",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "SOM": {
+      "name": "Somalia",
+      "scores": {
+        "flag": 0.4269,
+        "capital": 0.6315,
+        "map": 0.5049,
+        "neighbour": 0.5179
+      },
+      "observedSyntheticScores": {
+        "flag": 0.35,
+        "capital": 0.625,
+        "map": 0.55,
+        "neighbour": 0.55
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "hard",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "SPM": {
+      "name": "San Pedro y Miquelón",
+      "scores": {
+        "flag": 0.4729,
+        "capital": 0.6293,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.475,
+        "capital": 0.625,
+        "map": 0.6,
+        "neighbour": 0.6
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "SRB": {
+      "name": "Serbia",
+      "scores": {
+        "flag": 0.3472,
+        "capital": 0.5565,
+        "map": 0.4002,
+        "neighbour": 0.3444
+      },
+      "observedSyntheticScores": {
+        "flag": 0.325,
+        "capital": 0.525,
+        "map": 0.325,
+        "neighbour": 0.275
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "SSD": {
+      "name": "Sudán del Sur",
+      "scores": {
+        "flag": 0.45,
+        "capital": 0.5822,
+        "map": 0.4772,
+        "neighbour": 0.4446
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.6,
+        "map": 0.375,
+        "neighbour": 0.325
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "normal"
+      }
+    },
+    "STP": {
+      "name": "Santo Tomé y Príncipe",
+      "scores": {
+        "flag": 0.5368,
+        "capital": 0.6379,
+        "map": 0.6264,
+        "neighbour": 0.7185
+      },
+      "observedSyntheticScores": {
+        "flag": 0.5,
+        "capital": 0.65,
+        "map": 0.575,
+        "neighbour": 0.75
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "SUR": {
+      "name": "Surinam",
+      "scores": {
+        "flag": 0.3707,
+        "capital": 0.5932,
+        "map": 0.4603,
+        "neighbour": 0.4765
+      },
+      "observedSyntheticScores": {
+        "flag": 0.5,
+        "capital": 0.525,
+        "map": 0.425,
+        "neighbour": 0.35
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "normal",
+        "map": "easy",
+        "neighbour": "normal"
+      }
+    },
+    "SVK": {
+      "name": "Eslovaquia",
+      "scores": {
+        "flag": 0.369,
+        "capital": 0.5768,
+        "map": 0.4273,
+        "neighbour": 0.4142
+      },
+      "observedSyntheticScores": {
+        "flag": 0.45,
+        "capital": 0.625,
+        "map": 0.45,
+        "neighbour": 0.225
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "normal",
+        "map": "easy",
+        "neighbour": "normal"
+      }
+    },
+    "SVN": {
+      "name": "Eslovenia",
+      "scores": {
+        "flag": 0.3635,
+        "capital": 0.5666,
+        "map": 0.4364,
+        "neighbour": 0.4383
+      },
+      "observedSyntheticScores": {
+        "flag": 0.45,
+        "capital": 0.675,
+        "map": 0.375,
+        "neighbour": 0.45
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "normal"
+      }
+    },
+    "SWE": {
+      "name": "Suecia",
+      "scores": {
+        "flag": 0.2063,
+        "capital": 0.4152,
+        "map": 0.3268,
+        "neighbour": 0.3653
+      },
+      "observedSyntheticScores": {
+        "flag": 0.175,
+        "capital": 0.425,
+        "map": 0.275,
+        "neighbour": 0.375
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "SWZ": {
+      "name": "Esuatini",
+      "scores": {
+        "flag": 0.4326,
+        "capital": 0.612,
+        "map": 0.5141,
+        "neighbour": 0.5423
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.7,
+        "map": 0.5,
+        "neighbour": 0.55
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "SXM": {
+      "name": "Sint Maarten",
+      "scores": {
+        "flag": 0.393,
+        "capital": 0.6032,
+        "map": 0.4787,
+        "neighbour": 0.5254
+      },
+      "observedSyntheticScores": {
+        "flag": 0.45,
+        "capital": 0.525,
+        "map": 0.475,
+        "neighbour": 0.525
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "SYC": {
+      "name": "Seychelles",
+      "scores": {
+        "flag": 0.4902,
+        "capital": 0.6474,
+        "map": 0.6264,
+        "neighbour": 0.7185
+      },
+      "observedSyntheticScores": {
+        "flag": 0.5,
+        "capital": 0.775,
+        "map": 0.525,
+        "neighbour": 0.675
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "SYR": {
+      "name": "Siria",
+      "scores": {
+        "flag": 0.3842,
+        "capital": 0.595,
+        "map": 0.4617,
+        "neighbour": 0.446
+      },
+      "observedSyntheticScores": {
+        "flag": 0.45,
+        "capital": 0.475,
+        "map": 0.475,
+        "neighbour": 0.425
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "normal",
+        "map": "easy",
+        "neighbour": "normal"
+      }
+    },
+    "TCA": {
+      "name": "Islas Turks y Caicos",
+      "scores": {
+        "flag": 0.4729,
+        "capital": 0.6389,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.45,
+        "capital": 0.65,
+        "map": 0.575,
+        "neighbour": 0.75
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "TCD": {
+      "name": "Chad",
+      "scores": {
+        "flag": 0.4154,
+        "capital": 0.6218,
+        "map": 0.4772,
+        "neighbour": 0.4446
+      },
+      "observedSyntheticScores": {
+        "flag": 0.45,
+        "capital": 0.65,
+        "map": 0.45,
+        "neighbour": 0.475
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "hard",
+        "map": "normal",
+        "neighbour": "normal"
+      }
+    },
+    "TGO": {
+      "name": "Togo",
+      "scores": {
+        "flag": 0.4154,
+        "capital": 0.5822,
+        "map": 0.5049,
+        "neighbour": 0.5179
+      },
+      "observedSyntheticScores": {
+        "flag": 0.575,
+        "capital": 0.625,
+        "map": 0.525,
+        "neighbour": 0.7
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "THA": {
+      "name": "Tailandia",
+      "scores": {
+        "flag": 0.2521,
+        "capital": 0.4336,
+        "map": 0.3415,
+        "neighbour": 0.3497
+      },
+      "observedSyntheticScores": {
+        "flag": 0.325,
+        "capital": 0.375,
+        "map": 0.2,
+        "neighbour": 0.325
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "TJK": {
+      "name": "Tayikistán",
+      "scores": {
+        "flag": 0.4124,
+        "capital": 0.595,
+        "map": 0.4709,
+        "neighbour": 0.4704
+      },
+      "observedSyntheticScores": {
+        "flag": 0.4,
+        "capital": 0.5,
+        "map": 0.4,
+        "neighbour": 0.65
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "normal"
+      }
+    },
+    "TKL": {
+      "name": "Islas Tokelau",
+      "scores": {
+        "flag": 0.534,
+        "capital": 0.6636,
+        "map": 0.6492,
+        "neighbour": 0.7369
+      },
+      "observedSyntheticScores": {
+        "flag": 0.575,
+        "capital": 0.725,
+        "map": 0.75,
+        "neighbour": 0.775
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "TKM": {
+      "name": "Turkmenistán",
+      "scores": {
+        "flag": 0.4238,
+        "capital": 0.595,
+        "map": 0.4709,
+        "neighbour": 0.4704
+      },
+      "observedSyntheticScores": {
+        "flag": 0.5,
+        "capital": 0.575,
+        "map": 0.675,
+        "neighbour": 0.475
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "normal"
+      }
+    },
+    "TLS": {
+      "name": "Timor Oriental",
+      "scores": {
+        "flag": 0.4296,
+        "capital": 0.5545,
+        "map": 0.4985,
+        "neighbour": 0.5438
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.6,
+        "map": 0.425,
+        "neighbour": 0.55
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "easy",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "TON": {
+      "name": "Tonga",
+      "scores": {
+        "flag": 0.4932,
+        "capital": 0.6819,
+        "map": 0.6492,
+        "neighbour": 0.7369
+      },
+      "observedSyntheticScores": {
+        "flag": 0.5,
+        "capital": 0.675,
+        "map": 0.625,
+        "neighbour": 0.725
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "TTO": {
+      "name": "Trinidad y Tobago",
+      "scores": {
+        "flag": 0.4613,
+        "capital": 0.6293,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.525,
+        "capital": 0.7,
+        "map": 0.575,
+        "neighbour": 0.675
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "TUN": {
+      "name": "Túnez",
+      "scores": {
+        "flag": 0.4154,
+        "capital": 0.5922,
+        "map": 0.5141,
+        "neighbour": 0.5423
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.6,
+        "map": 0.475,
+        "neighbour": 0.625
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "TUR": {
+      "name": "Turquía",
+      "scores": {
+        "flag": 0.2431,
+        "capital": 0.4234,
+        "map": 0.3086,
+        "neighbour": 0.2649
+      },
+      "observedSyntheticScores": {
+        "flag": 0.325,
+        "capital": 0.425,
+        "map": 0.2,
+        "neighbour": 0.325
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "TUV": {
+      "name": "Tuvalu",
+      "scores": {
+        "flag": 0.4991,
+        "capital": 0.6728,
+        "map": 0.6492,
+        "neighbour": 0.7369
+      },
+      "observedSyntheticScores": {
+        "flag": 0.55,
+        "capital": 0.725,
+        "map": 0.6,
+        "neighbour": 0.725
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "TWN": {
+      "name": "Taiwán",
+      "scores": {
+        "flag": 0.4347,
+        "capital": 0.6016,
+        "map": 0.6029,
+        "neighbour": 0.6994
+      },
+      "observedSyntheticScores": {
+        "flag": 0.55,
+        "capital": 0.55,
+        "map": 0.675,
+        "neighbour": 0.775
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "normal",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "TZA": {
+      "name": "Tanzania",
+      "scores": {
+        "flag": 0.4326,
+        "capital": 0.6022,
+        "map": 0.4588,
+        "neighbour": 0.3966
+      },
+      "observedSyntheticScores": {
+        "flag": 0.425,
+        "capital": 0.625,
+        "map": 0.35,
+        "neighbour": 0.325
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "normal",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "UGA": {
+      "name": "Uganda",
+      "scores": {
+        "flag": 0.4211,
+        "capital": 0.612,
+        "map": 0.4864,
+        "neighbour": 0.469
+      },
+      "observedSyntheticScores": {
+        "flag": 0.3,
+        "capital": 0.6,
+        "map": 0.5,
+        "neighbour": 0.6
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "normal"
+      }
+    },
+    "UKR": {
+      "name": "Ucrania",
+      "scores": {
+        "flag": 0.2103,
+        "capital": 0.3654,
+        "map": 0.2868,
+        "neighbour": 0.2587
+      },
+      "observedSyntheticScores": {
+        "flag": 0.175,
+        "capital": 0.35,
+        "map": 0.25,
+        "neighbour": 0.2
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "UMI": {
+      "name": "Islas Ultramarinas Menores de Estados Unidos",
+      "scores": {
+        "flag": 0.4905,
+        "capital": 0.5595,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.4,
+        "capital": 0.55,
+        "map": 0.6,
+        "neighbour": 0.8
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "easy",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "URY": {
+      "name": "Uruguay",
+      "scores": {
+        "flag": 0.224,
+        "capital": 0.4421,
+        "map": 0.3403,
+        "neighbour": 0.3783
+      },
+      "observedSyntheticScores": {
+        "flag": 0.225,
+        "capital": 0.35,
+        "map": 0.325,
+        "neighbour": 0.325
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "USA": {
+      "name": "Estados Unidos",
+      "scores": {
+        "flag": 0.1596,
+        "capital": 0.348,
+        "map": 0.252,
+        "neighbour": 0.291
+      },
+      "observedSyntheticScores": {
+        "flag": 0.2,
+        "capital": 0.375,
+        "map": 0.15,
+        "neighbour": 0.3
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "UZB": {
+      "name": "Uzbekistán",
+      "scores": {
+        "flag": 0.4124,
+        "capital": 0.595,
+        "map": 0.4617,
+        "neighbour": 0.446
+      },
+      "observedSyntheticScores": {
+        "flag": 0.4,
+        "capital": 0.675,
+        "map": 0.5,
+        "neighbour": 0.325
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "easy",
+        "neighbour": "normal"
+      }
+    },
+    "VAT": {
+      "name": "Ciudad del Vaticano",
+      "scores": {
+        "flag": 0.4082,
+        "capital": 0.5869,
+        "map": 0.4639,
+        "neighbour": 0.5116
+      },
+      "observedSyntheticScores": {
+        "flag": 0.525,
+        "capital": 0.65,
+        "map": 0.475,
+        "neighbour": 0.5
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "VCT": {
+      "name": "San Vicente y Granadinas",
+      "scores": {
+        "flag": 0.4905,
+        "capital": 0.6097,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.5,
+        "capital": 0.675,
+        "map": 0.675,
+        "neighbour": 0.775
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "normal",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "VEN": {
+      "name": "Venezuela",
+      "scores": {
+        "flag": 0.2325,
+        "capital": 0.4114,
+        "map": 0.3319,
+        "neighbour": 0.3553
+      },
+      "observedSyntheticScores": {
+        "flag": 0.15,
+        "capital": 0.375,
+        "map": 0.375,
+        "neighbour": 0.375
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "VGB": {
+      "name": "Islas Vírgenes del Reino Unido",
+      "scores": {
+        "flag": 0.4905,
+        "capital": 0.5998,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.45,
+        "capital": 0.7,
+        "map": 0.525,
+        "neighbour": 0.65
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "normal",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "VIR": {
+      "name": "Islas Vírgenes de los Estados Unidos",
+      "scores": {
+        "flag": 0.4905,
+        "capital": 0.6671,
+        "map": 0.5838,
+        "neighbour": 0.6837
+      },
+      "observedSyntheticScores": {
+        "flag": 0.375,
+        "capital": 0.575,
+        "map": 0.65,
+        "neighbour": 0.725
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "VNM": {
+      "name": "Vietnam",
+      "scores": {
+        "flag": 0.2431,
+        "capital": 0.4132,
+        "map": 0.35,
+        "neighbour": 0.3726
+      },
+      "observedSyntheticScores": {
+        "flag": 0.325,
+        "capital": 0.425,
+        "map": 0.45,
+        "neighbour": 0.475
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "VUT": {
+      "name": "Vanuatu",
+      "scores": {
+        "flag": 0.5049,
+        "capital": 0.6728,
+        "map": 0.6492,
+        "neighbour": 0.7369
+      },
+      "observedSyntheticScores": {
+        "flag": 0.5,
+        "capital": 0.65,
+        "map": 0.55,
+        "neighbour": 0.625
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "WLF": {
+      "name": "Wallis y Futuna",
+      "scores": {
+        "flag": 0.5398,
+        "capital": 0.6636,
+        "map": 0.6492,
+        "neighbour": 0.7369
+      },
+      "observedSyntheticScores": {
+        "flag": 0.525,
+        "capital": 0.675,
+        "map": 0.775,
+        "neighbour": 0.725
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "WSM": {
+      "name": "Samoa",
+      "scores": {
+        "flag": 0.4932,
+        "capital": 0.6353,
+        "map": 0.6492,
+        "neighbour": 0.7369
+      },
+      "observedSyntheticScores": {
+        "flag": 0.65,
+        "capital": 0.625,
+        "map": 0.7,
+        "neighbour": 0.7
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "hard",
+        "map": "hard",
+        "neighbour": "hard"
+      }
+    },
+    "YEM": {
+      "name": "Yemen",
+      "scores": {
+        "flag": 0.3842,
+        "capital": 0.5647,
+        "map": 0.4893,
+        "neighbour": 0.5194
+      },
+      "observedSyntheticScores": {
+        "flag": 0.475,
+        "capital": 0.65,
+        "map": 0.525,
+        "neighbour": 0.525
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    },
+    "ZAF": {
+      "name": "Sudáfrica",
+      "scores": {
+        "flag": 0.18,
+        "capital": 0.3566,
+        "map": 0.258,
+        "neighbour": 0.2455
+      },
+      "observedSyntheticScores": {
+        "flag": 0.15,
+        "capital": 0.25,
+        "map": 0.225,
+        "neighbour": 0.225
+      },
+      "levels": {
+        "flag": "easy",
+        "capital": "easy",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "ZMB": {
+      "name": "Zambia",
+      "scores": {
+        "flag": 0.4211,
+        "capital": 0.6022,
+        "map": 0.4588,
+        "neighbour": 0.3966
+      },
+      "observedSyntheticScores": {
+        "flag": 0.475,
+        "capital": 0.525,
+        "map": 0.45,
+        "neighbour": 0.35
+      },
+      "levels": {
+        "flag": "normal",
+        "capital": "normal",
+        "map": "easy",
+        "neighbour": "easy"
+      }
+    },
+    "ZWE": {
+      "name": "Zimbabue",
+      "scores": {
+        "flag": 0.4326,
+        "capital": 0.6022,
+        "map": 0.4957,
+        "neighbour": 0.4935
+      },
+      "observedSyntheticScores": {
+        "flag": 0.325,
+        "capital": 0.475,
+        "map": 0.575,
+        "neighbour": 0.525
+      },
+      "levels": {
+        "flag": "hard",
+        "capital": "normal",
+        "map": "normal",
+        "neighbour": "hard"
+      }
+    }
+  }
+}

@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "ml:generate": "python ml/generate_synthetic_data.py"
   },
   "dependencies": {
     "@supabase/ssr": "latest",
