@@ -6,17 +6,21 @@ import { CountryDetective } from "@/app/components/CountryDetective";
 import { CountryWordle } from "@/app/components/CountryWordle";
 import { HistoricalRanking } from "@/app/components/HistoricalRanking";
 import { DailyChallenge } from "@/app/components/DailyChallenge";
+import { CountryMap } from "@/app/components/CountryMap";
+import { NeighbourCountries } from "@/app/components/NeighbourCountries";
 import { addDailyOutcome, DailyRecord, EMPTY_DAILY_RECORD, getDailyCountry, getDailyStreak, getTodayKey, readDailyRecord } from "@/lib/daily";
 import { Country, Difficulty, GameMode, getCapitalDisplayName, getCountryDisplayName, mapCountries, MODES, normalize, RawCountry, shuffle } from "@/lib/game";
 import { Language, UI_TEXT } from "@/lib/i18n";
 import { saveGameResult } from "@/lib/supabase/results";
+import { filterCountriesByDifficulty } from "@/lib/difficulty";
 
-type Screen = "menu" | "hub" | "player" | "ranking" | "intro" | "game" | "detective" | "wordle" | "dailyGame" | "results" | "dailyReview";
+type Screen = "menu" | "hub" | "player" | "ranking" | "intro" | "game" | "detective" | "wordle" | "dailyGame" | "countryMap" | "neighbours" | "results" | "dailyReview";
 type Score = { correct: number; wrong: number };
 type Player = { nickname: string; isGuest: boolean };
 
 export default function Home() {
   const [countries, setCountries] = useState<Country[]>([]);
+  const [mapCountryCodes, setMapCountryCodes] = useState<Set<string>>(new Set());
   const [screen, setScreen] = useState<Screen>("menu");
   const [hubCategory, setHubCategory] = useState<"daily" | "geography">("daily");
   const [mode, setMode] = useState<GameMode | null>(null);
@@ -54,6 +58,7 @@ export default function Home() {
       .then((response) => response.json())
       .then((data: RawCountry[]) => setCountries(mapCountries(data)))
       .catch(() => setCountries([]));
+    fetch("/data/world-countries.geojson").then((response) => response.json()).then((data: { features: Array<{ properties: { ISO_A3?: string; ADM0_A3?: string } }> }) => setMapCountryCodes(new Set(data.features.map((feature) => feature.properties.ISO_A3 === "-99" ? feature.properties.ADM0_A3 : feature.properties.ISO_A3).filter((code): code is string => Boolean(code))))).catch(() => setMapCountryCodes(new Set()));
     return () => window.cancelAnimationFrame(frame);
   }, []);
 
@@ -64,7 +69,7 @@ export default function Home() {
   const resultPercent = useMemo(() => totalAnswered ? Math.round((score.correct / totalAnswered) * 100) : 0, [score, totalAnswered]);
 
   useEffect(() => {
-    if (!["game", "detective", "wordle", "dailyGame"].includes(screen)) return;
+    if (!["game", "detective", "wordle", "dailyGame", "countryMap", "neighbours"].includes(screen)) return;
     if (!startedAt.current) startedAt.current = Date.now();
     const update = () => setElapsedSeconds(Math.floor((Date.now() - (startedAt.current || Date.now())) / 1000));
     update();
@@ -73,19 +78,19 @@ export default function Home() {
   }, [screen]);
 
   useEffect(() => {
-    if (!mode?.daily || !timerLimit || elapsedSeconds < timerLimit || timeoutHandled.current || !["game", "detective", "wordle", "dailyGame"].includes(screen)) return;
+    if (!mode?.daily || !timerLimit || elapsedSeconds < timerLimit || timeoutHandled.current || !["game", "detective", "wordle", "dailyGame", "countryMap", "neighbours"].includes(screen)) return;
     timeoutHandled.current = true;
-    setDailyRecord((record) => addDailyOutcome(record, `${todayKey}:${mode.id}`, "wrong"));
+    setDailyRecord((record) => addDailyOutcome(record, `${todayKey}:${mode.id}`, "wrong", difficulty));
     setScore({ correct: 0, wrong: 1 });
     setScreen("results");
-  }, [elapsedSeconds, mode, screen, timerLimit, todayKey]);
+  }, [difficulty, elapsedSeconds, mode, screen, timerLimit, todayKey]);
 
   useEffect(() => {
     if (screen !== "results" || !mode || !totalAnswered) return;
     const resultKey = `${mode.id}:${score.correct}:${score.wrong}`;
     if (savedResult.current === resultKey) return;
     savedResult.current = resultKey;
-    void saveGameResult({ mode: mode.id, correct: score.correct, wrong: score.wrong, nickname: mode.daily ? "Invitado" : player.nickname, isGuest: mode.daily || player.isGuest, durationSeconds: elapsedSeconds, difficulty, timerLimitSeconds: timerLimit || null }).catch((error: unknown) => {
+    void saveGameResult({ mode: mode.id, correct: score.correct, wrong: score.wrong, nickname: mode.daily ? "Invitado" : player.nickname, isGuest: mode.daily || player.isGuest, durationSeconds: elapsedSeconds, difficulty, timerLimitSeconds: timerLimit || null, isDaily: Boolean(mode.daily) }).catch((error: unknown) => {
       console.warn("No se pudo guardar el resultado en Supabase", error);
     });
   }, [difficulty, elapsedSeconds, mode, player, score.correct, score.wrong, screen, timerLimit, totalAnswered]);
@@ -109,10 +114,13 @@ export default function Home() {
   function openMode(selected: GameMode) {
     if (selected.customGame === "detective") setTimerLimit(0);
     if (selected.daily && isDailyCompleted(selected.id)) {
-      const outcome = dailyRecord.outcomes[`${todayKey}:${selected.id}`] || dailyRecord.outcomes[todayKey];
+      const recordKey = `${todayKey}:${selected.id}`;
+      const outcome = dailyRecord.outcomes[recordKey] || dailyRecord.outcomes[todayKey];
+      const playedDifficulty = dailyRecord.difficulties[recordKey] || difficulty;
       setMode(selected);
       setGameLanguage(language);
-      setQuestions([getDailyCountry(getEligiblePool(selected), `${todayKey}:${selected.id}`)]);
+      setDifficulty(playedDifficulty);
+      setQuestions([getDailyCountry(getEligiblePool(selected, playedDifficulty), recordKey)]);
       setScore(outcome === "correct" ? { correct: 1, wrong: 0 } : { correct: 0, wrong: 1 });
       setScreen("dailyReview");
       return;
@@ -121,14 +129,17 @@ export default function Home() {
     navigateTo("intro");
   }
 
-  function getEligiblePool(selected: GameMode) {
+  function getEligiblePool(selected: GameMode, selectedDifficulty = difficulty) {
     const basePool = selected.sovereignOnly ? countries.filter((country) => country.sovereign) : countries;
     const regionalPool = selected.region ? basePool.filter((country) => country.region === selected.region) : basePool;
-    if (selected.customGame !== "wordle" && selected.customGame !== "capital-wordle") return regionalPool;
-    return regionalPool.filter((country) => (selected.customGame === "capital-wordle" ? [getCapitalDisplayName(country, language)] : [country.name, country.englishName]).every((countryName) => {
-      const length = normalize(countryName).replace(/\s/g, "").length;
-      return length >= 4 && length <= 12;
-    }));
+    let eligiblePool = regionalPool;
+    if (selected.customGame === "country-map") eligiblePool = regionalPool.filter((country) => mapCountryCodes.has(country.cca3));
+    else if (selected.customGame === "neighbour-countries") eligiblePool = regionalPool.filter((country) => country.borders.length >= 2);
+    else if (selected.customGame === "wordle" || selected.customGame === "capital-wordle") eligiblePool = regionalPool.filter((country) => (selected.customGame === "capital-wordle" ? [getCapitalDisplayName(country, language)] : [country.name, country.englishName]).every((countryName) => {
+        const length = normalize(countryName).replace(/\s/g, "").length;
+        return length >= 4 && length <= 12;
+      }));
+    return selected.daily ? filterCountriesByDifficulty(eligiblePool, selected, selectedDifficulty) : eligiblePool;
   }
 
   function startGame(selected: GameMode) {
@@ -148,7 +159,7 @@ export default function Home() {
     timeoutHandled.current = false;
     setElapsedSeconds(0);
     startedAt.current = null;
-    navigateTo(selected.customGame === "detective" ? "detective" : selected.customGame === "wordle" ? "wordle" : selected.customGame ? "dailyGame" : "game");
+    navigateTo(selected.customGame === "detective" ? "detective" : selected.customGame === "wordle" ? "wordle" : selected.customGame === "country-map" ? "countryMap" : selected.customGame === "neighbour-countries" ? "neighbours" : selected.customGame ? "dailyGame" : "game");
   }
 
   function nextQuestion() {
@@ -166,7 +177,7 @@ export default function Home() {
     const countryOk = current.acceptedNames.some((name) => normalize(name) === normalizedAnswer);
     const capitalOk = !mode?.asksCapital || current.acceptedCapitals.some((capital) => normalize(capital) === normalize(capitalAnswer));
     const ok = countryOk && capitalOk;
-    if (mode?.daily) setDailyRecord((record) => addDailyOutcome(record, `${todayKey}:${mode.id}`, ok ? "correct" : "wrong"));
+    if (mode?.daily) setDailyRecord((record) => addDailyOutcome(record, `${todayKey}:${mode.id}`, ok ? "correct" : "wrong", difficulty));
     setScore((value) => ({ ...value, [ok ? "correct" : "wrong"]: value[ok ? "correct" : "wrong"] + 1 }));
     const countryName = getCountryDisplayName(current, language);
     setFeedback({ text: ok ? text.correct : `${countryName}${mode?.asksCapital ? ` — ${getCapitalDisplayName(current, language)}` : ""}`, ok });
@@ -174,7 +185,7 @@ export default function Home() {
   }
 
   function resolveCustomDaily(modeId: string, correct: boolean) {
-    setDailyRecord((record) => addDailyOutcome(record, `${todayKey}:${modeId}`, correct ? "correct" : "wrong"));
+    setDailyRecord((record) => addDailyOutcome(record, `${todayKey}:${modeId}`, correct ? "correct" : "wrong", difficulty));
     setScore(correct ? { correct: 1, wrong: 0 } : { correct: 0, wrong: 1 });
   }
 
@@ -287,6 +298,14 @@ export default function Home() {
     </main>;
   }
 
+  if (screen === "countryMap" && mode && current) {
+    return <main className="game-page"><AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter /><CountryMap target={current} language={gameLanguage} difficulty={difficulty} onResolved={(correct) => resolveCustomDaily(mode.id, correct)} onContinue={() => setScreen("results")} /></main>;
+  }
+
+  if (screen === "neighbours" && mode && current) {
+    return <main className="game-page"><AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter /><NeighbourCountries target={current} countries={countries} language={gameLanguage} difficulty={difficulty} onResolved={(correct) => resolveCustomDaily(mode.id, correct)} onContinue={() => setScreen("results")} /></main>;
+  }
+
   if (screen === "dailyGame" && mode && current && mode.customGame && !["detective", "wordle"].includes(mode.customGame)) {
     return <main className="game-page"><AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter /><div className="daily-game-meta"><span>{language === "es" ? ({ easy: "FÁCIL", normal: "NORMAL", hard: "DIFÍCIL" }[difficulty]) : difficulty.toUpperCase()}</span>{timerLimit > 0 && <b>⏱ {formatTime(Math.max(0, timerLimit - elapsedSeconds))}</b>}</div><DailyChallenge kind={mode.customGame as "daily-capital" | "capital-wordle" | "flag-choice" | "geo-connection"} target={current} countries={countries} language={gameLanguage} difficulty={difficulty} onResolved={(correct) => resolveCustomDaily(mode.id, correct)} onContinue={() => setScreen("results")} /></main>;
   }
@@ -317,7 +336,7 @@ export default function Home() {
       const completed = item.daily && isDailyCompleted(item.id);
       const streak = item.customGame ? getDailyStreak(dailyRecord, item.id) : 0;
       const badge = item.customGame ? (streak ? `${streak} 🔥` : completed ? undefined : item.badge) : item.badge;
-      return <button className={`mode-card ${completed ? "completed" : ""}`} key={item.id} onClick={() => openMode(item)} disabled={!countries.length}>
+      return <button className={`mode-card ${completed ? "completed" : ""}`} key={item.id} onClick={() => openMode(item)} disabled={!countries.length || (item.id === "country-map" && !mapCountryCodes.size)}>
         {badge && <span className={`badge ${item.id === "capitals" ? "yellow" : ""}`}>{localizeGameLabel(badge, language)}</span>}
         <GamePreview mode={item} />
         <div className="play-band"><strong>{completed ? text.completed : text.play}</strong><small>{copy.title}</small></div>
@@ -358,7 +377,7 @@ function formatTime(totalSeconds: number) {
 
 function localizeGameLabel(label: string, language: Language) {
   if (language === "en") return label;
-  return ({ DAILY: "DIARIO", MYSTERY: "MISTERIO", CAPITAL: "CAPITAL", FLAGS: "BANDERAS", CONNECTION: "CONEXIÓN", WORLD: "MUNDO", COUNTRIES: "PAÍSES", EXPERT: "EXPERTO", REGION: "REGIÓN", NEW: "NUEVO", POPULAR: "POPULAR", DOUBLE: "DOBLE" } as Record<string, string>)[label] || label;
+  return ({ DAILY: "DIARIO", MYSTERY: "MISTERIO", CAPITAL: "CAPITAL", FLAGS: "BANDERAS", CONNECTION: "CONEXIÓN", MAP: "MAPA", BORDERS: "FRONTERAS", WORLD: "MUNDO", COUNTRIES: "PAÍSES", EXPERT: "EXPERTO", REGION: "REGIÓN", NEW: "NUEVO", POPULAR: "POPULAR", DOUBLE: "DOBLE" } as Record<string, string>)[label] || label;
 }
 
 function getModeCopy(mode: GameMode, language: Language) {
@@ -405,6 +424,8 @@ function GamePreview({ mode }: { mode: GameMode }) {
     <defs><linearGradient id={`panel-${mode.id}`} x1="0" y1="0" x2="1" y2="1"><stop stopColor="#0e4051"/><stop offset="1" stopColor="#061923"/></linearGradient><filter id={`glow-${mode.id}`}><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
     <rect x="18" y="15" width="164" height="120" rx="14" fill={`url(#panel-${mode.id})`} stroke="#236078"/>
     {isWordle && <g>{[[54,42,"M","#2eaa73"],[82,42,"U","#273b45"],[110,42,"N","#c59610"],[138,42,"D","#273b45"],[54,72,"Q","#273b45"],[82,72,"U","#2eaa73"],[110,72,"I","#2eaa73"],[138,72,"Z","#273b45"]].map(([x,y,l,c]) => <g key={`${x}-${y}`}><rect x={Number(x)} y={Number(y)} width="24" height="24" rx="4" fill={String(c)} stroke="#77909a" strokeOpacity=".5"/><text x={Number(x)+12} y={Number(y)+17} textAnchor="middle" fill="white" fontSize="11" fontWeight="800">{l}</text></g>)}<rect x="65" y="108" width="70" height="6" rx="3" fill="#1f5365"/></g>}
+    {mode.customGame === "country-map" && <g><path d="M43 45h114v69H43z" fill="#082b39" stroke="#3a7890" strokeWidth="3"/><path d="M47 63c15-8 23-3 32-12l14 7 10-5 13 10 16-2 18 12-8 12-17 1-10 14-18-8-14 7-12-10-18-4z" fill="#43b879" stroke="#15705a" strokeWidth="2"/><path d="M116 42c0 14-14 29-14 29S88 56 88 42a14 14 0 1 1 28 0Z" fill="#ffbf00" stroke="#ffda63"/><circle cx="102" cy="42" r="4" fill="#132a32"/><path d="M52 105h41M119 105h29" stroke="#50c8e5" strokeWidth="3" strokeLinecap="round"/><circle cx="102" cy="105" r="10" fill="#113f50" stroke="#50c8e5"/><path d="m98 105 3 3 6-7" fill="none" stroke="#42d99a" strokeWidth="2.5"/></g>}
+    {mode.customGame === "neighbour-countries" && <g><path d="M100 75 62 48M100 75l39-27M100 75l-33 39M100 75l38 38" stroke="#42b7d3" strokeWidth="3"/><circle cx="100" cy="75" r="25" fill="#ffbf00" stroke="#ffe078" strokeWidth="3"/><path d="m88 76 8 8 17-20" fill="none" stroke="#17313a" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/>{[[62,48],[139,48],[67,114],[138,113]].map(([x,y],index)=><g key={`${x}-${y}`}><circle cx={x} cy={y} r="15" fill={index%2 ? "#17495b" : "#15523f"} stroke={index%2 ? "#44c4e2" : "#45d69a"} strokeWidth="3"/><path d={`M${x-7} ${y-2}h14M${x-5} ${y+4}h10`} stroke="#d9edf2" strokeWidth="2" strokeLinecap="round"/></g>)}</g>}
     {isConnection && <g stroke="#2e91ae" strokeWidth="2" fill="#092a37"><path d="M100 64L55 43M100 64l45-21M100 64v43" opacity=".75"/><circle cx="100" cy="64" r="24" fill="#0a3544" stroke="#ffbf00"/><text x="100" y="73" textAnchor="middle" fill="#ffcc32" stroke="none" fontSize="26" fontWeight="800">?</text><circle cx="55" cy="43" r="12"/><circle cx="145" cy="43" r="12"/><circle cx="100" cy="107" r="12"/><path d="M49 43h12M139 43h12M94 107h12" stroke="#77d8ec"/></g>}
     {mode.customGame === "flag-choice" && <g>{[[44,38,"#4d9f6c"],[104,38,"#397fa8"],[44,82,"#d4b944"],[104,82,"#a44d58"]].map(([x,y,c], index) => <g key={`${x}-${y}`}><rect x={Number(x)} y={Number(y)} width="52" height="34" rx="5" fill={String(c)} stroke={index === 1 ? "#42d99a" : "#78909a"} strokeWidth={index === 1 ? 3 : 1}/>{index === 1 && <><circle cx="153" cy="36" r="10" fill="#42d99a"/><path d="m148 36 3 3 6-7" fill="none" stroke="#05241a" strokeWidth="2.5"/></>}</g>)}</g>}
     {isCapital && <g fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M47 111h91M55 101h75M62 58h61l9 13H53l9-13Z" fill="#183d4b" stroke="#a8bdc5" strokeWidth="3"/><path d="M66 74v25M82 74v25M99 74v25M115 74v25" stroke="#7094a1" strokeWidth="7"/><path d="M151 43c0 13-14 27-14 27s-14-14-14-27a14 14 0 1 1 28 0Z" fill="#ffbf00" stroke="#ffda63"/><circle cx="137" cy="43" r="4" fill="#08212c" stroke="none"/>{mode.customGame === "daily-capital" && <g><rect x="35" y="29" width="33" height="30" rx="5" fill="#edf2f3" stroke="#dbe5e8"/><path d="M35 39h33" stroke="#00b9dd" strokeWidth="7"/><text x="51.5" y="54" textAnchor="middle" fill="#0b2934" stroke="none" fontSize="12" fontWeight="900">24</text></g>}{mode.id === "capitals" && <g><rect x="32" y="30" width="38" height="27" rx="4" fill="#f1eee5" stroke="#d9e3e6"/><path d="M32 39h38M32 48h38" stroke="#45a370" strokeWidth="9"/><circle cx="67" cy="57" r="8" fill="#3bd18f" stroke="#06271b" strokeWidth="2"/><path d="m63 57 3 3 5-6" stroke="#06271b" strokeWidth="2"/></g>}</g>}
@@ -412,7 +433,7 @@ function GamePreview({ mode }: { mode: GameMode }) {
     {featuredFlags && <g><g transform="rotate(-6 78 75)"><rect x="39" y="45" width="78" height="58" rx="9" fill="#123d4d" stroke="#31a879" strokeWidth="3"/><rect x="46" y="52" width="64" height="44" rx="6" fill="#092630"/><FlagSymbol code={featuredFlags[0]} x={49} y={56}/></g><g transform="rotate(6 121 75)"><rect x="82" y="45" width="78" height="58" rx="9" fill="#123d4d" stroke="#2585aa" strokeWidth="3"/><rect x="89" y="52" width="64" height="44" rx="6" fill="#092630"/><FlagSymbol code={featuredFlags[1]} x={92} y={56}/></g><circle cx="151" cy="108" r="14" fill="#3bd18f" filter={`url(#glow-${mode.id})`}/><path d="m144 108 5 5 10-12" fill="none" stroke="#05261a" strokeWidth="3"/></g>}
     {mode.id === "world" && <g><circle cx="100" cy="74" r="43" fill="#13769a" stroke="#65d6ed" strokeWidth="3"/><path d="M62 70c12-4 15-17 27-15l9 9-8 11 5 8-8 12-13-4-9-11M116 36l-5 13 9 7 13-2 8 13-7 13-13 3-4 20" fill="#45b879" stroke="#0d5d4a" strokeWidth="2"/><path d="M58 74h84M100 31c12 12 18 27 18 43s-6 31-18 43M100 31c-12 12-18 27-18 43s6 31 18 43" fill="none" stroke="#9ce7f3" strokeOpacity=".45"/><circle cx="137" cy="108" r="13" fill="#ffbf00"/><path d="m131 108 4 4 8-10" fill="none" stroke="#322300" strokeWidth="3"/></g>}
     {mode.id === "sovereign" && <g><circle cx="100" cy="74" r="43" fill="#0b3544" stroke="#42d99a" strokeWidth="3"/><circle cx="100" cy="74" r="27" fill="none" stroke="#2b7e77" strokeWidth="2"/><path d="M100 47v54M73 74h54M82 54c7 6 11 12 11 20s-4 15-11 21M118 54c-7 6-11 12-11 20s4 15 11 21" fill="none" stroke="#72c6bb" strokeWidth="2"/><path d="M65 42l4 3-2 5-5-3zM135 42l-4 3 2 5 5-3zM61 100l5-1 2 5-6 1zM139 100l-5-1-2 5 6 1z" fill="#ffbf00"/><circle cx="137" cy="108" r="14" fill="#3bd18f"/><path d="m130 108 5 5 10-12" fill="none" stroke="#05261a" strokeWidth="3"/></g>}
-    {!featuredFlags && mode.id !== "world" && mode.id !== "sovereign" && !isWordle && !isConnection && !isCapital && mode.customGame !== "flag-choice" && mode.id !== "daily" && <g transform="rotate(-5 100 75)"><rect x="45" y="45" width="78" height="51" rx="7" fill="#f1eee5" stroke="#b9c9cf" strokeWidth="4"/><path d="M45 62h78M45 79h78" stroke="#39936a" strokeWidth="17"/><rect x="78" y="55" width="78" height="51" rx="7" fill="#e9edf0" stroke="#d2dce0" strokeWidth="4"/><path d="M78 72h78M78 89h78" stroke="#347da4" strokeWidth="17"/><circle cx="151" cy="104" r="15" fill="#3bd18f" filter={`url(#glow-${mode.id})`}/><path d="m144 104 5 5 10-12" fill="none" stroke="#05261a" strokeWidth="3"/></g>}
+    {!featuredFlags && mode.id !== "world" && mode.id !== "sovereign" && !isWordle && !isConnection && !isCapital && mode.customGame !== "flag-choice" && mode.customGame !== "country-map" && mode.customGame !== "neighbour-countries" && mode.id !== "daily" && <g transform="rotate(-5 100 75)"><rect x="45" y="45" width="78" height="51" rx="7" fill="#f1eee5" stroke="#b9c9cf" strokeWidth="4"/><path d="M45 62h78M45 79h78" stroke="#39936a" strokeWidth="17"/><rect x="78" y="55" width="78" height="51" rx="7" fill="#e9edf0" stroke="#d2dce0" strokeWidth="4"/><path d="M78 72h78M78 89h78" stroke="#347da4" strokeWidth="17"/><circle cx="151" cy="104" r="15" fill="#3bd18f" filter={`url(#glow-${mode.id})`}/><path d="m144 104 5 5 10-12" fill="none" stroke="#05261a" strokeWidth="3"/></g>}
   </svg></div>;
 }
 

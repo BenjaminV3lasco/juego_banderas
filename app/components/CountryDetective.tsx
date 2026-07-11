@@ -44,7 +44,7 @@ export function CountryDetective({ target, countries, language, onResolved, onCo
   }, [countries, guess, language]);
   const options = category === "region" ? REGIONS : category === "subregion" ? subregions : "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
   const copy = language === "es" ? {
-    title: "País misterioso", askHint: "Elige una categoría y haz una pregunta:", continent: "Continente", subregion: "Subregión", capitalInitial: "Inicial de la capital", select: "Elige una opción", ask: "Hacer pregunta", questions: "preguntas disponibles", guess: "Escribe el país...", tryGuess: "Adivinar", win: "¡Descubriste el país!", lose: "Has perdido todas las vidas", missed: "Fallaste", livesLeft: "vidas restantes", answer: "El país era", continue: "Ver resultado",
+    title: "País misterioso", askHint: "Elige una categoría y haz una pregunta:", continent: "Continente", subregion: "Subregión", capitalInitial: "Inicial de la capital", select: "Elige una opción", ask: "Hacer pregunta", questions: "preguntas disponibles", guess: "Escribe el país...", tryGuess: "Adivinar", win: "¡Descubriste el país!", lose: "Has perdido todas las vidas", missed: "Respuesta incorrecta", livesLeft: "intentos restantes", answer: "El país era", continue: "Ver resultado",
   } : {
     title: "Mystery country", askHint: "Choose a category and ask a question:", continent: "Continent", subregion: "Subregion", capitalInitial: "Capital's first letter", select: "Choose an option", ask: "Ask question", questions: "questions left", guess: "Type the country...", tryGuess: "Guess", win: "You found the country!", lose: "You lost all your lives", missed: "Wrong guess", livesLeft: "lives left", answer: "The country was", continue: "View result",
   };
@@ -115,6 +115,7 @@ export function CountryDetective({ target, countries, language, onResolved, onCo
         </div>
         <button>{copy.tryGuess}</button>
       </form>
+      {guessFeedback && <p className="guess-feedback" role="status">{guessFeedback}</p>}
     </> : <div className="detective-reveal">
       <span className={finished ? "win" : "lose"}>{finished ? copy.win : copy.lose}</span>
       <h2>{copy.answer}: {targetName}</h2>

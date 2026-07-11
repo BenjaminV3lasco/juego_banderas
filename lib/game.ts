@@ -1,11 +1,14 @@
 import { getCountryAliases, getSpanishCountryName, isSovereignCountry } from "@/lib/country-names";
 import { getCapitalAliases, getSpanishCapitalName } from "@/lib/capital-names";
 
-export type ModeId = "daily" | "detective" | "wordle" | "daily-capital" | "capital-wordle" | "flag-choice" | "geo-connection" | "world" | "sovereign" | "capitals" | "americas" | "europe" | "asia" | "africa";
+export type ModeId = "daily" | "detective" | "wordle" | "daily-capital" | "capital-wordle" | "flag-choice" | "geo-connection" | "country-map" | "neighbour-countries" | "world" | "sovereign" | "capitals" | "americas" | "europe" | "asia" | "africa";
 export type Difficulty = "easy" | "normal" | "hard";
 
 export type RawCountry = {
   name: { common: string };
+  cca3?: string;
+  borders?: string[];
+  latlng?: number[];
   translations?: { spa?: { common?: string } };
   capital?: string[];
   flags?: { svg?: string; png?: string };
@@ -16,6 +19,9 @@ export type RawCountry = {
 export type Country = {
   name: string;
   englishName: string;
+  cca3: string;
+  borders: string[];
+  latlng: [number, number] | null;
   acceptedNames: string[];
   capital: string;
   englishCapital: string;
@@ -34,7 +40,7 @@ export type GameMode = {
   region?: string;
   asksCapital?: boolean;
   daily?: boolean;
-  customGame?: "detective" | "wordle" | "daily-capital" | "capital-wordle" | "flag-choice" | "geo-connection";
+  customGame?: "detective" | "wordle" | "daily-capital" | "capital-wordle" | "flag-choice" | "geo-connection" | "country-map" | "neighbour-countries";
   sovereignOnly?: boolean;
   copy: {
     es: { title: string; description: string; rules: string[] };
@@ -43,6 +49,8 @@ export type GameMode = {
 };
 
 export const MODES: GameMode[] = [
+  { id: "country-map", kicker: "MAP", flags: ["🌍", "📍"], badge: "NEW", daily: true, customGame: "country-map", sovereignOnly: true, copy: { es: { title: "¿Dónde está el país?", description: "Encuentra en el mapa la ubicación del país del día.", rules: ["Selecciona el país directamente en el mapa.", "La dificultad determina los intentos y las ayudas.", "Al terminar se revela la ubicación correcta."] }, en: { title: "Where is the country?", description: "Find today's country on the map.", rules: ["Select the country directly on the map.", "Difficulty controls attempts and hints.", "The correct location is revealed at the end."] } } },
+  { id: "neighbour-countries", kicker: "BORDERS", flags: ["🔗", "🌐"], badge: "NEW", daily: true, customGame: "neighbour-countries", sovereignOnly: true, copy: { es: { title: "Países vecinos", description: "Descubre el país oculto a partir de sus fronteras terrestres.", rules: ["Observa los países limítrofes mostrados.", "Las dificultades altas ofrecen menos vecinos.", "Escribe el país antes de agotar tus oportunidades."] }, en: { title: "Neighbouring countries", description: "Discover the hidden country from its land borders.", rules: ["Study the displayed neighbouring countries.", "Higher difficulties reveal fewer neighbours.", "Enter the country before running out of attempts."] } } },
   { id: "daily-capital", kicker: "CAPITAL", flags: ["🏛️", "📍"], badge: "NEW", daily: true, customGame: "daily-capital", copy: { es: { title: "Capital del día", description: "Cada día, un país nuevo y una oportunidad para recordar su capital.", rules: ["Adiviná la capital del país mostrado.", "Tenés un intento diario.", "La dificultad modifica las pistas disponibles."] }, en: { title: "Capital of the day", description: "A new country every day and one chance to remember its capital.", rules: ["Guess the capital of the displayed country.", "You have one daily attempt.", "Difficulty changes the available clues."] } } },
   { id: "capital-wordle", kicker: "WORDLE", flags: ["🟩", "🏛️", "🟨"], badge: "NEW", daily: true, customGame: "capital-wordle", copy: { es: { title: "Capital Wordle", description: "Descubrí la capital oculta letra por letra en un máximo de seis intentos.", rules: ["Verde indica posición correcta.", "Amarillo indica una letra en otra posición.", "Solo se aceptan capitales reales."] }, en: { title: "Capital Wordle", description: "Discover the hidden capital letter by letter in up to six attempts.", rules: ["Green means the position is correct.", "Yellow means the letter is elsewhere.", "Only real capitals are accepted."] } } },
   { id: "flag-choice", kicker: "FLAGS", flags: ["🚩", "✅", "🚩", "🚩"], badge: "NEW", daily: true, customGame: "flag-choice", copy: { es: { title: "¿Cuál es la bandera correcta?", description: "Elegí la bandera que corresponde al país entre varias alternativas.", rules: ["Cada dificultad agrega más opciones.", "Solo podés elegir una vez.", "El resultado suma al contador diario."] }, en: { title: "Which flag is correct?", description: "Choose the flag that belongs to the country from several options.", rules: ["Each difficulty adds more choices.", "You can choose only once.", "The result counts toward your daily score."] } } },
@@ -83,6 +91,9 @@ export function mapCountries(data: RawCountry[]): Country[] {
     return {
       name,
       englishName,
+      cca3: country.cca3 || "",
+      borders: country.borders || [],
+      latlng: country.latlng?.length === 2 ? [country.latlng[0], country.latlng[1]] as [number, number] : null,
       acceptedNames: [...new Set([name, englishName, ...getCountryAliases(englishName)])],
       capital: getSpanishCapitalName(englishCapital),
       englishCapital,

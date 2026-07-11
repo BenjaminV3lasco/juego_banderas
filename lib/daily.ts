@@ -1,4 +1,4 @@
-import type { Country } from "@/lib/game";
+import type { Country, Difficulty } from "@/lib/game";
 
 export type DailyOutcome = "correct" | "wrong";
 
@@ -6,12 +6,14 @@ export type DailyRecord = {
   correct: number;
   wrong: number;
   outcomes: Record<string, DailyOutcome>;
+  difficulties: Record<string, Difficulty>;
 };
 
 export const EMPTY_DAILY_RECORD: DailyRecord = {
   correct: 0,
   wrong: 0,
   outcomes: {},
+  difficulties: {},
 };
 
 export const DAILY_RECORD_KEY = "mundoquiz_daily_record_v2";
@@ -42,18 +44,20 @@ export function readDailyRecord(): DailyRecord {
       correct: Number(parsed.correct) || 0,
       wrong: Number(parsed.wrong) || 0,
       outcomes: parsed.outcomes || {},
+      difficulties: parsed.difficulties || {},
     };
   } catch {
     return EMPTY_DAILY_RECORD;
   }
 }
 
-export function addDailyOutcome(record: DailyRecord, dateKey: string, outcome: DailyOutcome) {
+export function addDailyOutcome(record: DailyRecord, dateKey: string, outcome: DailyOutcome, difficulty?: Difficulty) {
   if (record.outcomes[dateKey]) return record;
   const next = {
     ...record,
     [outcome]: record[outcome] + 1,
     outcomes: { ...record.outcomes, [dateKey]: outcome },
+    difficulties: difficulty ? { ...record.difficulties, [dateKey]: difficulty } : record.difficulties,
   };
   localStorage.setItem(DAILY_RECORD_KEY, JSON.stringify(next));
   return next;

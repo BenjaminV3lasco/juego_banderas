@@ -10,6 +10,7 @@ type GameResult = {
   durationSeconds?: number;
   difficulty?: Difficulty;
   timerLimitSeconds?: number | null;
+  isDaily?: boolean;
 };
 
 export type RankingEntry = {
@@ -40,6 +41,7 @@ export async function saveGameResult(result: GameResult) {
     duration_seconds: Math.max(0, result.durationSeconds || 0),
     difficulty: result.difficulty || "normal",
     timer_limit_seconds: result.timerLimitSeconds ?? null,
+    is_daily: result.isDaily ?? false,
   });
 
   if (error) throw error;
