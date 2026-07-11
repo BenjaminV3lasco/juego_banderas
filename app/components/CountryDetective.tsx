@@ -8,6 +8,7 @@ import { getGeographyName } from "@/lib/geography-names";
 
 type Category = "region" | "subregion" | "capitalInitial";
 type Clue = { question: string; answer: boolean };
+type SelectOption = { value: string; label: string };
 
 const REGIONS = ["Africa", "Americas", "Asia", "Europe", "Oceania", "Antarctic"];
 const REGION_NAMES: Record<Language, Record<string, string>> = {
@@ -23,6 +24,7 @@ export function CountryDetective({ target, countries, language, onResolved, onCo
   const [clues, setClues] = useState<Clue[]>([]);
   const [guess, setGuess] = useState("");
   const [suggestionsVisible, setSuggestionsVisible] = useState(false);
+  const [guessFeedback, setGuessFeedback] = useState("");
   const [finished, setFinished] = useState<boolean | null>(null);
 
   const subregions = useMemo(() => [...new Set(countries.map((country) => country.subregion).filter((item) => item && item !== "Other"))].sort(), [countries]);
@@ -42,9 +44,9 @@ export function CountryDetective({ target, countries, language, onResolved, onCo
   }, [countries, guess, language]);
   const options = category === "region" ? REGIONS : category === "subregion" ? subregions : "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
   const copy = language === "es" ? {
-    title: "País misterioso", askHint: "Elige una categoría y haz una pregunta:", continent: "Continente", subregion: "Subregión", capitalInitial: "Inicial de la capital", select: "Elige una opción", ask: "Hacer pregunta", questions: "preguntas disponibles", guess: "Escribe el país...", tryGuess: "Adivinar", win: "¡Descubriste el país!", lose: "Te has quedado sin intentos", answer: "El país era", continue: "Ver resultado",
+    title: "País misterioso", askHint: "Elige una categoría y haz una pregunta:", continent: "Continente", subregion: "Subregión", capitalInitial: "Inicial de la capital", select: "Elige una opción", ask: "Hacer pregunta", questions: "preguntas disponibles", guess: "Escribe el país...", tryGuess: "Adivinar", win: "¡Descubriste el país!", lose: "Has perdido todas las vidas", missed: "Fallaste", livesLeft: "vidas restantes", answer: "El país era", continue: "Ver resultado",
   } : {
-    title: "Mystery country", askHint: "Choose a category and ask a question:", continent: "Continent", subregion: "Subregion", capitalInitial: "Capital's first letter", select: "Choose an option", ask: "Ask question", questions: "questions left", guess: "Type the country...", tryGuess: "Guess", win: "You found the country!", lose: "You ran out of attempts", answer: "The country was", continue: "View result",
+    title: "Mystery country", askHint: "Choose a category and ask a question:", continent: "Continent", subregion: "Subregion", capitalInitial: "Capital's first letter", select: "Choose an option", ask: "Ask question", questions: "questions left", guess: "Type the country...", tryGuess: "Guess", win: "You found the country!", lose: "You lost all your lives", missed: "Wrong guess", livesLeft: "lives left", answer: "The country was", continue: "View result",
   };
 
   function questionText(selectedCategory: Category, selectedValue: string) {
@@ -77,6 +79,7 @@ export function CountryDetective({ target, countries, language, onResolved, onCo
     }
     const nextLives = lives - 1;
     setLives(nextLives);
+    setGuessFeedback(`${copy.missed}. ${nextLives} ${copy.livesLeft}.`);
     setGuess("");
     setSuggestionsVisible(false);
     if (!nextLives) {
@@ -86,17 +89,17 @@ export function CountryDetective({ target, countries, language, onResolved, onCo
   }
 
   const targetName = getCountryDisplayName(target, language);
+  const categoryOptions: SelectOption[] = [{ value: "region", label: copy.continent }, { value: "subregion", label: copy.subregion }, { value: "capitalInitial", label: copy.capitalInitial }];
+  const questionOptions = options.map((option) => ({ value: option, label: category === "region" ? REGION_NAMES[language][option] : category === "subregion" ? getGeographyName(option, language) : option }));
 
   return <section className="detective-shell">
-    <div className="detective-heading"><div className="mystery-icon">?</div><h1>{copy.title}</h1><div className="lives" aria-label={`${lives} lives`}>{Array.from({ length: 3 }, (_, index) => <span className={index >= lives ? "lost" : ""} key={index}>⚽</span>)}</div></div>
+    <div className="detective-heading"><div className="mystery-icon">?</div><h1>{copy.title}</h1><div className="lives" aria-label={language === "es" ? `${lives} vidas` : `${lives} lives`}>{Array.from({ length: 3 }, (_, index) => <span className={index >= lives ? "lost" : ""} key={index}>♥</span>)}</div></div>
     {finished === null ? <>
       <div className="question-builder">
         <p>{copy.askHint}</p>
         <div className="question-controls">
-          <select value={category} onChange={(event) => { setCategory(event.target.value as Category); setValue(""); }}>
-            <option value="region">{copy.continent}</option><option value="subregion">{copy.subregion}</option><option value="capitalInitial">{copy.capitalInitial}</option>
-          </select>
-          <select value={value} onChange={(event) => setValue(event.target.value)}><option value="">{copy.select}</option>{options.map((option) => <option value={option} key={option}>{category === "region" ? REGION_NAMES[language][option] : category === "subregion" ? getGeographyName(option, language) : option}</option>)}</select>
+          <DetectiveSelect value={category} options={categoryOptions} placeholder={copy.select} onChange={(nextValue) => { setCategory(nextValue as Category); setValue(""); }} />
+          <DetectiveSelect value={value} options={questionOptions} placeholder={copy.select} onChange={setValue} />
           <button onClick={askQuestion} disabled={!value || !questionsLeft}>{copy.ask}</button>
         </div>
       </div>
@@ -120,4 +123,13 @@ export function CountryDetective({ target, countries, language, onResolved, onCo
       <button onClick={onContinue}>{copy.continue}</button>
     </div>}
   </section>;
+}
+
+function DetectiveSelect({ value, options, placeholder, onChange }: { value: string; options: SelectOption[]; placeholder: string; onChange: (value: string) => void }) {
+  const [open, setOpen] = useState(false);
+  const selected = options.find((option) => option.value === value);
+  return <div className={`detective-select ${open ? "open" : ""}`}>
+    <button type="button" className="detective-select-trigger" aria-haspopup="listbox" aria-expanded={open} onClick={() => setOpen((current) => !current)}><span>{selected?.label || placeholder}</span><i>⌄</i></button>
+    {open && <div className="detective-select-menu" role="listbox">{options.map((option) => <button type="button" role="option" aria-selected={option.value === value} className={option.value === value ? "selected" : ""} key={option.value} onClick={() => { onChange(option.value); setOpen(false); }}><span>{option.label}</span>{option.value === value && <b>✓</b>}</button>)}</div>}
+  </div>;
 }

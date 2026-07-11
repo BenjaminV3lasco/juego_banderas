@@ -107,6 +107,7 @@ export default function Home() {
   }
 
   function openMode(selected: GameMode) {
+    if (selected.customGame === "detective") setTimerLimit(0);
     if (selected.daily && isDailyCompleted(selected.id)) {
       const outcome = dailyRecord.outcomes[`${todayKey}:${selected.id}`] || dailyRecord.outcomes[todayKey];
       setMode(selected);
@@ -241,7 +242,7 @@ export default function Home() {
           <p>{copy.description}</p>
           <h2>{text.howToPlay}</h2>
           <ul>{copy.rules.map((rule) => <li key={rule}>{rule}</li>)}</ul>
-          {mode.daily && <div className="game-settings"><span>{language === "es" ? "Dificultad" : "Difficulty"}</span><div>{(["easy", "normal", "hard"] as Difficulty[]).map((value) => <button type="button" className={difficulty === value ? "active" : ""} onClick={() => setDifficulty(value)} key={value}>{language === "es" ? ({ easy: "Fácil", normal: "Normal", hard: "Difícil" }[value]) : value}</button>)}</div><span>{language === "es" ? "Contador" : "Timer"}</span><div>{[0, 90, 60, 40].map((value) => <button type="button" className={timerLimit === value ? "active" : ""} onClick={() => setTimerLimit(value)} key={value}>{value ? `${value}s` : (language === "es" ? "Sin tiempo" : "No timer")}</button>)}</div></div>}
+          {mode.daily && <div className="game-settings"><span>{language === "es" ? "Dificultad" : "Difficulty"}</span><div>{(["easy", "normal", "hard"] as Difficulty[]).map((value) => <button type="button" className={difficulty === value ? "active" : ""} onClick={() => setDifficulty(value)} key={value}>{language === "es" ? ({ easy: "Fácil", normal: "Normal", hard: "Difícil" }[value]) : value}</button>)}</div>{mode.customGame !== "detective" && <><span>{language === "es" ? "Contador" : "Timer"}</span><div>{[0, 90, 60, 40].map((value) => <button type="button" className={timerLimit === value ? "active" : ""} onClick={() => setTimerLimit(value)} key={value}>{value ? `${value}s` : (language === "es" ? "Sin tiempo" : "No timer")}</button>)}</div></>}</div>}
           <button className="start-game" onClick={() => startGame(mode)}>{text.start}</button>
         </div>
       </section>
