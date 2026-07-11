@@ -163,3 +163,23 @@ body { background:radial-gradient(circle at 50% -20%,#073448 0,#00111a 38%); }
   .geography-option h2,.ranking-option h2 { line-height:1.25; }
   .geography-option p,.ranking-option p { line-height:1.42; }
 }
+
+/* Unified SVG game artwork */
+.svg-preview { display:grid; place-items:center; padding:7px; }
+.svg-preview svg { position:relative; z-index:1; width:100%; height:100%; overflow:visible; filter:drop-shadow(0 10px 16px #0006); transition:transform .25s ease,filter .25s ease; }
+.mode-card:hover .svg-preview svg { transform:scale(1.035); filter:drop-shadow(0 14px 20px #0008); }
+.intro-visual .svg-preview { padding:10px; }
+.intro-visual .svg-preview svg { width:min(100%,270px); }
+
+/* Competitive game exit confirmation */
+.exit-modal-backdrop { position:fixed; z-index:100; inset:0; display:grid; place-items:center; padding:20px; background:#000b; backdrop-filter:blur(7px); animation:modalFade .18s ease both; }
+.exit-modal { width:min(440px,100%); border:1px solid #315c6c; border-radius:18px; background:linear-gradient(150deg,#0a2c39,#041923); padding:32px; text-align:center; box-shadow:0 30px 90px #000c,inset 0 1px #ffffff10; animation:modalIn .25s cubic-bezier(.2,.8,.2,1) both; }
+.exit-modal-icon { width:56px; height:56px; margin:0 auto 15px; display:grid; place-items:center; border:1px solid #8a6720; border-radius:50%; background:#3a2b0b; color:var(--yellow); box-shadow:0 0 25px #ffbf0025; }
+.exit-modal-icon span { font-size:1.55rem; font-weight:900; }
+.exit-modal small { color:var(--yellow); font-size:.64rem; font-weight:900; letter-spacing:.16em; }
+.exit-modal h2 { margin:8px 0 10px; font-size:1.45rem; letter-spacing:-.025em; }.exit-modal p { max-width:350px; margin:auto; color:#aebdc3; font-size:.84rem; line-height:1.55; }
+.exit-modal-actions { display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-top:25px; }.exit-modal-actions button { border-radius:8px; padding:11px 12px; font-size:.78rem; font-weight:800; cursor:pointer; }
+.exit-modal-actions .stay { border:1px solid #2e6679; background:#123746; color:white; }.exit-modal-actions .stay:hover { border-color:var(--cyan); background:#17495a; }
+.exit-modal-actions .leave { border:1px solid #8b2f42; background:#571a29; color:#ff9aaa; }.exit-modal-actions .leave:hover { background:#711e31; color:white; }
+@keyframes modalFade{from{opacity:0}to{opacity:1}}@keyframes modalIn{from{opacity:0;transform:translateY(14px) scale(.96)}to{opacity:1;transform:none}}
+@media(max-width:430px){.exit-modal{padding:26px 20px}.exit-modal-actions{grid-template-columns:1fr}.exit-modal-actions .stay{order:-1}}

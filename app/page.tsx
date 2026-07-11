@@ -35,6 +35,7 @@ export default function Home() {
   const [timerLimit, setTimerLimit] = useState(0);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [isNavigating, setIsNavigating] = useState(false);
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
   const startedAt = useRef<number | null>(null);
   const timeoutHandled = useRef(false);
   const savedResult = useRef<string | null>(null);
@@ -205,6 +206,11 @@ export default function Home() {
     setScreen("hub");
   }
 
+  function confirmCompetitiveExit() {
+    setShowExitConfirm(false);
+    returnToHub();
+  }
+
   const geographyModes = MODES.filter((item) => !item.daily);
 
   if (isNavigating) return <ScreenLoader language={language} />;
@@ -226,7 +232,7 @@ export default function Home() {
   if (screen === "intro" && mode) {
     const copy = getModeCopy(mode, language);
     return <main className="intro-page">
-      <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} />
+      <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter={mode.daily} />
       <section className="intro-card">
         <div className="intro-visual"><GamePreview mode={mode} /></div>
         <div className="intro-content">
@@ -245,7 +251,7 @@ export default function Home() {
   if (screen === "game" && mode && current) {
     const copy = getModeCopy(mode, language);
     return <main className="game-page">
-      <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} />
+      <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={() => mode.daily ? returnToHub() : setShowExitConfirm(true)} backLabel={text.back} showCounter={mode.daily} />
       <section className="game-shell">
         {!mode.daily && <div className="competitive-timer">⏱ {formatTime(elapsedSeconds)}</div>}
         <div className="game-meta"><span>{copy.title}</span><span className="round-score"><b>{score.correct}</b><i>–</i><em>{score.wrong}</em></span><span>{index + 1} / {questions.length}</span></div>
@@ -262,30 +268,31 @@ export default function Home() {
           </form>
         </article>
       </section>
+      {!mode.daily && showExitConfirm && <ExitConfirmation language={language} onCancel={() => setShowExitConfirm(false)} onConfirm={confirmCompetitiveExit} />}
     </main>;
   }
 
   if (screen === "detective" && mode && current) {
     return <main className="game-page">
-      <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} />
+      <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter={mode.daily} />
       <CountryDetective target={current} countries={countries} language={language} onResolved={(correct) => resolveCustomDaily("detective", correct)} onContinue={() => setScreen("results")} />
     </main>;
   }
 
   if (screen === "wordle" && mode && current) {
     return <main className="game-page">
-      <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} />
+      <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter={mode.daily} />
       <CountryWordle target={current} countries={countries} language={gameLanguage} onResolved={(correct) => resolveCustomDaily("wordle", correct)} onContinue={() => setScreen("results")} />
     </main>;
   }
 
   if (screen === "dailyGame" && mode && current && mode.customGame && !["detective", "wordle"].includes(mode.customGame)) {
-    return <main className="game-page"><AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} /><div className="daily-game-meta"><span>{language === "es" ? ({ easy: "FÁCIL", normal: "NORMAL", hard: "DIFÍCIL" }[difficulty]) : difficulty.toUpperCase()}</span>{timerLimit > 0 && <b>⏱ {formatTime(Math.max(0, timerLimit - elapsedSeconds))}</b>}</div><DailyChallenge kind={mode.customGame as "daily-capital" | "capital-wordle" | "flag-choice" | "geo-connection"} target={current} countries={countries} language={gameLanguage} difficulty={difficulty} onResolved={(correct) => resolveCustomDaily(mode.id, correct)} onContinue={() => setScreen("results")} /></main>;
+    return <main className="game-page"><AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter /><div className="daily-game-meta"><span>{language === "es" ? ({ easy: "FÁCIL", normal: "NORMAL", hard: "DIFÍCIL" }[difficulty]) : difficulty.toUpperCase()}</span>{timerLimit > 0 && <b>⏱ {formatTime(Math.max(0, timerLimit - elapsedSeconds))}</b>}</div><DailyChallenge kind={mode.customGame as "daily-capital" | "capital-wordle" | "flag-choice" | "geo-connection"} target={current} countries={countries} language={gameLanguage} difficulty={difficulty} onResolved={(correct) => resolveCustomDaily(mode.id, correct)} onContinue={() => setScreen("results")} /></main>;
   }
 
   if (screen === "results" && mode) {
     return <main className="result-page">
-      <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} />
+      <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} showCounter={mode.daily} />
       <div className="result-wrap"><div className="result-card"><span className="eyebrow">{mode.daily ? text.dailyCompleted : text.gameCompleted}</span><h1>{resultPercent}%</h1><p>{score.correct} {text.correctAnswers} {totalAnswered}</p>{(!mode.daily || timerLimit > 0) && <p className="result-time">⏱ {formatTime(elapsedSeconds)}</p>}<div className="result-actions">{!mode.daily && <button onClick={() => startGame(mode)}>{text.playAgain}</button>}<button className="secondary" onClick={returnToHub}>{text.viewModes}</button></div></div></div>
     </main>;
   }
@@ -295,7 +302,7 @@ export default function Home() {
     const countryName = getCountryDisplayName(current, language);
     const streak = getDailyStreak(dailyRecord, mode.id);
     return <main className="daily-review-page">
-      <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} />
+      <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter={mode.daily} />
       <section className="daily-review-card"><span className={`review-status ${correct ? "correct" : "wrong"}`}>{language === "es" ? (correct ? "DESAFÍO SUPERADO" : "DESAFÍO NO SUPERADO") : (correct ? "CHALLENGE COMPLETED" : "CHALLENGE MISSED")}</span><h1>{getModeCopy(mode, language).title}</h1><div className="review-flag">{/* eslint-disable-next-line @next/next/no-img-element */}<img src={current.flag} alt={countryName} /></div><h2>{countryName}</h2>{streak > 0 && <div className="review-streak">🔥 {streak} {language === "es" ? "días de racha" : "day streak"}</div>}<button onClick={returnToHub}>{text.viewModes}</button></section>
     </main>;
   }
@@ -303,7 +310,7 @@ export default function Home() {
   if (screen === "hub") {
     const visibleModes = MODES.filter((item) => hubCategory === "daily" ? item.daily : !item.daily);
     return <main className="home-page">
-    <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={() => setScreen("menu")} backLabel={text.mainMenu} />
+    <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={() => setScreen("menu")} backLabel={text.mainMenu} showCounter={hubCategory === "daily"} />
     <section className="hub"><div className="hub-heading"><span>{hubCategory === "daily" ? text.dailyChallenges : text.geographyLevel}</span>{hubCategory === "geography" && <small>{player.isGuest ? text.playAsGuest : player.nickname}</small>}</div><h1>{text.chooseGame}</h1><div className="mode-grid">{visibleModes.map((item) => {
       const copy = getModeCopy(item, language);
       const completed = item.daily && isDailyCompleted(item.id);
@@ -330,11 +337,11 @@ export default function Home() {
   </main>;
 }
 
-function AppHeader({ language, dailyRecord, onLanguage, onBack, backLabel }: { language: Language; dailyRecord: DailyRecord; onLanguage: () => void; onBack?: () => void; backLabel?: string }) {
+function AppHeader({ language, dailyRecord, onLanguage, onBack, backLabel, showCounter = false }: { language: Language; dailyRecord: DailyRecord; onLanguage: () => void; onBack?: () => void; backLabel?: string; showCounter?: boolean }) {
   return <header className="topbar" id="top">
-    {onBack ? <button className="back-button" onClick={onBack}>← {backLabel}</button> : <DailyCounter record={dailyRecord} language={language} />}
+    {onBack ? <button className="back-button" onClick={onBack}>← {backLabel}</button> : showCounter ? <DailyCounter record={dailyRecord} language={language} /> : <span />}
     <div className="logo"><span>MUNDO</span>QUIZ</div>
-    <div className="top-actions">{onBack && <DailyCounter record={dailyRecord} language={language} />}<button className="language-button" onClick={onLanguage} aria-label="Change language"><Image src={language === "es" ? "/flags/es.svg" : "/flags/gb.svg"} alt="" width={24} height={16} /> <span>{language === "es" ? "ES" : "EN"}</span></button></div>
+    <div className="top-actions">{onBack && showCounter && <DailyCounter record={dailyRecord} language={language} />}<button className="language-button" onClick={onLanguage} aria-label="Change language"><Image src={language === "es" ? "/flags/es.svg" : "/flags/gb.svg"} alt="" width={24} height={16} /> <span>{language === "es" ? "ES" : "EN"}</span></button></div>
   </header>;
 }
 
@@ -372,6 +379,13 @@ function ScreenLoader({ language }: { language: Language }) {
   return <main className="screen-loader" role="status" aria-live="polite"><div className="loader-brand"><div className="loader-orbit"><span /></div><div className="logo"><span>MUNDO</span>QUIZ</div><p>{language === "es" ? "Preparando el desafío…" : "Preparing the challenge…"}</p><div className="loader-bar"><i /></div></div></main>;
 }
 
+function ExitConfirmation({ language, onCancel, onConfirm }: { language: Language; onCancel: () => void; onConfirm: () => void }) {
+  const copy = language === "es"
+    ? { eyebrow: "PARTIDA EN CURSO", title: "¿Quieres abandonar la partida?", body: "Tu progreso actual se perderá y este resultado no aparecerá en el ranking.", cancel: "Continuar jugando", confirm: "Abandonar partida" }
+    : { eyebrow: "GAME IN PROGRESS", title: "Do you want to leave the game?", body: "Your current progress will be lost and this result will not appear in the ranking.", cancel: "Keep playing", confirm: "Leave game" };
+  return <div className="exit-modal-backdrop" role="presentation" onMouseDown={onCancel}><section className="exit-modal" role="alertdialog" aria-modal="true" aria-labelledby="exit-title" onMouseDown={(event) => event.stopPropagation()}><div className="exit-modal-icon"><span>!</span></div><small>{copy.eyebrow}</small><h2 id="exit-title">{copy.title}</h2><p>{copy.body}</p><div className="exit-modal-actions"><button className="stay" onClick={onCancel}>{copy.cancel}</button><button className="leave" onClick={onConfirm}>{copy.confirm}</button></div></section></div>;
+}
+
 function MenuIcon({ kind }: { kind: "daily" | "geography" | "ranking" }) {
   if (kind === "daily") return <span className="menu-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="8"/><path d="M24 4v7M24 37v7M4 24h7M37 24h7M10 10l5 5M33 33l5 5M38 10l-5 5M15 33l-5 5"/></svg></span>;
   if (kind === "geography") return <span className="menu-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="18"/><path d="M6 24h36M24 6c6 5 9 11 9 18s-3 13-9 18c-6-5-9-11-9-18s3-13 9-18z"/></svg></span>;
@@ -379,10 +393,38 @@ function MenuIcon({ kind }: { kind: "daily" | "geography" | "ranking" }) {
 }
 
 function GamePreview({ mode }: { mode: GameMode }) {
-  if (mode.customGame === "wordle" || mode.customGame === "capital-wordle") return <div className="mode-preview visual-wordle"><div>{["M","U","N","D","O"].map((letter, index) => <span className={index === 0 ? "green" : index === 2 ? "yellow" : ""} key={letter}>{letter}</span>)}</div><div>{["Q","U","I","Z"].map((letter, index) => <span className={index > 1 ? "green" : ""} key={letter}>{letter}</span>)}</div></div>;
-  if (mode.customGame === "detective" || mode.customGame === "geo-connection") return <div className="mode-preview visual-connection"><div className="preview-node main">?</div><i/><div className="preview-node one"/><div className="preview-node two"/><div className="preview-node three"/><span className="preview-clue first"/><span className="preview-clue second"/></div>;
-  if (mode.customGame === "flag-choice") return <div className="mode-preview visual-choice"><span/><span className="selected"><b>✓</b></span><span/><span/></div>;
-  if (mode.customGame === "daily-capital" || mode.id === "capitals") return <div className="mode-preview visual-capital"><div className="building"><i/><i/><i/><i/></div><span className="pin"><b/></span><div className="answer-line"/></div>;
-  if (mode.id === "daily") return <div className="mode-preview visual-daily"><div className="calendar"><b>24</b><span/></div><div className="mini-flag"><i/><i/><i/></div></div>;
-  return <div className="mode-preview visual-flags"><div className="flag-card back"><i/><i/><i/></div><div className="flag-card front"><i/><i/><i/></div><span className="preview-check">✓</span></div>;
+  const isWordle = mode.customGame === "wordle" || mode.customGame === "capital-wordle";
+  const isConnection = mode.customGame === "detective" || mode.customGame === "geo-connection";
+  const isCapital = mode.customGame === "daily-capital" || mode.id === "capitals";
+  const continentFlags: Partial<Record<GameMode["id"], [FlagCode, FlagCode]>> = {
+    americas: ["AR", "BR"], europe: ["ES", "FR"], asia: ["JP", "KR"], africa: ["ZA", "EG"],
+  };
+  const featuredFlags = continentFlags[mode.id];
+  return <div className={`mode-preview svg-preview preview-${mode.id}`}><svg viewBox="0 0 200 150" aria-hidden="true">
+    <defs><linearGradient id={`panel-${mode.id}`} x1="0" y1="0" x2="1" y2="1"><stop stopColor="#0e4051"/><stop offset="1" stopColor="#061923"/></linearGradient><filter id={`glow-${mode.id}`}><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+    <rect x="18" y="15" width="164" height="120" rx="14" fill={`url(#panel-${mode.id})`} stroke="#236078"/>
+    {isWordle && <g>{[[54,42,"M","#2eaa73"],[82,42,"U","#273b45"],[110,42,"N","#c59610"],[138,42,"D","#273b45"],[54,72,"Q","#273b45"],[82,72,"U","#2eaa73"],[110,72,"I","#2eaa73"],[138,72,"Z","#273b45"]].map(([x,y,l,c]) => <g key={`${x}-${y}`}><rect x={Number(x)} y={Number(y)} width="24" height="24" rx="4" fill={String(c)} stroke="#77909a" strokeOpacity=".5"/><text x={Number(x)+12} y={Number(y)+17} textAnchor="middle" fill="white" fontSize="11" fontWeight="800">{l}</text></g>)}<rect x="65" y="108" width="70" height="6" rx="3" fill="#1f5365"/></g>}
+    {isConnection && <g stroke="#2e91ae" strokeWidth="2" fill="#092a37"><path d="M100 64L55 43M100 64l45-21M100 64v43" opacity=".75"/><circle cx="100" cy="64" r="24" fill="#0a3544" stroke="#ffbf00"/><text x="100" y="73" textAnchor="middle" fill="#ffcc32" stroke="none" fontSize="26" fontWeight="800">?</text><circle cx="55" cy="43" r="12"/><circle cx="145" cy="43" r="12"/><circle cx="100" cy="107" r="12"/><path d="M49 43h12M139 43h12M94 107h12" stroke="#77d8ec"/></g>}
+    {mode.customGame === "flag-choice" && <g>{[[44,38,"#4d9f6c"],[104,38,"#397fa8"],[44,82,"#d4b944"],[104,82,"#a44d58"]].map(([x,y,c], index) => <g key={`${x}-${y}`}><rect x={Number(x)} y={Number(y)} width="52" height="34" rx="5" fill={String(c)} stroke={index === 1 ? "#42d99a" : "#78909a"} strokeWidth={index === 1 ? 3 : 1}/>{index === 1 && <><circle cx="153" cy="36" r="10" fill="#42d99a"/><path d="m148 36 3 3 6-7" fill="none" stroke="#05241a" strokeWidth="2.5"/></>}</g>)}</g>}
+    {isCapital && <g fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M47 111h91M55 101h75M62 58h61l9 13H53l9-13Z" fill="#183d4b" stroke="#a8bdc5" strokeWidth="3"/><path d="M66 74v25M82 74v25M99 74v25M115 74v25" stroke="#7094a1" strokeWidth="7"/><path d="M151 43c0 13-14 27-14 27s-14-14-14-27a14 14 0 1 1 28 0Z" fill="#ffbf00" stroke="#ffda63"/><circle cx="137" cy="43" r="4" fill="#08212c" stroke="none"/>{mode.customGame === "daily-capital" && <g><rect x="35" y="29" width="33" height="30" rx="5" fill="#edf2f3" stroke="#dbe5e8"/><path d="M35 39h33" stroke="#00b9dd" strokeWidth="7"/><text x="51.5" y="54" textAnchor="middle" fill="#0b2934" stroke="none" fontSize="12" fontWeight="900">24</text></g>}{mode.id === "capitals" && <g><rect x="32" y="30" width="38" height="27" rx="4" fill="#f1eee5" stroke="#d9e3e6"/><path d="M32 39h38M32 48h38" stroke="#45a370" strokeWidth="9"/><circle cx="67" cy="57" r="8" fill="#3bd18f" stroke="#06271b" strokeWidth="2"/><path d="m63 57 3 3 5-6" stroke="#06271b" strokeWidth="2"/></g>}</g>}
+    {mode.id === "daily" && <g><rect x="43" y="39" width="62" height="70" rx="8" fill="#e6edef"/><path d="M43 55h62" stroke="#ffbf00" strokeWidth="12"/><text x="74" y="91" textAnchor="middle" fill="#102b36" fontSize="25" fontWeight="900">24</text><path d="M118 58h39v38h-39z" fill="#f1eee1" stroke="#dce5e8" strokeWidth="3"/><path d="M118 71h39M118 84h39" stroke="#39a66f" strokeWidth="13"/><circle cx="157" cy="101" r="13" fill="#3bd18f"/><path d="m151 101 4 4 8-10" fill="none" stroke="#05261a" strokeWidth="3"/></g>}
+    {featuredFlags && <g><g transform="rotate(-6 78 75)"><rect x="39" y="45" width="78" height="58" rx="9" fill="#123d4d" stroke="#31a879" strokeWidth="3"/><rect x="46" y="52" width="64" height="44" rx="6" fill="#092630"/><FlagSymbol code={featuredFlags[0]} x={49} y={56}/></g><g transform="rotate(6 121 75)"><rect x="82" y="45" width="78" height="58" rx="9" fill="#123d4d" stroke="#2585aa" strokeWidth="3"/><rect x="89" y="52" width="64" height="44" rx="6" fill="#092630"/><FlagSymbol code={featuredFlags[1]} x={92} y={56}/></g><circle cx="151" cy="108" r="14" fill="#3bd18f" filter={`url(#glow-${mode.id})`}/><path d="m144 108 5 5 10-12" fill="none" stroke="#05261a" strokeWidth="3"/></g>}
+    {mode.id === "world" && <g><circle cx="100" cy="74" r="43" fill="#13769a" stroke="#65d6ed" strokeWidth="3"/><path d="M62 70c12-4 15-17 27-15l9 9-8 11 5 8-8 12-13-4-9-11M116 36l-5 13 9 7 13-2 8 13-7 13-13 3-4 20" fill="#45b879" stroke="#0d5d4a" strokeWidth="2"/><path d="M58 74h84M100 31c12 12 18 27 18 43s-6 31-18 43M100 31c-12 12-18 27-18 43s6 31 18 43" fill="none" stroke="#9ce7f3" strokeOpacity=".45"/><circle cx="137" cy="108" r="13" fill="#ffbf00"/><path d="m131 108 4 4 8-10" fill="none" stroke="#322300" strokeWidth="3"/></g>}
+    {mode.id === "sovereign" && <g><circle cx="100" cy="74" r="43" fill="#0b3544" stroke="#42d99a" strokeWidth="3"/><circle cx="100" cy="74" r="27" fill="none" stroke="#2b7e77" strokeWidth="2"/><path d="M100 47v54M73 74h54M82 54c7 6 11 12 11 20s-4 15-11 21M118 54c-7 6-11 12-11 20s4 15 11 21" fill="none" stroke="#72c6bb" strokeWidth="2"/><path d="M65 42l4 3-2 5-5-3zM135 42l-4 3 2 5 5-3zM61 100l5-1 2 5-6 1zM139 100l-5-1-2 5 6 1z" fill="#ffbf00"/><circle cx="137" cy="108" r="14" fill="#3bd18f"/><path d="m130 108 5 5 10-12" fill="none" stroke="#05261a" strokeWidth="3"/></g>}
+    {!featuredFlags && mode.id !== "world" && mode.id !== "sovereign" && !isWordle && !isConnection && !isCapital && mode.customGame !== "flag-choice" && mode.id !== "daily" && <g transform="rotate(-5 100 75)"><rect x="45" y="45" width="78" height="51" rx="7" fill="#f1eee5" stroke="#b9c9cf" strokeWidth="4"/><path d="M45 62h78M45 79h78" stroke="#39936a" strokeWidth="17"/><rect x="78" y="55" width="78" height="51" rx="7" fill="#e9edf0" stroke="#d2dce0" strokeWidth="4"/><path d="M78 72h78M78 89h78" stroke="#347da4" strokeWidth="17"/><circle cx="151" cy="104" r="15" fill="#3bd18f" filter={`url(#glow-${mode.id})`}/><path d="m144 104 5 5 10-12" fill="none" stroke="#05261a" strokeWidth="3"/></g>}
+  </svg></div>;
+}
+
+type FlagCode = "AR" | "BR" | "ES" | "FR" | "JP" | "KR" | "ZA" | "EG";
+
+function FlagSymbol({ code, x, y }: { code: FlagCode; x: number; y: number }) {
+  const w = 58, h = 36;
+  if (code === "AR") return <g><rect x={x} y={y} width={w} height={h} rx="3" fill="#74c6e7"/><rect x={x} y={y+12} width={w} height="12" fill="white"/><circle cx={x+29} cy={y+18} r="4" fill="#f6b91c"/></g>;
+  if (code === "BR") return <g><rect x={x} y={y} width={w} height={h} rx="3" fill="#22974b"/><path d={`M${x+29} ${y+4}l23 14-23 14L${x+6} ${y+18}z`} fill="#f4ce2e"/><circle cx={x+29} cy={y+18} r="8" fill="#2454a4"/></g>;
+  if (code === "ES") return <g><rect x={x} y={y} width={w} height={h} rx="3" fill="#bf2638"/><rect x={x} y={y+9} width={w} height="18" fill="#f5c928"/></g>;
+  if (code === "FR") return <g><rect x={x} y={y} width={w} height={h} rx="3" fill="#fff"/><path d={`M${x} ${y}h${w/3}v${h}H${x}z`} fill="#002395"/><path d={`M${x+w*2/3} ${y}h${w/3}v${h}H${x+w*2/3}z`} fill="#ed2939"/><rect x={x} y={y} width={w} height={h} rx="3" fill="none" stroke="#cdd8dc" strokeWidth="1"/></g>;
+  if (code === "JP") return <g><rect x={x} y={y} width={w} height={h} rx="3" fill="white"/><circle cx={x+29} cy={y+18} r="10" fill="#d52d3f"/></g>;
+  if (code === "KR") return <g><rect x={x} y={y} width={w} height={h} rx="3" fill="white"/><path d={`M${x+20} ${y+18}a9 9 0 0 1 18 0c-4.5-3.5-9 3.5-13.5 0s-4.5-3.5-4.5 0Z`} fill="#d73745"/><path d={`M${x+38} ${y+18}a9 9 0 0 1-18 0c4.5 3.5 9-3.5 13.5 0s4.5 3.5 4.5 0Z`} fill="#2462a4"/><g stroke="#18212a" strokeWidth="1.7"><path d={`M${x+7} ${y+8}l8 4M${x+8} ${y+5}l8 4M${x+43} ${y+27}l8 4M${x+42} ${y+30}l8 4M${x+8} ${y+31}l8-4M${x+7} ${y+34}l8-4M${x+42} ${y+9}l8-4M${x+43} ${y+12}l8-4`}/></g></g>;
+  if (code === "EG") return <g><rect x={x} y={y} width={w} height={h} rx="3" fill="#ce2738"/><rect x={x} y={y+12} width={w} height="12" fill="#fff"/><rect x={x} y={y+24} width={w} height="12" fill="#111"/><path d={`M${x+24} ${y+16}l5-3 5 3-2 2 3 1-6 4-6-4 3-1z`} fill="#c89b28"/></g>;
+  return <g><rect x={x} y={y} width={w} height={h} rx="3" fill="#de3831"/><path d={`M${x} ${y+36}h58V${y+21}H${x+25}z`} fill="#002395"/><path d={`M${x} ${y+2}l28 16L${x} ${y+34}z`} fill="#000" stroke="#ffb81c" strokeWidth="3"/><path d={`M${x} ${y+7}l21 11L${x} ${y+29}M${x+19} ${y+18}h39`} fill="none" stroke="#fff" strokeWidth="10"/><path d={`M${x} ${y+10}l17 8L${x} ${y+26}M${x+17} ${y+18}h41`} fill="none" stroke="#007a4d" strokeWidth="6"/></g>;
 }
