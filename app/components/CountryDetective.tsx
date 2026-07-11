@@ -42,7 +42,7 @@ export function CountryDetective({ target, countries, language, onResolved, onCo
   }, [countries, guess, language]);
   const options = category === "region" ? REGIONS : category === "subregion" ? subregions : "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
   const copy = language === "es" ? {
-    title: "País misterioso", askHint: "Elegí una categoría y hacé una pregunta:", continent: "Continente", subregion: "Subregión", capitalInitial: "Inicial de la capital", select: "Elegí una opción", ask: "Hacer pregunta", questions: "preguntas disponibles", guess: "Escribí el país...", tryGuess: "Adivinar", win: "¡Descubriste el país!", lose: "Te quedaste sin intentos", answer: "El país era", continue: "Ver resultado",
+    title: "País misterioso", askHint: "Elige una categoría y haz una pregunta:", continent: "Continente", subregion: "Subregión", capitalInitial: "Inicial de la capital", select: "Elige una opción", ask: "Hacer pregunta", questions: "preguntas disponibles", guess: "Escribe el país...", tryGuess: "Adivinar", win: "¡Descubriste el país!", lose: "Te has quedado sin intentos", answer: "El país era", continue: "Ver resultado",
   } : {
     title: "Mystery country", askHint: "Choose a category and ask a question:", continent: "Continent", subregion: "Subregion", capitalInitial: "Capital's first letter", select: "Choose an option", ask: "Ask question", questions: "questions left", guess: "Type the country...", tryGuess: "Guess", win: "You found the country!", lose: "You ran out of attempts", answer: "The country was", continue: "View result",
   };

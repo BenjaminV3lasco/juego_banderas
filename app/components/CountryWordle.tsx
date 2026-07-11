@@ -44,7 +44,7 @@ export function CountryWordle({ target, countries, language, onResolved, onConti
   const [error, setError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const copy = language === "es"
-    ? { title: "País Wordle", invalid: "Ingresá un país válido con la cantidad correcta de letras.", win: "¡País descubierto!", lose: "No quedan intentos", answer: "El país era", continue: "Ver resultado", input: "Escribí con el teclado" }
+    ? { title: "País Wordle", invalid: "Introduce un país válido con la cantidad correcta de letras.", win: "¡País descubierto!", lose: "No quedan intentos", answer: "El país era", continue: "Ver resultado", input: "Escribe con el teclado" }
     : { title: "Country Wordle", invalid: "Enter a valid country with the correct number of letters.", win: "Country discovered!", lose: "No tries left", answer: "The country was", continue: "View result", input: "Type with your keyboard" };
 
   const validWords = useMemo(() => new Set(countries.map((country) => toWord(getCountryDisplayName(country, language))).filter((word) => word.length === answer.length)), [answer.length, countries, language]);

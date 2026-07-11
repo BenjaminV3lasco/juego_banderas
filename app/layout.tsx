@@ -6,7 +6,7 @@ const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700
 
 export const metadata: Metadata = {
   title: "MundoQuiz — Juegos de banderas",
-  description: "Poné a prueba cuánto sabés del mundo.",
+  description: "Pon a prueba cuánto sabes del mundo.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

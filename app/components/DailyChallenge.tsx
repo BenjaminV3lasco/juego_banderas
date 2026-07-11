@@ -23,7 +23,7 @@ export function DailyChallenge({ kind, target, countries, language, difficulty, 
   const [finished, setFinished] = useState<boolean | null>(null);
   const [guesses, setGuesses] = useState<{ value: string; status: Status[] }[]>([]);
   const [clues, setClues] = useState(difficulty === "easy" ? 2 : 1);
-  const copy = language === "es" ? { check: "Confirmar", next: "Ver resultado", capital: "Escribí la capital", country: "Escribí el país", right: "¡Respuesta correcta!", wrong: "Respuesta incorrecta", was: "La respuesta era", clue: "Mostrar otra pista", tries: "intentos" } : { check: "Confirm", next: "View result", capital: "Type the capital", country: "Type the country", right: "Correct answer!", wrong: "Wrong answer", was: "The answer was", clue: "Show another clue", tries: "tries" };
+  const copy = language === "es" ? { check: "Confirmar", next: "Ver resultado", capital: "Escribe la capital", country: "Escribe el país", right: "¡Respuesta correcta!", wrong: "Respuesta incorrecta", was: "La respuesta era", clue: "Mostrar otra pista", tries: "intentos" } : { check: "Confirm", next: "View result", capital: "Type the capital", country: "Type the country", right: "Correct answer!", wrong: "Wrong answer", was: "The answer was", clue: "Show another clue", tries: "tries" };
   const countryName = getCountryDisplayName(target, language);
   const capitalName = getCapitalDisplayName(target, language);
   const capitalAnswer = word(capitalName);

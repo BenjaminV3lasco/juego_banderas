@@ -224,7 +224,7 @@ export default function Home() {
   }
 
   if (screen === "intro" && mode) {
-    const copy = mode.copy[language];
+    const copy = getModeCopy(mode, language);
     return <main className="intro-page">
       <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} />
       <section className="intro-card">
@@ -243,7 +243,7 @@ export default function Home() {
   }
 
   if (screen === "game" && mode && current) {
-    const copy = mode.copy[language];
+    const copy = getModeCopy(mode, language);
     return <main className="game-page">
       <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} />
       <section className="game-shell">
@@ -296,7 +296,7 @@ export default function Home() {
     const streak = getDailyStreak(dailyRecord, mode.id);
     return <main className="daily-review-page">
       <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} />
-      <section className="daily-review-card"><span className={`review-status ${correct ? "correct" : "wrong"}`}>{language === "es" ? (correct ? "DESAFÍO SUPERADO" : "DESAFÍO NO SUPERADO") : (correct ? "CHALLENGE COMPLETED" : "CHALLENGE MISSED")}</span><h1>{mode.copy[language].title}</h1><div className="review-flag">{/* eslint-disable-next-line @next/next/no-img-element */}<img src={current.flag} alt={countryName} /></div><h2>{countryName}</h2>{streak > 0 && <div className="review-streak">🔥 {streak} {language === "es" ? "días de racha" : "day streak"}</div>}<button onClick={returnToHub}>{text.viewModes}</button></section>
+      <section className="daily-review-card"><span className={`review-status ${correct ? "correct" : "wrong"}`}>{language === "es" ? (correct ? "DESAFÍO SUPERADO" : "DESAFÍO NO SUPERADO") : (correct ? "CHALLENGE COMPLETED" : "CHALLENGE MISSED")}</span><h1>{getModeCopy(mode, language).title}</h1><div className="review-flag">{/* eslint-disable-next-line @next/next/no-img-element */}<img src={current.flag} alt={countryName} /></div><h2>{countryName}</h2>{streak > 0 && <div className="review-streak">🔥 {streak} {language === "es" ? "días de racha" : "day streak"}</div>}<button onClick={returnToHub}>{text.viewModes}</button></section>
     </main>;
   }
 
@@ -305,7 +305,7 @@ export default function Home() {
     return <main className="home-page">
     <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={() => setScreen("menu")} backLabel={text.mainMenu} />
     <section className="hub"><div className="hub-heading"><span>{hubCategory === "daily" ? text.dailyChallenges : text.geographyLevel}</span>{hubCategory === "geography" && <small>{player.isGuest ? text.playAsGuest : player.nickname}</small>}</div><h1>{text.chooseGame}</h1><div className="mode-grid">{visibleModes.map((item) => {
-      const copy = item.copy[language];
+      const copy = getModeCopy(item, language);
       const completed = item.daily && isDailyCompleted(item.id);
       const streak = item.customGame ? getDailyStreak(dailyRecord, item.id) : 0;
       const badge = item.customGame ? (streak ? `${streak} 🔥` : completed ? undefined : item.badge) : item.badge;
@@ -351,6 +351,21 @@ function formatTime(totalSeconds: number) {
 function localizeGameLabel(label: string, language: Language) {
   if (language === "en") return label;
   return ({ DAILY: "DIARIO", MYSTERY: "MISTERIO", CAPITAL: "CAPITAL", FLAGS: "BANDERAS", CONNECTION: "CONEXIÓN", WORLD: "MUNDO", COUNTRIES: "PAÍSES", EXPERT: "EXPERTO", REGION: "REGIÓN", NEW: "NUEVO", POPULAR: "POPULAR", DOUBLE: "DOBLE" } as Record<string, string>)[label] || label;
+}
+
+function getModeCopy(mode: GameMode, language: Language) {
+  const copy = mode.copy[language];
+  if (language === "en") return copy;
+  const neutralize = (value: string) => value
+    .replaceAll("Adiviná", "Adivina").replaceAll("Descubrí", "Descubre")
+    .replaceAll("Elegí", "Elige").replaceAll("Tenés", "Tienes")
+    .replaceAll("Podés", "Puedes").replaceAll("podés", "puedes")
+    .replaceAll("Recorré", "Recorre").replaceAll("Escribí", "Escribe")
+    .replaceAll("sabés", "sabes").replaceAll("Poné", "Pon")
+    .replaceAll("Completá", "Completa").replaceAll("reconocé", "reconoce")
+    .replaceAll("recordá", "recuerda").replaceAll("acertás", "aciertas")
+    .replaceAll("revelás", "revelas").replaceAll("sumás", "sumas");
+  return { title: neutralize(copy.title), description: neutralize(copy.description), rules: copy.rules.map(neutralize) };
 }
 
 function ScreenLoader({ language }: { language: Language }) {

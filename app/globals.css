@@ -153,3 +153,13 @@ body { background:radial-gradient(circle at 50% -20%,#073448 0,#00111a 38%); }
 .calendar { position:relative; }
 .intro-visual>.mode-preview { width:100%; height:230px; border-radius:14px; }
 @media(max-width:720px){.intro-visual>.mode-preview{height:150px}}
+
+/* Keep compact menu cards vertically balanced */
+@media(min-width:721px){
+  .menu-options { grid-template-rows:repeat(2,165px); }
+  .geography-option,.ranking-option { grid-template-columns:64px minmax(0,1fr) 36px; align-items:center; padding:20px 22px; }
+  .geography-option .menu-icon,.ranking-option .menu-icon { width:58px; height:58px; align-self:center; }
+  .geography-option>div,.ranking-option>div { align-self:center; min-width:0; }
+  .geography-option h2,.ranking-option h2 { line-height:1.25; }
+  .geography-option p,.ranking-option p { line-height:1.42; }
+}
