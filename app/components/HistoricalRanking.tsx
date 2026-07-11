@@ -24,7 +24,7 @@ export function HistoricalRanking({ language, modes }: { language: Language; mod
 
   const ranking = useMemo(() => entries
     .filter((entry) => entry.mode === selectedMode)
-    .sort((a, b) => (b.correct / b.total) - (a.correct / a.total) || b.correct - a.correct || new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+    .sort((a, b) => (b.correct / b.total) - (a.correct / a.total) || b.correct - a.correct || a.duration_seconds - b.duration_seconds || new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
     .slice(0, 50), [entries, selectedMode]);
 
   const selectedModeLabel = modes.find((mode) => mode.id === selectedMode)?.copy[language].title || "";
@@ -34,6 +34,6 @@ export function HistoricalRanking({ language, modes }: { language: Language; mod
     {status === "loading" && <div className="ranking-message">{copy.loading}</div>}
     {status === "error" && <div className="ranking-message error">{copy.error}</div>}
     {status === "ready" && !ranking.length && <div className="ranking-message">{copy.empty}</div>}
-    {status === "ready" && ranking.length > 0 && <div className="ranking-table"><div className="ranking-row ranking-labels"><span>#</span><span>{copy.player}</span><span>{copy.score}</span><span>{copy.accuracy}</span><span>{copy.date}</span></div>{ranking.map((entry, index) => <div className="ranking-row" key={entry.id}><strong className={`rank-position rank-${index + 1}`}>{index + 1}</strong><span>{entry.nickname}</span><span>{entry.correct}/{entry.total}</span><span>{Math.round((entry.correct / entry.total) * 100)}%</span><time>{new Date(entry.created_at).toLocaleDateString(language === "es" ? "es-AR" : "en-GB")}</time></div>)}</div>}
+    {status === "ready" && ranking.length > 0 && <div className="ranking-table"><div className="ranking-row ranking-labels"><span>#</span><span>{copy.player}</span><span>{copy.score}</span><span>{copy.accuracy}</span><span>{language === "es" ? "Tiempo" : "Time"}</span></div>{ranking.map((entry, index) => <div className="ranking-row" key={entry.id}><strong className={`rank-position rank-${index + 1}`}>{index + 1}</strong><span>{entry.nickname}</span><span>{entry.correct}/{entry.total}</span><span>{Math.round((entry.correct / entry.total) * 100)}%</span><time>{entry.duration_seconds ? `${Math.floor(entry.duration_seconds / 60)}:${String(entry.duration_seconds % 60).padStart(2, "0")}` : "—"}</time></div>)}</div>}
   </section>;
 }

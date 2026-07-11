@@ -4,6 +4,7 @@ import { FormEvent, useMemo, useState } from "react";
 import type { Country } from "@/lib/game";
 import { getCountryDisplayName, normalize } from "@/lib/game";
 import type { Language } from "@/lib/i18n";
+import { getGeographyName } from "@/lib/geography-names";
 
 type Category = "region" | "subregion" | "capitalInitial";
 type Clue = { question: string; answer: boolean };
@@ -48,7 +49,7 @@ export function CountryDetective({ target, countries, language, onResolved, onCo
 
   function questionText(selectedCategory: Category, selectedValue: string) {
     if (selectedCategory === "region") return language === "es" ? `¿Está en ${REGION_NAMES.es[selectedValue]}?` : `Is it in ${REGION_NAMES.en[selectedValue]}?`;
-    if (selectedCategory === "subregion") return language === "es" ? `¿Pertenece a ${selectedValue}?` : `Is it in ${selectedValue}?`;
+    if (selectedCategory === "subregion") return language === "es" ? `¿Pertenece a ${getGeographyName(selectedValue, language)}?` : `Is it in ${selectedValue}?`;
     return language === "es" ? `¿Su capital empieza con ${selectedValue}?` : `Does its capital start with ${selectedValue}?`;
   }
 
@@ -95,7 +96,7 @@ export function CountryDetective({ target, countries, language, onResolved, onCo
           <select value={category} onChange={(event) => { setCategory(event.target.value as Category); setValue(""); }}>
             <option value="region">{copy.continent}</option><option value="subregion">{copy.subregion}</option><option value="capitalInitial">{copy.capitalInitial}</option>
           </select>
-          <select value={value} onChange={(event) => setValue(event.target.value)}><option value="">{copy.select}</option>{options.map((option) => <option value={option} key={option}>{category === "region" ? REGION_NAMES[language][option] : option}</option>)}</select>
+          <select value={value} onChange={(event) => setValue(event.target.value)}><option value="">{copy.select}</option>{options.map((option) => <option value={option} key={option}>{category === "region" ? REGION_NAMES[language][option] : category === "subregion" ? getGeographyName(option, language) : option}</option>)}</select>
           <button onClick={askQuestion} disabled={!value || !questionsLeft}>{copy.ask}</button>
         </div>
       </div>

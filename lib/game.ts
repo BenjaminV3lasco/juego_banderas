@@ -1,6 +1,7 @@
 import { getCountryAliases, getSpanishCountryName, isSovereignCountry } from "@/lib/country-names";
 
-export type ModeId = "daily" | "detective" | "wordle" | "world" | "sovereign" | "capitals" | "americas" | "europe" | "asia" | "africa";
+export type ModeId = "daily" | "detective" | "wordle" | "daily-capital" | "capital-wordle" | "flag-choice" | "geo-connection" | "world" | "sovereign" | "capitals" | "americas" | "europe" | "asia" | "africa";
+export type Difficulty = "easy" | "normal" | "hard";
 
 export type RawCountry = {
   name: { common: string };
@@ -30,7 +31,7 @@ export type GameMode = {
   region?: string;
   asksCapital?: boolean;
   daily?: boolean;
-  customGame?: "detective" | "wordle";
+  customGame?: "detective" | "wordle" | "daily-capital" | "capital-wordle" | "flag-choice" | "geo-connection";
   sovereignOnly?: boolean;
   copy: {
     es: { title: string; description: string; rules: string[] };
@@ -39,6 +40,10 @@ export type GameMode = {
 };
 
 export const MODES: GameMode[] = [
+  { id: "daily-capital", kicker: "CAPITAL", flags: ["🏛️", "📍"], badge: "NEW", daily: true, customGame: "daily-capital", copy: { es: { title: "Capital del día", description: "Cada día, un país nuevo y una oportunidad para recordar su capital.", rules: ["Adiviná la capital del país mostrado.", "Tenés un intento diario.", "La dificultad modifica las pistas disponibles."] }, en: { title: "Capital of the day", description: "A new country every day and one chance to remember its capital.", rules: ["Guess the capital of the displayed country.", "You have one daily attempt.", "Difficulty changes the available clues."] } } },
+  { id: "capital-wordle", kicker: "WORDLE", flags: ["🟩", "🏛️", "🟨"], badge: "NEW", daily: true, customGame: "capital-wordle", copy: { es: { title: "Capital Wordle", description: "Descubrí la capital oculta letra por letra en un máximo de seis intentos.", rules: ["Verde indica posición correcta.", "Amarillo indica una letra en otra posición.", "Solo se aceptan capitales reales."] }, en: { title: "Capital Wordle", description: "Discover the hidden capital letter by letter in up to six attempts.", rules: ["Green means the position is correct.", "Yellow means the letter is elsewhere.", "Only real capitals are accepted."] } } },
+  { id: "flag-choice", kicker: "FLAGS", flags: ["🚩", "✅", "🚩", "🚩"], badge: "NEW", daily: true, customGame: "flag-choice", copy: { es: { title: "¿Cuál es la bandera correcta?", description: "Elegí la bandera que corresponde al país entre varias alternativas.", rules: ["Cada dificultad agrega más opciones.", "Solo podés elegir una vez.", "El resultado suma al contador diario."] }, en: { title: "Which flag is correct?", description: "Choose the flag that belongs to the country from several options.", rules: ["Each difficulty adds more choices.", "You can choose only once.", "The result counts toward your daily score."] } } },
+  { id: "geo-connection", kicker: "CONNECTION", flags: ["🌍", "🔗", "❓"], badge: "NEW", daily: true, customGame: "geo-connection", copy: { es: { title: "Conexión geográfica", description: "Conectá pistas geográficas para descubrir el país oculto.", rules: ["Las pistas aparecen de a una.", "Usar más pistas reduce tu ventaja.", "En difícil no se revela la capital."] }, en: { title: "Geographic connection", description: "Connect geographic clues to discover the hidden country.", rules: ["Clues appear one at a time.", "Using more clues reduces your advantage.", "Hard mode never reveals the capital."] } } },
   { id: "daily", kicker: "DAILY", flags: ["📅", "🚩"], badge: "NEW", daily: true, copy: { es: { title: "Bandera del día", description: "Una nueva bandera cada día para poner a prueba tu constancia.", rules: ["Tenés un solo intento por día.", "Un acierto suma al contador verde; un error, al rojo.", "La misma bandera aparece para toda la comunidad."] }, en: { title: "Flag of the day", description: "A new flag every day to test your consistency.", rules: ["You get one attempt per day.", "A correct answer adds to green; a miss adds to red.", "The same flag appears for the whole community."] } } },
   { id: "detective", kicker: "MYSTERY", flags: ["❓", "🕵️"], badge: "NEW", daily: true, customGame: "detective", copy: { es: { title: "Adiviná el país", description: "Descubrí el país misterioso haciendo preguntas antes de arriesgar tu respuesta.", rules: ["Podés hacer hasta 10 preguntas de sí o no.", "Tenés tres intentos para adivinar el país.", "Si acertás, revelás la bandera y sumás al contador diario."] }, en: { title: "Guess the country", description: "Discover the mystery country by asking questions before risking your answer.", rules: ["You can ask up to 10 yes-or-no questions.", "You have three attempts to guess the country.", "A correct answer reveals the flag and adds to your daily score."] } } },
   { id: "wordle", kicker: "WORDLE", flags: ["🟩", "🟨", "⬛"], badge: "NEW", daily: true, customGame: "wordle", copy: { es: { title: "País Wordle", description: "Adiviná el país letra por letra en seis intentos o menos.", rules: ["Verde: letra correcta en el lugar correcto.", "Amarillo: la letra está, pero en otra posición.", "Gris: la letra no forma parte del país."] }, en: { title: "Country Wordle", description: "Guess the country letter by letter in six tries or fewer.", rules: ["Green: correct letter in the correct position.", "Yellow: the letter exists but belongs elsewhere.", "Gray: the letter is not part of the country."] } } },

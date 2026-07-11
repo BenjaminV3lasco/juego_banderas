@@ -5,12 +5,13 @@ import Image from "next/image";
 import { CountryDetective } from "@/app/components/CountryDetective";
 import { CountryWordle } from "@/app/components/CountryWordle";
 import { HistoricalRanking } from "@/app/components/HistoricalRanking";
+import { DailyChallenge } from "@/app/components/DailyChallenge";
 import { addDailyOutcome, DailyRecord, EMPTY_DAILY_RECORD, getDailyCountry, getDailyStreak, getTodayKey, readDailyRecord } from "@/lib/daily";
-import { Country, GameMode, getCountryDisplayName, mapCountries, MODES, normalize, RawCountry, shuffle } from "@/lib/game";
+import { Country, Difficulty, GameMode, getCountryDisplayName, mapCountries, MODES, normalize, RawCountry, shuffle } from "@/lib/game";
 import { Language, UI_TEXT } from "@/lib/i18n";
 import { saveGameResult } from "@/lib/supabase/results";
 
-type Screen = "menu" | "hub" | "player" | "ranking" | "intro" | "game" | "detective" | "wordle" | "results" | "dailyReview";
+type Screen = "menu" | "hub" | "player" | "ranking" | "intro" | "game" | "detective" | "wordle" | "dailyGame" | "results" | "dailyReview";
 type Score = { correct: number; wrong: number };
 type Player = { nickname: string; isGuest: boolean };
 
@@ -30,6 +31,11 @@ export default function Home() {
   const [dailyRecord, setDailyRecord] = useState<DailyRecord>(EMPTY_DAILY_RECORD);
   const [player, setPlayer] = useState<Player>({ nickname: "Invitado", isGuest: true });
   const [nicknameInput, setNicknameInput] = useState("");
+  const [difficulty, setDifficulty] = useState<Difficulty>("normal");
+  const [timerLimit, setTimerLimit] = useState(0);
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const startedAt = useRef<number | null>(null);
+  const timeoutHandled = useRef(false);
   const savedResult = useRef<string | null>(null);
   const todayKey = getTodayKey();
   const text = UI_TEXT[language];
@@ -56,14 +62,31 @@ export default function Home() {
   const resultPercent = useMemo(() => totalAnswered ? Math.round((score.correct / totalAnswered) * 100) : 0, [score, totalAnswered]);
 
   useEffect(() => {
+    if (!["game", "detective", "wordle", "dailyGame"].includes(screen)) return;
+    if (!startedAt.current) startedAt.current = Date.now();
+    const update = () => setElapsedSeconds(Math.floor((Date.now() - (startedAt.current || Date.now())) / 1000));
+    update();
+    const interval = window.setInterval(update, 1000);
+    return () => window.clearInterval(interval);
+  }, [screen]);
+
+  useEffect(() => {
+    if (!mode?.daily || !timerLimit || elapsedSeconds < timerLimit || timeoutHandled.current || !["game", "detective", "wordle", "dailyGame"].includes(screen)) return;
+    timeoutHandled.current = true;
+    setDailyRecord((record) => addDailyOutcome(record, `${todayKey}:${mode.id}`, "wrong"));
+    setScore({ correct: 0, wrong: 1 });
+    setScreen("results");
+  }, [elapsedSeconds, mode, screen, timerLimit, todayKey]);
+
+  useEffect(() => {
     if (screen !== "results" || !mode || !totalAnswered) return;
     const resultKey = `${mode.id}:${score.correct}:${score.wrong}`;
     if (savedResult.current === resultKey) return;
     savedResult.current = resultKey;
-    void saveGameResult({ mode: mode.id, correct: score.correct, wrong: score.wrong, nickname: mode.daily ? "Invitado" : player.nickname, isGuest: mode.daily || player.isGuest }).catch((error: unknown) => {
+    void saveGameResult({ mode: mode.id, correct: score.correct, wrong: score.wrong, nickname: mode.daily ? "Invitado" : player.nickname, isGuest: mode.daily || player.isGuest, durationSeconds: elapsedSeconds, difficulty, timerLimitSeconds: timerLimit || null }).catch((error: unknown) => {
       console.warn("No se pudo guardar el resultado en Supabase", error);
     });
-  }, [mode, player, score.correct, score.wrong, screen, totalAnswered]);
+  }, [difficulty, elapsedSeconds, mode, player, score.correct, score.wrong, screen, timerLimit, totalAnswered]);
 
   function toggleLanguage() {
     setLanguage((currentLanguage) => {
@@ -90,8 +113,8 @@ export default function Home() {
   function getEligiblePool(selected: GameMode) {
     const basePool = selected.sovereignOnly ? countries.filter((country) => country.sovereign) : countries;
     const regionalPool = selected.region ? basePool.filter((country) => country.region === selected.region) : basePool;
-    if (selected.customGame !== "wordle") return regionalPool;
-    return regionalPool.filter((country) => [country.name, country.englishName].every((countryName) => {
+    if (selected.customGame !== "wordle" && selected.customGame !== "capital-wordle") return regionalPool;
+    return regionalPool.filter((country) => (selected.customGame === "capital-wordle" ? [country.capital] : [country.name, country.englishName]).every((countryName) => {
       const length = normalize(countryName).replace(/\s/g, "").length;
       return length >= 4 && length <= 12;
     }));
@@ -111,7 +134,10 @@ export default function Home() {
     setCountryAnswer("");
     setCapitalAnswer("");
     savedResult.current = null;
-    setScreen(selected.customGame || "game");
+    timeoutHandled.current = false;
+    setElapsedSeconds(0);
+    startedAt.current = null;
+    setScreen(selected.customGame === "detective" ? "detective" : selected.customGame === "wordle" ? "wordle" : selected.customGame ? "dailyGame" : "game");
   }
 
   function nextQuestion() {
@@ -193,11 +219,12 @@ export default function Home() {
       <section className="intro-card">
         <div className={`intro-visual ${mode.flags.length === 4 ? "four" : ""}`}>{mode.flags.map((flag, flagIndex) => <span key={`${flag}-${flagIndex}`}>{flag}</span>)}</div>
         <div className="intro-content">
-          <span className="intro-kicker">{mode.kicker}</span>
+          <span className="intro-kicker">{localizeGameLabel(mode.kicker, language)}</span>
           <h1>{copy.title}</h1>
           <p>{copy.description}</p>
           <h2>{text.howToPlay}</h2>
           <ul>{copy.rules.map((rule) => <li key={rule}>{rule}</li>)}</ul>
+          {mode.daily && <div className="game-settings"><span>{language === "es" ? "Dificultad" : "Difficulty"}</span><div>{(["easy", "normal", "hard"] as Difficulty[]).map((value) => <button type="button" className={difficulty === value ? "active" : ""} onClick={() => setDifficulty(value)} key={value}>{language === "es" ? ({ easy: "Fácil", normal: "Normal", hard: "Difícil" }[value]) : value}</button>)}</div><span>{language === "es" ? "Contador" : "Timer"}</span><div>{[0, 90, 60, 40].map((value) => <button type="button" className={timerLimit === value ? "active" : ""} onClick={() => setTimerLimit(value)} key={value}>{value ? `${value}s` : (language === "es" ? "Sin tiempo" : "No timer")}</button>)}</div></div>}
           <button className="start-game" onClick={() => startGame(mode)}>{text.start}</button>
         </div>
       </section>
@@ -209,6 +236,7 @@ export default function Home() {
     return <main className="game-page">
       <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} />
       <section className="game-shell">
+        {!mode.daily && <div className="competitive-timer">⏱ {formatTime(elapsedSeconds)}</div>}
         <div className="game-meta"><span>{copy.title}</span><span className="round-score"><b>{score.correct}</b><i>–</i><em>{score.wrong}</em></span><span>{index + 1} / {questions.length}</span></div>
         <div className="progress"><span style={{ width: `${progress}%` }} /></div>
         <article className="question-card">
@@ -240,10 +268,14 @@ export default function Home() {
     </main>;
   }
 
+  if (screen === "dailyGame" && mode && current && mode.customGame && !["detective", "wordle"].includes(mode.customGame)) {
+    return <main className="game-page"><AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} /><div className="daily-game-meta"><span>{language === "es" ? ({ easy: "FÁCIL", normal: "NORMAL", hard: "DIFÍCIL" }[difficulty]) : difficulty.toUpperCase()}</span>{timerLimit > 0 && <b>⏱ {formatTime(Math.max(0, timerLimit - elapsedSeconds))}</b>}</div><DailyChallenge kind={mode.customGame as "daily-capital" | "capital-wordle" | "flag-choice" | "geo-connection"} target={current} countries={countries} language={gameLanguage} difficulty={difficulty} onResolved={(correct) => resolveCustomDaily(mode.id, correct)} onContinue={() => setScreen("results")} /></main>;
+  }
+
   if (screen === "results" && mode) {
     return <main className="result-page">
       <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} />
-      <div className="result-wrap"><div className="result-card"><span className="eyebrow">{mode.daily ? text.dailyCompleted : text.gameCompleted}</span><h1>{resultPercent}%</h1><p>{score.correct} {text.correctAnswers} {totalAnswered}</p><div className="result-actions">{!mode.daily && <button onClick={() => startGame(mode)}>{text.playAgain}</button>}<button className="secondary" onClick={returnToHub}>{text.viewModes}</button></div></div></div>
+      <div className="result-wrap"><div className="result-card"><span className="eyebrow">{mode.daily ? text.dailyCompleted : text.gameCompleted}</span><h1>{resultPercent}%</h1><p>{score.correct} {text.correctAnswers} {totalAnswered}</p>{(!mode.daily || timerLimit > 0) && <p className="result-time">⏱ {formatTime(elapsedSeconds)}</p>}<div className="result-actions">{!mode.daily && <button onClick={() => startGame(mode)}>{text.playAgain}</button>}<button className="secondary" onClick={returnToHub}>{text.viewModes}</button></div></div></div>
     </main>;
   }
 
@@ -267,7 +299,7 @@ export default function Home() {
       const streak = item.customGame ? getDailyStreak(dailyRecord, item.id) : 0;
       const badge = item.customGame ? (streak ? `${streak} 🔥` : completed ? undefined : item.badge) : item.badge;
       return <button className={`mode-card ${completed ? "completed" : ""}`} key={item.id} onClick={() => openMode(item)} disabled={!countries.length}>
-        {badge && <span className={`badge ${item.id === "capitals" ? "yellow" : ""}`}>{badge}</span>}
+        {badge && <span className={`badge ${item.id === "capitals" ? "yellow" : ""}`}>{localizeGameLabel(badge, language)}</span>}
         <div className={`mode-preview ${item.flags.length === 4 ? "four" : ""}`}>{item.flags.map((flag, flagIndex) => <span key={`${flag}-${flagIndex}`}>{flag}</span>)}</div>
         <div className="play-band"><strong>{completed ? text.completed : text.play}</strong><small>{copy.title}</small></div>
       </button>;
@@ -297,4 +329,15 @@ function AppHeader({ language, dailyRecord, onLanguage, onBack, backLabel }: { l
 
 function DailyCounter({ record, language }: { record: DailyRecord; language: Language }) {
   return <div className="score-pill daily-counter" title={UI_TEXT[language].dailyScore}><b>{record.correct}</b><i>–</i><em>{record.wrong}</em></div>;
+}
+
+function formatTime(totalSeconds: number) {
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+}
+
+function localizeGameLabel(label: string, language: Language) {
+  if (language === "en") return label;
+  return ({ DAILY: "DIARIO", MYSTERY: "MISTERIO", CAPITAL: "CAPITAL", FLAGS: "BANDERAS", CONNECTION: "CONEXIÓN", WORLD: "MUNDO", COUNTRIES: "PAÍSES", EXPERT: "EXPERTO", REGION: "REGIÓN", NEW: "NUEVO", POPULAR: "POPULAR", DOUBLE: "DOBLE" } as Record<string, string>)[label] || label;
 }

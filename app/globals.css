@@ -85,3 +85,38 @@ body { background:radial-gradient(circle at 50% -20%,#073448 0,#00111a 38%); }
 .detective-reveal,.wordle-reveal,.result-card { animation:resultIn .42s cubic-bezier(.2,.8,.2,1); }
 .detective-reveal img,.wordle-reveal img { animation:flagReveal .55s .12s both; }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-delay:0ms!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+
+.game-settings { margin-top:20px; display:grid; gap:8px; }
+.game-settings>span { color:#b9c8ce; font-size:.75rem; font-weight:700; }
+.game-settings>div { display:flex; flex-wrap:wrap; gap:7px; }
+.game-settings button { border:1px solid #31505e; border-radius:8px; background:#12303d; padding:7px 11px; font-size:.72rem; cursor:pointer; text-transform:capitalize; }
+.game-settings button.active { border-color:var(--cyan); background:var(--cyan); color:#001820; font-weight:800; }
+.competitive-timer { width:max-content; margin:0 0 12px auto; border:1px solid #31515f; border-radius:99px; background:#102b37; color:var(--yellow); padding:7px 11px; font-size:.78rem; font-weight:800; font-variant-numeric:tabular-nums; }
+.result-time { margin-top:9px; color:var(--yellow)!important; font-weight:800; }
+.daily-game-meta { width:min(720px,calc(100% - 24px)); margin:25px auto 0; display:flex; justify-content:space-between; color:#9fb4bc; font-size:.72rem; letter-spacing:.08em; }
+.daily-game-meta b { color:var(--yellow); font-variant-numeric:tabular-nums; }
+.daily-game-shell { width:min(720px,calc(100% - 24px)); min-height:430px; margin:12px auto 70px; border:1px solid #1b5870; border-radius:18px; background:linear-gradient(145deg,#082a38,#031923); padding:34px; text-align:center; box-shadow:0 25px 70px #0007; animation:cardIn .4s ease both; }
+.daily-game-shell>h1 { font-size:1.55rem; margin-bottom:10px; }
+.daily-prompt { color:#a8bbc3; margin-bottom:22px; }
+.daily-answer-form { width:min(470px,100%); margin:25px auto 0; display:grid; grid-template-columns:1fr auto; gap:8px; }
+.daily-answer-form input { min-width:0; border:1px solid #3b5966; border-radius:9px; background:#01131c; color:white; padding:12px 14px; outline:none; }
+.daily-answer-form input:focus { border-color:var(--cyan); }
+.daily-answer-form button,.clue-button,.daily-finish>button { border:0; border-radius:8px; background:var(--yellow); color:#171100; padding:11px 15px; font-weight:800; cursor:pointer; }
+.flag-options { margin-top:25px; display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+.flag-options.options-3 { max-width:520px; margin-inline:auto; }
+.flag-options.options-6 { grid-template-columns:repeat(3,1fr); }
+.flag-options button { min-height:120px; border:1px solid #294c5b; border-radius:11px; background:#02141d; cursor:pointer; padding:12px; transition:.18s; }
+.flag-options button:hover { border-color:var(--cyan); transform:translateY(-3px); }
+.flag-options img { width:100%; height:100px; object-fit:contain; }
+.connection-clues { max-width:540px; margin:24px auto; display:grid; gap:8px; }
+.connection-clues div { border-left:3px solid var(--cyan); border-radius:6px; background:#0b3140; padding:12px; text-align:left; animation:clueIn .25s ease; }
+.clue-button { background:#173b49; color:white; border:1px solid #38606f; }
+.capital-wordle-board { min-height:205px; display:flex; flex-direction:column; align-items:center; gap:5px; margin:20px 0; }
+.capital-wordle-row { display:flex; gap:5px; }
+.capital-wordle-row span { width:38px; height:38px; display:grid; place-items:center; border-radius:5px; background:#3b414b; font-weight:800; animation:tileReveal .45s ease; }
+.capital-wordle-row span.correct { background:#2ea66f; }.capital-wordle-row span.present { background:#d5a514; color:#171100; }
+.daily-finish { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:15px; }
+.daily-finish>span { font-weight:900; letter-spacing:.08em; }.daily-finish .win { color:var(--green); }.daily-finish .lose { color:#ff657d; }
+.daily-answer-flag { width:min(320px,90%); height:180px; display:grid; place-items:center; border-radius:10px; background:#00131c; }
+.daily-answer-flag img { max-width:88%; max-height:85%; object-fit:contain; animation:flagReveal .5s ease; }
+@media(max-width:520px){.daily-game-shell{padding:22px 15px}.flag-options.options-6{grid-template-columns:repeat(2,1fr)}.flag-options button{min-height:95px}.flag-options img{height:75px}.daily-answer-form{grid-template-columns:1fr}.capital-wordle-row span{width:28px;height:32px;font-size:.75rem}}
