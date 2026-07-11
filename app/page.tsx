@@ -120,7 +120,7 @@ export default function Home() {
   }
 
   function openMode(selected: GameMode) {
-    if (selected.customGame === "detective") setTimerLimit(0);
+    if (["detective", "wordle", "capital-wordle"].includes(selected.customGame || "")) setTimerLimit(0);
     if (selected.daily && isDailyCompleted(selected.id)) {
       const recordKey = `${todayKey}:${selected.id}`;
       const outcome = dailyRecord.outcomes[recordKey] || dailyRecord.outcomes[todayKey];
@@ -169,7 +169,7 @@ export default function Home() {
     startedAt.current = null;
     gameSessionId.current = selected.daily ? null : createGameSessionId();
     questionStartedAt.current = null;
-    navigateTo(selected.customGame === "detective" ? "detective" : selected.customGame === "wordle" ? "wordle" : selected.customGame === "country-map" ? "countryMap" : selected.customGame === "neighbour-countries" ? "neighbours" : selected.customGame ? "dailyGame" : "game");
+    navigateTo(selected.customGame === "detective" ? "detective" : selected.customGame === "wordle" || selected.customGame === "capital-wordle" ? "wordle" : selected.customGame === "country-map" ? "countryMap" : selected.customGame === "neighbour-countries" ? "neighbours" : selected.customGame ? "dailyGame" : "game");
   }
 
   function nextQuestion() {
@@ -275,7 +275,7 @@ export default function Home() {
           <p>{copy.description}</p>
           <h2>{text.howToPlay}</h2>
           <ul>{copy.rules.map((rule) => <li key={rule}>{rule}</li>)}</ul>
-          {mode.daily && <div className="game-settings"><span>{language === "es" ? "Dificultad" : "Difficulty"}</span><div>{(["easy", "normal", "hard"] as Difficulty[]).map((value) => <button type="button" className={difficulty === value ? "active" : ""} onClick={() => setDifficulty(value)} key={value}>{language === "es" ? ({ easy: "Fácil", normal: "Normal", hard: "Difícil" }[value]) : value}</button>)}</div>{mode.customGame !== "detective" && <><span>{language === "es" ? "Contador" : "Timer"}</span><div>{[0, 90, 60, 40].map((value) => <button type="button" className={timerLimit === value ? "active" : ""} onClick={() => setTimerLimit(value)} key={value}>{value ? `${value}s` : (language === "es" ? "Sin tiempo" : "No timer")}</button>)}</div></>}</div>}
+          {mode.daily && <div className="game-settings"><span>{language === "es" ? "Dificultad" : "Difficulty"}</span><div>{(["easy", "normal", "hard"] as Difficulty[]).map((value) => <button type="button" className={difficulty === value ? "active" : ""} onClick={() => setDifficulty(value)} key={value}>{language === "es" ? ({ easy: "Fácil", normal: "Normal", hard: "Difícil" }[value]) : value}</button>)}</div>{!["detective", "wordle", "capital-wordle"].includes(mode.customGame || "") && <><span>{language === "es" ? "Contador" : "Timer"}</span><div>{[0, 90, 60, 40].map((value) => <button type="button" className={timerLimit === value ? "active" : ""} onClick={() => setTimerLimit(value)} key={value}>{value ? `${value}s` : (language === "es" ? "Sin tiempo" : "No timer")}</button>)}</div></>}</div>}
           <button className="start-game" onClick={() => startGame(mode)}>{text.start}</button>
         </div>
       </section>
@@ -316,7 +316,7 @@ export default function Home() {
   if (screen === "wordle" && mode && current) {
     return <main className="game-page">
       <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter={mode.daily} />
-      <CountryWordle target={current} countries={countries} language={gameLanguage} onResolved={(correct) => resolveCustomDaily("wordle", correct)} onContinue={() => setScreen("results")} />
+      <CountryWordle target={current} countries={countries} language={gameLanguage} difficulty={difficulty} variant={mode.customGame === "capital-wordle" ? "capital" : "country"} onResolved={(correct) => resolveCustomDaily(mode.id, correct)} onContinue={() => setScreen("results")} />
     </main>;
   }
 
@@ -328,7 +328,7 @@ export default function Home() {
     return <main className="game-page"><AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter /><NeighbourCountries target={current} countries={countries} language={gameLanguage} difficulty={difficulty} onResolved={(correct) => resolveCustomDaily(mode.id, correct)} onContinue={() => setScreen("results")} /></main>;
   }
 
-  if (screen === "dailyGame" && mode && current && mode.customGame && !["detective", "wordle"].includes(mode.customGame)) {
+  if (screen === "dailyGame" && mode && current && mode.customGame && !["detective", "wordle", "capital-wordle"].includes(mode.customGame)) {
     return <main className="game-page"><AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter /><div className="daily-game-meta"><span>{language === "es" ? ({ easy: "FÁCIL", normal: "NORMAL", hard: "DIFÍCIL" }[difficulty]) : difficulty.toUpperCase()}</span>{timerLimit > 0 && <b>⏱ {formatTime(Math.max(0, timerLimit - elapsedSeconds))}</b>}</div><DailyChallenge kind={mode.customGame as "daily-capital" | "capital-wordle" | "flag-choice" | "geo-connection"} target={current} countries={countries} language={gameLanguage} difficulty={difficulty} onResolved={(correct) => resolveCustomDaily(mode.id, correct)} onContinue={() => setScreen("results")} /></main>;
   }
 

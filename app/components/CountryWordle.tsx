@@ -1,8 +1,8 @@
 "use client";
 
 import { CSSProperties, FormEvent, useMemo, useRef, useState } from "react";
-import type { Country } from "@/lib/game";
-import { getCountryDisplayName, normalize } from "@/lib/game";
+import type { Country, Difficulty } from "@/lib/game";
+import { getCapitalDisplayName, getCountryDisplayName, normalize } from "@/lib/game";
 import type { Language } from "@/lib/i18n";
 
 type LetterStatus = "correct" | "present" | "absent";
@@ -35,8 +35,9 @@ function evaluateGuess(guess: string, answer: string): LetterStatus[] {
   return statuses;
 }
 
-export function CountryWordle({ target, countries, language, onResolved, onContinue }: { target: Country; countries: Country[]; language: Language; onResolved: (correct: boolean) => void; onContinue: () => void }) {
-  const targetName = getCountryDisplayName(target, language);
+export function CountryWordle({ target, countries, language, difficulty, variant = "country", onResolved, onContinue }: { target: Country; countries: Country[]; language: Language; difficulty: Difficulty; variant?: "country" | "capital"; onResolved: (correct: boolean) => void; onContinue: () => void }) {
+  const isCapital = variant === "capital";
+  const targetName = isCapital ? getCapitalDisplayName(target, language) : getCountryDisplayName(target, language);
   const answer = toWord(targetName);
   const [input, setInput] = useState("");
   const [guesses, setGuesses] = useState<EvaluatedGuess[]>([]);
@@ -44,10 +45,10 @@ export function CountryWordle({ target, countries, language, onResolved, onConti
   const [error, setError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const copy = language === "es"
-    ? { title: "País Wordle", invalid: "Introduce un país válido con la cantidad correcta de letras.", win: "¡País descubierto!", lose: "No quedan intentos", answer: "El país era", continue: "Ver resultado", input: "Escribe con el teclado" }
-    : { title: "Country Wordle", invalid: "Enter a valid country with the correct number of letters.", win: "Country discovered!", lose: "No tries left", answer: "The country was", continue: "View result", input: "Type with your keyboard" };
+    ? { title: isCapital ? "Capital Wordle" : "País Wordle", invalid: `Introduce ${isCapital ? "una capital" : "un país"} válido con la cantidad correcta de letras.`, win: isCapital ? "¡Capital descubierta!" : "¡País descubierto!", lose: "No quedan intentos", answer: isCapital ? "La capital era" : "El país era", continue: "Ver resultado", input: "Escribe con el teclado" }
+    : { title: isCapital ? "Capital Wordle" : "Country Wordle", invalid: `Enter a valid ${isCapital ? "capital" : "country"} with the correct number of letters.`, win: isCapital ? "Capital discovered!" : "Country discovered!", lose: "No tries left", answer: isCapital ? "The capital was" : "The country was", continue: "View result", input: "Type with your keyboard" };
 
-  const validWords = useMemo(() => new Set(countries.map((country) => toWord(getCountryDisplayName(country, language))).filter((word) => word.length === answer.length)), [answer.length, countries, language]);
+  const validWords = useMemo(() => new Set(countries.map((country) => toWord(isCapital ? getCapitalDisplayName(country, language) : getCountryDisplayName(country, language))).filter((word) => word.length === answer.length)), [answer.length, countries, isCapital, language]);
   const keyboardStatuses = useMemo(() => {
     const result: Record<string, LetterStatus> = {};
     for (const guess of guesses) guess.word.split("").forEach((letter, index) => {
@@ -72,7 +73,7 @@ export function CountryWordle({ target, countries, language, onResolved, onConti
   function submitGuess(event: FormEvent) {
     event.preventDefault();
     if (finished !== null) return;
-    if (input.length !== answer.length || !validWords.has(input)) {
+    if (input.length !== answer.length || (difficulty !== "easy" && !validWords.has(input))) {
       setError(copy.invalid);
       return;
     }
@@ -111,7 +112,7 @@ export function CountryWordle({ target, countries, language, onResolved, onConti
       <span className={finished ? "win" : "lose"}>{finished ? copy.win : copy.lose}</span>
       <h2>{copy.answer}: {targetName}</h2>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={target.flag} alt={targetName} />
+      <img src={target.flag} alt={isCapital ? getCountryDisplayName(target, language) : targetName} />
       <button onClick={onContinue}>{copy.continue}</button>
     </div>}
   </section>;
