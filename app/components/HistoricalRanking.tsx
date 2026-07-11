@@ -5,6 +5,7 @@ import { GameMode, ModeId } from "@/lib/game";
 import { Language } from "@/lib/i18n";
 import { getHistoricalRanking, RankingEntry } from "@/lib/supabase/results";
 import { LoadingState } from "@/app/components/LoadingState";
+import Image from "next/image";
 
 export function HistoricalRanking({ language, modes }: { language: Language; modes: GameMode[] }) {
   const [entries, setEntries] = useState<RankingEntry[]>([]);
@@ -40,6 +41,7 @@ export function HistoricalRanking({ language, modes }: { language: Language; mod
 }
 
 function RankingModeIcon({ mode }: { mode: ModeId }) {
+  if (mode === "africa") return <span className="ranking-real-flag" aria-hidden="true"><Image src="/flags/za.svg" alt="" width={22} height={15} /></span>;
   if (["americas", "europe", "asia", "africa"].includes(mode)) return <span className={`ranking-flag-icon flag-${mode}`} aria-hidden="true"><i /></span>;
   const icon = mode === "world" ? "🌎" : mode === "sovereign" ? "◎" : mode === "capitals" ? "⌖" : "◆";
   return <span className="ranking-symbol-icon" aria-hidden="true">{icon}</span>;

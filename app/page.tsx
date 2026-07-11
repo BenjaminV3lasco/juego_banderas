@@ -36,6 +36,7 @@ export default function Home() {
   const [feedback, setFeedback] = useState<{ text: string; ok: boolean } | null>(null);
   const [dailyRecord, setDailyRecord] = useState<DailyRecord>(EMPTY_DAILY_RECORD);
   const [player, setPlayer] = useState<Player>({ nickname: "Invitado", isGuest: true });
+  const [hasPlayerSession, setHasPlayerSession] = useState(false);
   const [nicknameInput, setNicknameInput] = useState("");
   const [difficulty, setDifficulty] = useState<Difficulty>("normal");
   const [timerLimit, setTimerLimit] = useState(0);
@@ -55,8 +56,17 @@ export default function Home() {
       setDailyRecord(readDailyRecord());
       const storedLanguage = localStorage.getItem("mundoquiz_language");
       if (storedLanguage === "es" || storedLanguage === "en") setLanguage(storedLanguage);
-      const storedNickname = localStorage.getItem("mundoquiz_nickname");
-      if (storedNickname) setNicknameInput(storedNickname);
+      const storedPlayer = sessionStorage.getItem("mundoquiz_player");
+      if (storedPlayer) {
+        try {
+          const parsed = JSON.parse(storedPlayer) as Player;
+          if (parsed.nickname && typeof parsed.isGuest === "boolean") {
+            setPlayer(parsed);
+            setNicknameInput(parsed.isGuest ? "" : parsed.nickname);
+            setHasPlayerSession(true);
+          }
+        } catch { sessionStorage.removeItem("mundoquiz_player"); }
+      }
     });
     fetch("/data/countries.json")
       .then((response) => response.json())
@@ -217,20 +227,30 @@ export default function Home() {
   }
 
   function openGeographySetup() {
+    if (hasPlayerSession) {
+      setHubCategory("geography");
+      navigateTo("hub");
+      return;
+    }
     navigateTo("player");
   }
 
   function continueWithNickname() {
     const nickname = nicknameInput.trim().slice(0, 20);
     if (!nickname) return;
-    localStorage.setItem("mundoquiz_nickname", nickname);
-    setPlayer({ nickname, isGuest: false });
+    const selectedPlayer = { nickname, isGuest: false };
+    sessionStorage.setItem("mundoquiz_player", JSON.stringify(selectedPlayer));
+    setPlayer(selectedPlayer);
+    setHasPlayerSession(true);
     setHubCategory("geography");
     setScreen("hub");
   }
 
   function continueAsGuest() {
-    setPlayer({ nickname: language === "es" ? "Invitado" : "Guest", isGuest: true });
+    const selectedPlayer = { nickname: language === "es" ? "Invitado" : "Guest", isGuest: true };
+    sessionStorage.setItem("mundoquiz_player", JSON.stringify(selectedPlayer));
+    setPlayer(selectedPlayer);
+    setHasPlayerSession(true);
     setHubCategory("geography");
     setScreen("hub");
   }
@@ -347,7 +367,7 @@ export default function Home() {
   if (screen === "results" && mode) {
     return <main className="result-page">
       <AppHeader onHome={handleLogoNavigation} language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} showCounter={mode.daily} />
-      <div className="result-wrap"><div className="result-card"><span className="eyebrow">{mode.daily ? text.dailyCompleted : text.gameCompleted}</span><h1>{resultPercent}%</h1><p>{score.correct} {text.correctAnswers} {totalAnswered}</p>{(!mode.daily || timerLimit > 0) && <p className="result-time">⏱ {formatTime(elapsedSeconds)}</p>}<div className="result-actions">{!mode.daily && <button onClick={() => startGame(mode)}>{text.playAgain}</button>}<button className="secondary" onClick={returnToHub}>{text.viewModes}</button></div></div></div>
+      <div className="result-wrap"><div className="result-card"><span className="eyebrow">{mode.daily ? text.dailyCompleted : text.gameCompleted}</span><h1>{resultPercent}%</h1><p>{score.correct} {text.correctAnswers} {totalAnswered}</p>{(!mode.daily || timerLimit > 0) && <p className="result-time">⏱ {formatTime(elapsedSeconds)}</p>}<div className="result-actions">{!mode.daily && <><button onClick={() => startGame(mode)}>{text.playAgain}</button><button className="ranking-action" onClick={() => navigateTo("ranking")}>{text.viewRanking}</button></>}<button className="secondary" onClick={returnToHub}>{text.viewModes}</button></div></div></div>
     </main>;
   }
 
