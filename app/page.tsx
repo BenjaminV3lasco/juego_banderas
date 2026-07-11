@@ -7,7 +7,7 @@ import { CountryWordle } from "@/app/components/CountryWordle";
 import { HistoricalRanking } from "@/app/components/HistoricalRanking";
 import { DailyChallenge } from "@/app/components/DailyChallenge";
 import { addDailyOutcome, DailyRecord, EMPTY_DAILY_RECORD, getDailyCountry, getDailyStreak, getTodayKey, readDailyRecord } from "@/lib/daily";
-import { Country, Difficulty, GameMode, getCountryDisplayName, mapCountries, MODES, normalize, RawCountry, shuffle } from "@/lib/game";
+import { Country, Difficulty, GameMode, getCapitalDisplayName, getCountryDisplayName, mapCountries, MODES, normalize, RawCountry, shuffle } from "@/lib/game";
 import { Language, UI_TEXT } from "@/lib/i18n";
 import { saveGameResult } from "@/lib/supabase/results";
 
@@ -34,6 +34,7 @@ export default function Home() {
   const [difficulty, setDifficulty] = useState<Difficulty>("normal");
   const [timerLimit, setTimerLimit] = useState(0);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const [isNavigating, setIsNavigating] = useState(false);
   const startedAt = useRef<number | null>(null);
   const timeoutHandled = useRef(false);
   const savedResult = useRef<string | null>(null);
@@ -96,6 +97,14 @@ export default function Home() {
     });
   }
 
+  function navigateTo(nextScreen: Screen) {
+    setIsNavigating(true);
+    window.setTimeout(() => {
+      setScreen(nextScreen);
+      setIsNavigating(false);
+    }, 280);
+  }
+
   function openMode(selected: GameMode) {
     if (selected.daily && isDailyCompleted(selected.id)) {
       const outcome = dailyRecord.outcomes[`${todayKey}:${selected.id}`] || dailyRecord.outcomes[todayKey];
@@ -107,14 +116,14 @@ export default function Home() {
       return;
     }
     setMode(selected);
-    setScreen("intro");
+    navigateTo("intro");
   }
 
   function getEligiblePool(selected: GameMode) {
     const basePool = selected.sovereignOnly ? countries.filter((country) => country.sovereign) : countries;
     const regionalPool = selected.region ? basePool.filter((country) => country.region === selected.region) : basePool;
     if (selected.customGame !== "wordle" && selected.customGame !== "capital-wordle") return regionalPool;
-    return regionalPool.filter((country) => (selected.customGame === "capital-wordle" ? [country.capital] : [country.name, country.englishName]).every((countryName) => {
+    return regionalPool.filter((country) => (selected.customGame === "capital-wordle" ? [getCapitalDisplayName(country, language)] : [country.name, country.englishName]).every((countryName) => {
       const length = normalize(countryName).replace(/\s/g, "").length;
       return length >= 4 && length <= 12;
     }));
@@ -137,7 +146,7 @@ export default function Home() {
     timeoutHandled.current = false;
     setElapsedSeconds(0);
     startedAt.current = null;
-    setScreen(selected.customGame === "detective" ? "detective" : selected.customGame === "wordle" ? "wordle" : selected.customGame ? "dailyGame" : "game");
+    navigateTo(selected.customGame === "detective" ? "detective" : selected.customGame === "wordle" ? "wordle" : selected.customGame ? "dailyGame" : "game");
   }
 
   function nextQuestion() {
@@ -153,12 +162,12 @@ export default function Home() {
     if (!current || feedback) return;
     const normalizedAnswer = normalize(countryAnswer);
     const countryOk = current.acceptedNames.some((name) => normalize(name) === normalizedAnswer);
-    const capitalOk = !mode?.asksCapital || normalize(capitalAnswer) === normalize(current.capital);
+    const capitalOk = !mode?.asksCapital || current.acceptedCapitals.some((capital) => normalize(capital) === normalize(capitalAnswer));
     const ok = countryOk && capitalOk;
     if (mode?.daily) setDailyRecord((record) => addDailyOutcome(record, `${todayKey}:${mode.id}`, ok ? "correct" : "wrong"));
     setScore((value) => ({ ...value, [ok ? "correct" : "wrong"]: value[ok ? "correct" : "wrong"] + 1 }));
     const countryName = getCountryDisplayName(current, language);
-    setFeedback({ text: ok ? text.correct : `${countryName}${mode?.asksCapital ? ` — ${current.capital}` : ""}`, ok });
+    setFeedback({ text: ok ? text.correct : `${countryName}${mode?.asksCapital ? ` — ${getCapitalDisplayName(current, language)}` : ""}`, ok });
     window.setTimeout(nextQuestion, ok ? 850 : 1400);
   }
 
@@ -169,11 +178,11 @@ export default function Home() {
 
   function openDailyHub() {
     setHubCategory("daily");
-    setScreen("hub");
+    navigateTo("hub");
   }
 
   function openGeographySetup() {
-    setScreen("player");
+    navigateTo("player");
   }
 
   function continueWithNickname() {
@@ -198,6 +207,8 @@ export default function Home() {
 
   const geographyModes = MODES.filter((item) => !item.daily);
 
+  if (isNavigating) return <ScreenLoader language={language} />;
+
   if (screen === "player") {
     return <main className="player-page">
       <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={() => setScreen("menu")} backLabel={text.mainMenu} />
@@ -217,7 +228,7 @@ export default function Home() {
     return <main className="intro-page">
       <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} />
       <section className="intro-card">
-        <div className={`intro-visual ${mode.flags.length === 4 ? "four" : ""}`}>{mode.flags.map((flag, flagIndex) => <span key={`${flag}-${flagIndex}`}>{flag}</span>)}</div>
+        <div className="intro-visual"><GamePreview mode={mode} /></div>
         <div className="intro-content">
           <span className="intro-kicker">{localizeGameLabel(mode.kicker, language)}</span>
           <h1>{copy.title}</h1>
@@ -300,7 +311,7 @@ export default function Home() {
       const badge = item.customGame ? (streak ? `${streak} 🔥` : completed ? undefined : item.badge) : item.badge;
       return <button className={`mode-card ${completed ? "completed" : ""}`} key={item.id} onClick={() => openMode(item)} disabled={!countries.length}>
         {badge && <span className={`badge ${item.id === "capitals" ? "yellow" : ""}`}>{localizeGameLabel(badge, language)}</span>}
-        <div className={`mode-preview ${item.flags.length === 4 ? "four" : ""}`}>{item.flags.map((flag, flagIndex) => <span key={`${flag}-${flagIndex}`}>{flag}</span>)}</div>
+        <GamePreview mode={item} />
         <div className="play-band"><strong>{completed ? text.completed : text.play}</strong><small>{copy.title}</small></div>
       </button>;
     })}</div></section>
@@ -312,9 +323,9 @@ export default function Home() {
   return <main className="menu-page">
     <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} />
     <section className="main-menu"><div className="menu-heading"><span className="eyebrow">MUNDOQUIZ</span><h1>{text.menuTitle}</h1></div><div className="menu-options">
-      <button className="menu-option daily-option" onClick={openDailyHub}><span className="menu-icon">☀</span><div><h2>{text.dailyChallenges}</h2><p>{text.dailyDescription}</p></div><strong>→</strong></button>
-      <button className="menu-option geography-option" onClick={openGeographySetup}><span className="menu-icon">🌍</span><div><h2>{text.geographyLevel}</h2><p>{text.geographyDescription}</p></div><strong>→</strong></button>
-      <button className="menu-option ranking-option" onClick={() => setScreen("ranking")}><span className="menu-icon">♛</span><div><h2>{text.historicalRanking}</h2><p>{text.rankingDescription}</p></div><strong>→</strong></button>
+      <button className="menu-option daily-option" onClick={openDailyHub}><MenuIcon kind="daily" /><div><span className="menu-number">01</span><h2>{text.dailyChallenges}</h2><p>{text.dailyDescription}</p></div><strong>→</strong></button>
+      <button className="menu-option geography-option" onClick={openGeographySetup}><MenuIcon kind="geography" /><div><span className="menu-number">02</span><h2>{text.geographyLevel}</h2><p>{text.geographyDescription}</p></div><strong>→</strong></button>
+      <button className="menu-option ranking-option" onClick={() => navigateTo("ranking")}><MenuIcon kind="ranking" /><div><span className="menu-number">03</span><h2>{text.historicalRanking}</h2><p>{text.rankingDescription}</p></div><strong>→</strong></button>
     </div></section>
   </main>;
 }
@@ -340,4 +351,23 @@ function formatTime(totalSeconds: number) {
 function localizeGameLabel(label: string, language: Language) {
   if (language === "en") return label;
   return ({ DAILY: "DIARIO", MYSTERY: "MISTERIO", CAPITAL: "CAPITAL", FLAGS: "BANDERAS", CONNECTION: "CONEXIÓN", WORLD: "MUNDO", COUNTRIES: "PAÍSES", EXPERT: "EXPERTO", REGION: "REGIÓN", NEW: "NUEVO", POPULAR: "POPULAR", DOUBLE: "DOBLE" } as Record<string, string>)[label] || label;
+}
+
+function ScreenLoader({ language }: { language: Language }) {
+  return <main className="screen-loader" role="status" aria-live="polite"><div className="loader-brand"><div className="loader-orbit"><span /></div><div className="logo"><span>MUNDO</span>QUIZ</div><p>{language === "es" ? "Preparando el desafío…" : "Preparing the challenge…"}</p><div className="loader-bar"><i /></div></div></main>;
+}
+
+function MenuIcon({ kind }: { kind: "daily" | "geography" | "ranking" }) {
+  if (kind === "daily") return <span className="menu-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="8"/><path d="M24 4v7M24 37v7M4 24h7M37 24h7M10 10l5 5M33 33l5 5M38 10l-5 5M15 33l-5 5"/></svg></span>;
+  if (kind === "geography") return <span className="menu-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="18"/><path d="M6 24h36M24 6c6 5 9 11 9 18s-3 13-9 18c-6-5-9-11-9-18s3-13 9-18z"/></svg></span>;
+  return <span className="menu-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 39h30M13 35h22l2-20-9 7-4-12-4 12-9-7 2 20z"/><circle cx="11" cy="12" r="2"/><circle cx="24" cy="7" r="2"/><circle cx="37" cy="12" r="2"/></svg></span>;
+}
+
+function GamePreview({ mode }: { mode: GameMode }) {
+  if (mode.customGame === "wordle" || mode.customGame === "capital-wordle") return <div className="mode-preview visual-wordle"><div>{["M","U","N","D","O"].map((letter, index) => <span className={index === 0 ? "green" : index === 2 ? "yellow" : ""} key={letter}>{letter}</span>)}</div><div>{["Q","U","I","Z"].map((letter, index) => <span className={index > 1 ? "green" : ""} key={letter}>{letter}</span>)}</div></div>;
+  if (mode.customGame === "detective" || mode.customGame === "geo-connection") return <div className="mode-preview visual-connection"><div className="preview-node main">?</div><i/><div className="preview-node one"/><div className="preview-node two"/><div className="preview-node three"/><span className="preview-clue first"/><span className="preview-clue second"/></div>;
+  if (mode.customGame === "flag-choice") return <div className="mode-preview visual-choice"><span/><span className="selected"><b>✓</b></span><span/><span/></div>;
+  if (mode.customGame === "daily-capital" || mode.id === "capitals") return <div className="mode-preview visual-capital"><div className="building"><i/><i/><i/><i/></div><span className="pin"><b/></span><div className="answer-line"/></div>;
+  if (mode.id === "daily") return <div className="mode-preview visual-daily"><div className="calendar"><b>24</b><span/></div><div className="mini-flag"><i/><i/><i/></div></div>;
+  return <div className="mode-preview visual-flags"><div className="flag-card back"><i/><i/><i/></div><div className="flag-card front"><i/><i/><i/></div><span className="preview-check">✓</span></div>;
 }

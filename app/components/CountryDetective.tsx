@@ -2,7 +2,7 @@
 
 import { FormEvent, useMemo, useState } from "react";
 import type { Country } from "@/lib/game";
-import { getCountryDisplayName, normalize } from "@/lib/game";
+import { getCapitalDisplayName, getCountryDisplayName, normalize } from "@/lib/game";
 import type { Language } from "@/lib/i18n";
 import { getGeographyName } from "@/lib/geography-names";
 
@@ -59,7 +59,7 @@ export function CountryDetective({ target, countries, language, onResolved, onCo
       ? target.region === value
       : category === "subregion"
         ? target.subregion === value
-        : normalize(target.capital).startsWith(normalize(value));
+        : normalize(getCapitalDisplayName(target, language)).startsWith(normalize(value));
     setClues((current) => [...current, { question: questionText(category, value), answer }]);
     setQuestionsLeft((current) => current - 1);
     setValue("");

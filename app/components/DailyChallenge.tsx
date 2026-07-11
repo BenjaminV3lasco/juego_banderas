@@ -3,7 +3,7 @@
 import { FormEvent, useMemo, useState } from "react";
 import Image from "next/image";
 import type { Country, Difficulty, ModeId } from "@/lib/game";
-import { getCountryDisplayName, normalize, shuffle } from "@/lib/game";
+import { getCapitalDisplayName, getCountryDisplayName, normalize, shuffle } from "@/lib/game";
 import type { Language } from "@/lib/i18n";
 import { getGeographyName } from "@/lib/geography-names";
 
@@ -25,15 +25,16 @@ export function DailyChallenge({ kind, target, countries, language, difficulty, 
   const [clues, setClues] = useState(difficulty === "easy" ? 2 : 1);
   const copy = language === "es" ? { check: "Confirmar", next: "Ver resultado", capital: "Escribí la capital", country: "Escribí el país", right: "¡Respuesta correcta!", wrong: "Respuesta incorrecta", was: "La respuesta era", clue: "Mostrar otra pista", tries: "intentos" } : { check: "Confirm", next: "View result", capital: "Type the capital", country: "Type the country", right: "Correct answer!", wrong: "Wrong answer", was: "The answer was", clue: "Show another clue", tries: "tries" };
   const countryName = getCountryDisplayName(target, language);
-  const capitalAnswer = word(target.capital);
+  const capitalName = getCapitalDisplayName(target, language);
+  const capitalAnswer = word(capitalName);
   const maxTries = difficulty === "easy" ? 8 : difficulty === "normal" ? 6 : 4;
   const optionCount = difficulty === "easy" ? 3 : difficulty === "normal" ? 4 : 6;
   const flagOptions = useMemo(() => shuffle([target, ...shuffle(countries.filter((country) => country.name !== target.name)).slice(0, optionCount - 1)]), [countries, optionCount, target]);
-  const capitalWords = useMemo(() => new Set(countries.map((country) => word(country.capital)).filter((value) => value.length === capitalAnswer.length)), [capitalAnswer.length, countries]);
+  const capitalWords = useMemo(() => new Set(countries.map((country) => word(getCapitalDisplayName(country, language))).filter((value) => value.length === capitalAnswer.length)), [capitalAnswer.length, countries, language]);
   const connectionClues = [
     `${language === "es" ? "Continente" : "Continent"}: ${getGeographyName(target.region, language)}`,
     `${language === "es" ? "Subregión" : "Subregion"}: ${getGeographyName(target.subregion, language)}`,
-    ...(difficulty === "hard" ? [] : [`${language === "es" ? "Capital" : "Capital"}: ${target.capital}`]),
+    ...(difficulty === "hard" ? [] : [`Capital: ${capitalName}`]),
     `${language === "es" ? "Nombre" : "Name"}: ${word(countryName).length} ${language === "es" ? "letras" : "letters"}`,
   ];
 
@@ -48,12 +49,12 @@ export function DailyChallenge({ kind, target, countries, language, difficulty, 
       if (value === capitalAnswer) finish(true); else if (next.length === maxTries) finish(false);
       return;
     }
-    const expected = kind === "daily-capital" ? normalize(target.capital) : null;
-    const ok = expected ? normalize(answer) === expected : target.acceptedNames.some((name) => normalize(name) === normalize(answer));
+    const capitalOk = target.acceptedCapitals.some((capital) => normalize(capital) === normalize(answer));
+    const ok = kind === "daily-capital" ? capitalOk : target.acceptedNames.some((name) => normalize(name) === normalize(answer));
     finish(ok);
   }
 
-  if (finished !== null) return <section className="daily-game-shell daily-finish"><span className={finished ? "win" : "lose"}>{finished ? copy.right : copy.wrong}</span><h1>{copy.was}: {kind.includes("capital") ? target.capital : countryName}</h1><div className="daily-answer-flag"><Image src={target.flag} alt={countryName} width={320} height={180} unoptimized /></div><button onClick={onContinue}>{copy.next}</button></section>;
+  if (finished !== null) return <section className="daily-game-shell daily-finish"><span className={finished ? "win" : "lose"}>{finished ? copy.right : copy.wrong}</span><h1>{copy.was}: {kind.includes("capital") ? capitalName : countryName}</h1><div className="daily-answer-flag"><Image src={target.flag} alt={countryName} width={320} height={180} unoptimized /></div><button onClick={onContinue}>{copy.next}</button></section>;
 
   if (kind === "flag-choice") return <section className="daily-game-shell"><h1>{countryName}</h1><p className="daily-prompt">{language === "es" ? "¿Cuál es su bandera?" : "Which is its flag?"}</p><div className={`flag-options options-${optionCount}`}>{flagOptions.map((country) => <button key={country.name} onClick={() => finish(country.name === target.name)}><Image src={country.flag} alt={language === "es" ? "Opción de bandera" : "Flag option"} width={180} height={100} unoptimized /></button>)}</div></section>;
 

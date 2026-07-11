@@ -1,4 +1,5 @@
 import { getCountryAliases, getSpanishCountryName, isSovereignCountry } from "@/lib/country-names";
+import { getCapitalAliases, getSpanishCapitalName } from "@/lib/capital-names";
 
 export type ModeId = "daily" | "detective" | "wordle" | "daily-capital" | "capital-wordle" | "flag-choice" | "geo-connection" | "world" | "sovereign" | "capitals" | "americas" | "europe" | "asia" | "africa";
 export type Difficulty = "easy" | "normal" | "hard";
@@ -17,6 +18,8 @@ export type Country = {
   englishName: string;
   acceptedNames: string[];
   capital: string;
+  englishCapital: string;
+  acceptedCapitals: string[];
   flag: string;
   region: string;
   subregion: string;
@@ -68,15 +71,22 @@ export function getCountryDisplayName(country: Country, language: "es" | "en") {
   return language === "es" ? country.name : country.englishName;
 }
 
+export function getCapitalDisplayName(country: Country, language: "es" | "en") {
+  return language === "es" ? country.capital : country.englishCapital;
+}
+
 export function mapCountries(data: RawCountry[]): Country[] {
   return data.map((country) => {
     const englishName = country.name.common;
     const name = getSpanishCountryName(englishName, country.translations?.spa?.common || englishName);
+    const englishCapital = country.capital?.[0] || "";
     return {
       name,
       englishName,
       acceptedNames: [...new Set([name, englishName, ...getCountryAliases(englishName)])],
-      capital: country.capital?.[0] || "",
+      capital: getSpanishCapitalName(englishCapital),
+      englishCapital,
+      acceptedCapitals: getCapitalAliases(englishCapital),
       flag: country.flags?.svg || country.flags?.png || "",
       region: country.region || "Other",
       subregion: country.subregion || "Other",
