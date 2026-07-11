@@ -13,6 +13,7 @@ import { Country, Difficulty, GameMode, getCapitalDisplayName, getCountryDisplay
 import { Language, UI_TEXT } from "@/lib/i18n";
 import { saveGameResult } from "@/lib/supabase/results";
 import { filterCountriesByDifficulty } from "@/lib/difficulty";
+import { createGameSessionId, saveCompetitiveAnswerEvent } from "@/lib/supabase/answer-events";
 
 type Screen = "menu" | "hub" | "player" | "ranking" | "intro" | "game" | "detective" | "wordle" | "dailyGame" | "countryMap" | "neighbours" | "results" | "dailyReview";
 type Score = { correct: number; wrong: number };
@@ -43,6 +44,8 @@ export default function Home() {
   const startedAt = useRef<number | null>(null);
   const timeoutHandled = useRef(false);
   const savedResult = useRef<string | null>(null);
+  const gameSessionId = useRef<string | null>(null);
+  const questionStartedAt = useRef<number | null>(null);
   const todayKey = getTodayKey();
   const text = UI_TEXT[language];
 
@@ -76,6 +79,10 @@ export default function Home() {
     const interval = window.setInterval(update, 1000);
     return () => window.clearInterval(interval);
   }, [screen]);
+
+  useEffect(() => {
+    if (screen === "game" && mode && !mode.daily && current) questionStartedAt.current = Date.now();
+  }, [current, index, mode, screen]);
 
   useEffect(() => {
     if (!mode?.daily || !timerLimit || elapsedSeconds < timerLimit || timeoutHandled.current || !["game", "detective", "wordle", "dailyGame", "countryMap", "neighbours"].includes(screen)) return;
@@ -159,6 +166,8 @@ export default function Home() {
     timeoutHandled.current = false;
     setElapsedSeconds(0);
     startedAt.current = null;
+    gameSessionId.current = selected.daily ? null : createGameSessionId();
+    questionStartedAt.current = null;
     navigateTo(selected.customGame === "detective" ? "detective" : selected.customGame === "wordle" ? "wordle" : selected.customGame === "country-map" ? "countryMap" : selected.customGame === "neighbour-countries" ? "neighbours" : selected.customGame ? "dailyGame" : "game");
   }
 
@@ -177,6 +186,18 @@ export default function Home() {
     const countryOk = current.acceptedNames.some((name) => normalize(name) === normalizedAnswer);
     const capitalOk = !mode?.asksCapital || current.acceptedCapitals.some((capital) => normalize(capital) === normalize(capitalAnswer));
     const ok = countryOk && capitalOk;
+    if (mode && !mode.daily && gameSessionId.current) {
+      void saveCompetitiveAnswerEvent({
+        sessionId: gameSessionId.current,
+        countryCode: current.cca3,
+        gameMode: mode.id,
+        difficulty,
+        language: gameLanguage,
+        correct: ok,
+        responseTimeMs: Date.now() - (questionStartedAt.current || Date.now()),
+        attemptsUsed: 1,
+      }).catch((error: unknown) => console.warn("No se pudo guardar la respuesta competitiva", error));
+    }
     if (mode?.daily) setDailyRecord((record) => addDailyOutcome(record, `${todayKey}:${mode.id}`, ok ? "correct" : "wrong", difficulty));
     setScore((value) => ({ ...value, [ok ? "correct" : "wrong"]: value[ok ? "correct" : "wrong"] + 1 }));
     const countryName = getCountryDisplayName(current, language);
