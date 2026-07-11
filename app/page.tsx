@@ -15,7 +15,6 @@ import { saveGameResult } from "@/lib/supabase/results";
 import { filterCountriesByDifficulty } from "@/lib/difficulty";
 import { createGameSessionId, saveCompetitiveAnswerEvent } from "@/lib/supabase/answer-events";
 import { LoadingState } from "@/app/components/LoadingState";
-import { AnswerAutocomplete } from "@/app/components/AnswerAutocomplete";
 
 type Screen = "menu" | "hub" | "player" | "ranking" | "intro" | "game" | "detective" | "wordle" | "dailyGame" | "countryMap" | "neighbours" | "results" | "dailyReview";
 type Score = { correct: number; wrong: number };
@@ -72,8 +71,6 @@ export default function Home() {
   const totalAnswered = score.correct + score.wrong;
   const progress = questions.length ? (index / questions.length) * 100 : 0;
   const resultPercent = useMemo(() => totalAnswered ? Math.round((score.correct / totalAnswered) * 100) : 0, [score, totalAnswered]);
-  const countryOptions = useMemo(() => countries.map((country) => ({ label: getCountryDisplayName(country, gameLanguage), searchTerms: country.acceptedNames })), [countries, gameLanguage]);
-  const capitalOptions = useMemo(() => countries.map((country) => ({ label: getCapitalDisplayName(country, gameLanguage), searchTerms: country.acceptedCapitals })), [countries, gameLanguage]);
 
   useEffect(() => {
     if (!["game", "detective", "wordle", "dailyGame", "countryMap", "neighbours"].includes(screen)) return;
@@ -306,8 +303,8 @@ export default function Home() {
           <div className="flag-stage"><img src={current.flag} alt={language === "es" ? "Bandera a identificar" : "Flag to identify"} /></div>
           <form onSubmit={submitAnswer}>
             <label htmlFor="country">{text.countryQuestion}</label>
-            <AnswerAutocomplete id="country" value={countryAnswer} onChange={setCountryAnswer} options={countryOptions} autoFocus placeholder={text.countryPlaceholder} />
-            {mode.asksCapital && <><label htmlFor="capital">{text.capitalQuestion}</label><AnswerAutocomplete id="capital" value={capitalAnswer} onChange={setCapitalAnswer} options={capitalOptions} placeholder={text.capitalPlaceholder} /></>}
+            <input id="country" value={countryAnswer} onChange={(event) => setCountryAnswer(event.target.value)} autoFocus autoComplete="off" placeholder={text.countryPlaceholder} />
+            {mode.asksCapital && <><label htmlFor="capital">{text.capitalQuestion}</label><input id="capital" value={capitalAnswer} onChange={(event) => setCapitalAnswer(event.target.value)} autoComplete="off" placeholder={text.capitalPlaceholder} /></>}
             {feedback && <div className={`feedback ${feedback.ok ? "ok" : "bad"}`}>{feedback.text}</div>}
             <div className="game-actions"><button type="button" className="skip" onClick={() => { setCountryAnswer(""); submitAnswer({ preventDefault() {} } as FormEvent); }}>{text.skip}</button><button type="submit" className="confirm">{text.confirm}</button></div>
           </form>
