@@ -208,3 +208,13 @@ body { background:radial-gradient(circle at 50% -20%,#073448 0,#00111a 38%); }
 .menu-option:hover::before{transform:none;opacity:.85}
 .menu-option,.menu-option:hover{box-shadow:inset 0 1px #ffffff0b,0 8px 22px #0002}
 .daily-game-shell,.map-game-shell,.neighbour-shell{box-shadow:inset 0 1px #ffffff08,0 10px 28px #0003}
+
+/* Interactive map navigation and shadow-free game surfaces. */
+.world-map-wrap{height:clamp(300px,47vw,450px);cursor:grab;overscroll-behavior:contain;touch-action:none;scrollbar-width:none;user-select:none}
+.world-map-wrap::-webkit-scrollbar{display:none}
+.world-map-wrap.dragging{cursor:grabbing}
+.world-map-wrap.dragging .world-map path{cursor:grabbing}
+.intro-card,.daily-game-shell,.map-game-shell,.neighbour-shell,.daily-review-card{box-shadow:inset 0 1px #ffffff08}
+.logo-home-button{border:0;background:transparent;color:inherit;padding:0;cursor:pointer}
+.answer-autocomplete{position:relative;min-width:0}.answer-autocomplete>input{width:100%}.answer-suggestions{position:absolute;z-index:40;left:0;right:0;top:calc(100% + 5px);overflow:hidden;border:1px solid #376172;border-radius:9px;background:#082631;box-shadow:0 14px 30px #0008}.answer-suggestions button{width:100%;display:block;border:0;border-bottom:1px solid #173b48;background:transparent;color:#eef7fa;padding:9px 12px;text-align:left;cursor:pointer}.answer-suggestions button:last-child{border-bottom:0}.answer-suggestions button:hover,.answer-suggestions button:focus{background:#10475b;outline:none}
+@media(max-width:600px){.world-map-wrap{height:360px;overflow:auto}.world-map{min-width:0}}

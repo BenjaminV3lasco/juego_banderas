@@ -15,6 +15,7 @@ import { saveGameResult } from "@/lib/supabase/results";
 import { filterCountriesByDifficulty } from "@/lib/difficulty";
 import { createGameSessionId, saveCompetitiveAnswerEvent } from "@/lib/supabase/answer-events";
 import { LoadingState } from "@/app/components/LoadingState";
+import { AnswerAutocomplete } from "@/app/components/AnswerAutocomplete";
 
 type Screen = "menu" | "hub" | "player" | "ranking" | "intro" | "game" | "detective" | "wordle" | "dailyGame" | "countryMap" | "neighbours" | "results" | "dailyReview";
 type Score = { correct: number; wrong: number };
@@ -71,6 +72,8 @@ export default function Home() {
   const totalAnswered = score.correct + score.wrong;
   const progress = questions.length ? (index / questions.length) * 100 : 0;
   const resultPercent = useMemo(() => totalAnswered ? Math.round((score.correct / totalAnswered) * 100) : 0, [score, totalAnswered]);
+  const countryOptions = useMemo(() => countries.map((country) => ({ label: getCountryDisplayName(country, gameLanguage), searchTerms: country.acceptedNames })), [countries, gameLanguage]);
+  const capitalOptions = useMemo(() => countries.map((country) => ({ label: getCapitalDisplayName(country, gameLanguage), searchTerms: country.acceptedCapitals })), [countries, gameLanguage]);
 
   useEffect(() => {
     if (!["game", "detective", "wordle", "dailyGame", "countryMap", "neighbours"].includes(screen)) return;
@@ -245,20 +248,28 @@ export default function Home() {
     returnToHub();
   }
 
+  function handleLogoNavigation() {
+    if (["intro", "game", "detective", "wordle", "dailyGame", "countryMap", "neighbours", "results", "dailyReview"].includes(screen)) {
+      returnToHub();
+      return;
+    }
+    if (screen !== "hub") setScreen("menu");
+  }
+
   const geographyModes = MODES.filter((item) => !item.daily);
 
   if (isNavigating) return <ScreenLoader language={language} />;
 
   if (screen === "player") {
     return <main className="player-page">
-      <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={() => setScreen("menu")} backLabel={text.mainMenu} />
+      <AppHeader onHome={() => setScreen("menu")} language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={() => setScreen("menu")} backLabel={text.mainMenu} />
       <section className="player-card"><span className="eyebrow">MUNDOQUIZ</span><h1>{text.identifyYourself}</h1><label htmlFor="nickname">{text.nicknameLabel}</label><input id="nickname" value={nicknameInput} onChange={(event) => setNicknameInput(event.target.value.slice(0, 20))} onKeyDown={(event) => { if (event.key === "Enter") continueWithNickname(); }} placeholder={text.nicknamePlaceholder} maxLength={20} autoFocus /><button className="player-primary" onClick={continueWithNickname} disabled={!nicknameInput.trim()}>{text.continueAsPlayer}</button><div className="player-divider"><span>o</span></div><button className="player-guest" onClick={continueAsGuest}>{text.playAsGuest}</button></section>
     </main>;
   }
 
   if (screen === "ranking") {
     return <main className="ranking-page">
-      <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={() => setScreen("menu")} backLabel={text.mainMenu} />
+      <AppHeader onHome={() => setScreen("menu")} language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={() => setScreen("menu")} backLabel={text.mainMenu} />
       <HistoricalRanking language={language} modes={geographyModes} />
     </main>;
   }
@@ -266,7 +277,7 @@ export default function Home() {
   if (screen === "intro" && mode) {
     const copy = getModeCopy(mode, language);
     return <main className="intro-page">
-      <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter={mode.daily} />
+      <AppHeader onHome={handleLogoNavigation} language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter={mode.daily} />
       <section className="intro-card">
         <div className="intro-visual"><GamePreview mode={mode} /></div>
         <div className="intro-content">
@@ -285,7 +296,7 @@ export default function Home() {
   if (screen === "game" && mode && current) {
     const copy = getModeCopy(mode, language);
     return <main className="game-page">
-      <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={() => mode.daily ? returnToHub() : setShowExitConfirm(true)} backLabel={text.back} showCounter={mode.daily} />
+      <AppHeader onHome={handleLogoNavigation} language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={() => mode.daily ? returnToHub() : setShowExitConfirm(true)} backLabel={text.back} showCounter={mode.daily} />
       <section className="game-shell">
         {!mode.daily && <div className="competitive-timer">⏱ {formatTime(elapsedSeconds)}</div>}
         <div className="game-meta"><span>{copy.title}</span><span className="round-score"><b>{score.correct}</b><i>–</i><em>{score.wrong}</em></span><span>{index + 1} / {questions.length}</span></div>
@@ -295,8 +306,8 @@ export default function Home() {
           <div className="flag-stage"><img src={current.flag} alt={language === "es" ? "Bandera a identificar" : "Flag to identify"} /></div>
           <form onSubmit={submitAnswer}>
             <label htmlFor="country">{text.countryQuestion}</label>
-            <input id="country" value={countryAnswer} onChange={(event) => setCountryAnswer(event.target.value)} autoFocus autoComplete="off" placeholder={text.countryPlaceholder} />
-            {mode.asksCapital && <><label htmlFor="capital">{text.capitalQuestion}</label><input id="capital" value={capitalAnswer} onChange={(event) => setCapitalAnswer(event.target.value)} autoComplete="off" placeholder={text.capitalPlaceholder} /></>}
+            <AnswerAutocomplete id="country" value={countryAnswer} onChange={setCountryAnswer} options={countryOptions} autoFocus placeholder={text.countryPlaceholder} />
+            {mode.asksCapital && <><label htmlFor="capital">{text.capitalQuestion}</label><AnswerAutocomplete id="capital" value={capitalAnswer} onChange={setCapitalAnswer} options={capitalOptions} placeholder={text.capitalPlaceholder} /></>}
             {feedback && <div className={`feedback ${feedback.ok ? "ok" : "bad"}`}>{feedback.text}</div>}
             <div className="game-actions"><button type="button" className="skip" onClick={() => { setCountryAnswer(""); submitAnswer({ preventDefault() {} } as FormEvent); }}>{text.skip}</button><button type="submit" className="confirm">{text.confirm}</button></div>
           </form>
@@ -308,33 +319,33 @@ export default function Home() {
 
   if (screen === "detective" && mode && current) {
     return <main className="game-page">
-      <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter={mode.daily} />
+      <AppHeader onHome={handleLogoNavigation} language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter={mode.daily} />
       <CountryDetective target={current} countries={countries} language={language} onResolved={(correct) => resolveCustomDaily("detective", correct)} onContinue={() => setScreen("results")} />
     </main>;
   }
 
   if (screen === "wordle" && mode && current) {
     return <main className="game-page">
-      <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter={mode.daily} />
+      <AppHeader onHome={handleLogoNavigation} language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter={mode.daily} />
       <CountryWordle target={current} countries={countries} language={gameLanguage} difficulty={difficulty} variant={mode.customGame === "capital-wordle" ? "capital" : "country"} onResolved={(correct) => resolveCustomDaily(mode.id, correct)} onContinue={() => setScreen("results")} />
     </main>;
   }
 
   if (screen === "countryMap" && mode && current) {
-    return <main className="game-page"><AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter /><CountryMap target={current} language={gameLanguage} difficulty={difficulty} onResolved={(correct) => resolveCustomDaily(mode.id, correct)} onContinue={() => setScreen("results")} /></main>;
+    return <main className="game-page"><AppHeader onHome={handleLogoNavigation} language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter /><CountryMap target={current} language={gameLanguage} difficulty={difficulty} onResolved={(correct) => resolveCustomDaily(mode.id, correct)} onContinue={() => setScreen("results")} /></main>;
   }
 
   if (screen === "neighbours" && mode && current) {
-    return <main className="game-page"><AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter /><NeighbourCountries target={current} countries={countries} language={gameLanguage} difficulty={difficulty} onResolved={(correct) => resolveCustomDaily(mode.id, correct)} onContinue={() => setScreen("results")} /></main>;
+    return <main className="game-page"><AppHeader onHome={handleLogoNavigation} language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter /><NeighbourCountries target={current} countries={countries} language={gameLanguage} difficulty={difficulty} onResolved={(correct) => resolveCustomDaily(mode.id, correct)} onContinue={() => setScreen("results")} /></main>;
   }
 
   if (screen === "dailyGame" && mode && current && mode.customGame && !["detective", "wordle", "capital-wordle"].includes(mode.customGame)) {
-    return <main className="game-page"><AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter /><div className="daily-game-meta"><span>{language === "es" ? ({ easy: "FÁCIL", normal: "NORMAL", hard: "DIFÍCIL" }[difficulty]) : difficulty.toUpperCase()}</span>{timerLimit > 0 && <b>⏱ {formatTime(Math.max(0, timerLimit - elapsedSeconds))}</b>}</div><DailyChallenge kind={mode.customGame as "daily-capital" | "capital-wordle" | "flag-choice" | "geo-connection"} target={current} countries={countries} language={gameLanguage} difficulty={difficulty} onResolved={(correct) => resolveCustomDaily(mode.id, correct)} onContinue={() => setScreen("results")} /></main>;
+    return <main className="game-page"><AppHeader onHome={handleLogoNavigation} language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter /><div className="daily-game-meta"><span>{language === "es" ? ({ easy: "FÁCIL", normal: "NORMAL", hard: "DIFÍCIL" }[difficulty]) : difficulty.toUpperCase()}</span>{timerLimit > 0 && <b>⏱ {formatTime(Math.max(0, timerLimit - elapsedSeconds))}</b>}</div><DailyChallenge kind={mode.customGame as "daily-capital" | "capital-wordle" | "flag-choice" | "geo-connection"} target={current} countries={countries} language={gameLanguage} difficulty={difficulty} onResolved={(correct) => resolveCustomDaily(mode.id, correct)} onContinue={() => setScreen("results")} /></main>;
   }
 
   if (screen === "results" && mode) {
     return <main className="result-page">
-      <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} showCounter={mode.daily} />
+      <AppHeader onHome={handleLogoNavigation} language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} showCounter={mode.daily} />
       <div className="result-wrap"><div className="result-card"><span className="eyebrow">{mode.daily ? text.dailyCompleted : text.gameCompleted}</span><h1>{resultPercent}%</h1><p>{score.correct} {text.correctAnswers} {totalAnswered}</p>{(!mode.daily || timerLimit > 0) && <p className="result-time">⏱ {formatTime(elapsedSeconds)}</p>}<div className="result-actions">{!mode.daily && <button onClick={() => startGame(mode)}>{text.playAgain}</button>}<button className="secondary" onClick={returnToHub}>{text.viewModes}</button></div></div></div>
     </main>;
   }
@@ -344,7 +355,7 @@ export default function Home() {
     const countryName = getCountryDisplayName(current, language);
     const streak = getDailyStreak(dailyRecord, mode.id);
     return <main className="daily-review-page">
-      <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter={mode.daily} />
+      <AppHeader onHome={handleLogoNavigation} language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter={mode.daily} />
       <section className="daily-review-card"><span className={`review-status ${correct ? "correct" : "wrong"}`}>{language === "es" ? (correct ? "DESAFÍO SUPERADO" : "DESAFÍO NO SUPERADO") : (correct ? "CHALLENGE COMPLETED" : "CHALLENGE MISSED")}</span><h1>{getModeCopy(mode, language).title}</h1><div className="review-flag">{/* eslint-disable-next-line @next/next/no-img-element */}<img src={current.flag} alt={countryName} /></div><h2>{countryName}</h2>{streak > 0 && <div className="review-streak">🔥 {streak} {language === "es" ? "días de racha" : "day streak"}</div>}<button onClick={returnToHub}>{text.viewModes}</button></section>
     </main>;
   }
@@ -352,7 +363,7 @@ export default function Home() {
   if (screen === "hub") {
     const visibleModes = MODES.filter((item) => hubCategory === "daily" ? item.daily : !item.daily);
     return <main className="home-page">
-    <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={() => setScreen("menu")} backLabel={text.mainMenu} showCounter={hubCategory === "daily"} />
+    <AppHeader onHome={() => setScreen("menu")} language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={() => setScreen("menu")} backLabel={text.mainMenu} showCounter={hubCategory === "daily"} />
     <section className="hub"><div className="hub-heading"><span>{hubCategory === "daily" ? text.dailyChallenges : text.geographyLevel}</span>{hubCategory === "geography" && <small>{player.isGuest ? text.playAsGuest : player.nickname}</small>}</div><h1>{text.chooseGame}</h1><div className="mode-grid">{visibleModes.map((item) => {
       const copy = getModeCopy(item, language);
       const completed = item.daily && isDailyCompleted(item.id);
@@ -365,12 +376,12 @@ export default function Home() {
       </button>;
     })}</div></section>
     <section className="about" id="about"><h2>{text.aboutTitle}</h2><p>{text.aboutText}</p></section>
-    <footer><div className="logo footer-logo"><span>MUNDO</span>QUIZ</div><p>{text.footerText}</p><nav><a href="#top">{text.games}</a><a href="#about">{text.about}</a><a href="https://github.com" target="_blank" rel="noreferrer">GitHub</a></nav></footer>
+    <footer><div className="logo footer-logo"><span>MUNDO</span>QUIZ</div><p>{text.footerText}</p><nav><a href="#top">{text.games}</a><a href="#about">{text.about}</a><a href="https://github.com/BenjaminV3lasco" target="_blank" rel="noreferrer">GitHub</a></nav></footer>
   </main>;
   }
 
   return <main className="menu-page">
-    <AppHeader language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} />
+    <AppHeader onHome={() => setScreen("menu")} language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} />
     <section className="main-menu"><div className="menu-heading"><span className="eyebrow">MUNDOQUIZ</span><h1>{text.menuTitle}</h1></div><div className="menu-options">
       <button className="menu-option daily-option" onClick={openDailyHub}><MenuIcon kind="daily" /><div><span className="menu-number">01</span><h2>{text.dailyChallenges}</h2><p>{text.dailyDescription}</p></div><strong>→</strong></button>
       <button className="menu-option geography-option" onClick={openGeographySetup}><MenuIcon kind="geography" /><div><span className="menu-number">02</span><h2>{text.geographyLevel}</h2><p>{text.geographyDescription}</p></div><strong>→</strong></button>
@@ -379,10 +390,10 @@ export default function Home() {
   </main>;
 }
 
-function AppHeader({ language, dailyRecord, onLanguage, onBack, backLabel, showCounter = false }: { language: Language; dailyRecord: DailyRecord; onLanguage: () => void; onBack?: () => void; backLabel?: string; showCounter?: boolean }) {
+function AppHeader({ language, dailyRecord, onLanguage, onHome, onBack, backLabel, showCounter = false }: { language: Language; dailyRecord: DailyRecord; onLanguage: () => void; onHome: () => void; onBack?: () => void; backLabel?: string; showCounter?: boolean }) {
   return <header className="topbar" id="top">
     {onBack ? <button className="back-button" onClick={onBack}>← {backLabel}</button> : showCounter ? <DailyCounter record={dailyRecord} language={language} /> : <span />}
-    <div className="logo"><span>MUNDO</span>QUIZ</div>
+    <button type="button" className="logo-home-button" onClick={onHome} aria-label={language === "es" ? "Volver a los juegos" : "Back to games"}><div className="logo"><span>MUNDO</span>QUIZ</div></button>
     <div className="top-actions">{onBack && showCounter && <DailyCounter record={dailyRecord} language={language} />}<button className="language-button" onClick={onLanguage} aria-label="Change language"><Image src={language === "es" ? "/flags/es.svg" : "/flags/gb.svg"} alt="" width={24} height={16} /> <span>{language === "es" ? "ES" : "EN"}</span></button></div>
   </header>;
 }
