@@ -40,10 +40,10 @@ export function readDailyRecord(): DailyRecord {
     const stored = localStorage.getItem(DAILY_RECORD_KEY);
     if (!stored) return EMPTY_DAILY_RECORD;
     const parsed = JSON.parse(stored) as DailyRecord;
+    const outcomes = parsed.outcomes || {};
     return {
-      correct: Number(parsed.correct) || 0,
-      wrong: Number(parsed.wrong) || 0,
-      outcomes: parsed.outcomes || {},
+      ...getDailyScore(outcomes, getTodayKey()),
+      outcomes,
       difficulties: parsed.difficulties || {},
     };
   } catch {
@@ -53,14 +53,22 @@ export function readDailyRecord(): DailyRecord {
 
 export function addDailyOutcome(record: DailyRecord, dateKey: string, outcome: DailyOutcome, difficulty?: Difficulty) {
   if (record.outcomes[dateKey]) return record;
+  const outcomes = { ...record.outcomes, [dateKey]: outcome };
   const next = {
     ...record,
-    [outcome]: record[outcome] + 1,
-    outcomes: { ...record.outcomes, [dateKey]: outcome },
+    ...getDailyScore(outcomes, dateKey.slice(0, 10)),
+    outcomes,
     difficulties: difficulty ? { ...record.difficulties, [dateKey]: difficulty } : record.difficulties,
   };
   localStorage.setItem(DAILY_RECORD_KEY, JSON.stringify(next));
   return next;
+}
+
+function getDailyScore(outcomes: Record<string, DailyOutcome>, dateKey: string) {
+  return Object.entries(outcomes).reduce((score, [key, outcome]) => {
+    if (key === dateKey || key.startsWith(`${dateKey}:`)) score[outcome] += 1;
+    return score;
+  }, { correct: 0, wrong: 0 });
 }
 
 export function getDailyStreak(record: DailyRecord, challenge: string, today = new Date()) {
