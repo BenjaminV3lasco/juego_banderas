@@ -79,3 +79,4 @@ server.err.log
 
 # Reproducible ML training artifacts (generated with npm run ml:generate)
 ml/data/*.csv
+ml/data/real_data_report.json

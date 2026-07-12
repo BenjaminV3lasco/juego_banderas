@@ -39,3 +39,26 @@ La selección conserva un fallback: si faltara una clasificación o un nivel tuv
 - No se analiza todavía la similitud visual real entre banderas.
 - Los perfiles y probabilidades son supuestos documentados, no mediciones.
 - Cuando existan eventos reales, deben conservarse con `source = real` y tener cada vez más peso que estos datos sintéticos.
+
+## Análisis de partidas reales
+
+Exporta `public.answer_events` desde Supabase como CSV y guárdalo en
+`ml/data/real_answer_events.csv`. Luego ejecuta:
+
+```bash
+npm run ml:analyze
+```
+
+El comando valida el archivo y genera dos artefactos exploratorios:
+
+- `ml/data/real_data_report.json`: resumen, advertencias y métricas completas.
+- `ml/data/real_country_metrics.csv`: tabla por país y tipo de conocimiento.
+
+La puntuación preliminar suaviza los errores observados usando el puntaje
+sintético como prior equivalente a 20 respuestas. También incorpora, con menor
+peso, el percentil del tiempo mediano. El informe no sobrescribe
+`country-difficulty.json` ni modifica la aplicación.
+
+La confianza exige cantidad de respuestas y diversidad de jugadores. Muchas
+respuestas de una sola persona permiten probar la recolección, pero no inferir
+la dificultad general de un país.
