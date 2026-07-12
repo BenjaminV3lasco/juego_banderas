@@ -16,8 +16,9 @@ import { filterCountriesByDifficulty } from "@/lib/difficulty";
 import { createGameSessionId, saveCompetitiveAnswerEvent } from "@/lib/supabase/answer-events";
 import { LoadingState } from "@/app/components/LoadingState";
 import { QuickMatch } from "@/app/components/QuickMatch";
+import { PersonalStats } from "@/app/components/PersonalStats";
 
-type Screen = "menu" | "hub" | "about" | "player" | "ranking" | "intro" | "game" | "quickMatch" | "detective" | "wordle" | "dailyGame" | "countryMap" | "neighbours" | "results" | "dailyReview";
+type Screen = "menu" | "hub" | "about" | "player" | "ranking" | "stats" | "intro" | "game" | "quickMatch" | "detective" | "wordle" | "dailyGame" | "countryMap" | "neighbours" | "results" | "dailyReview";
 type Score = { correct: number; wrong: number };
 type Player = { nickname: string; isGuest: boolean };
 
@@ -39,6 +40,7 @@ export default function Home() {
   const [dailyRecord, setDailyRecord] = useState<DailyRecord>(EMPTY_DAILY_RECORD);
   const [player, setPlayer] = useState<Player>({ nickname: "Invitado", isGuest: true });
   const [hasPlayerSession, setHasPlayerSession] = useState(false);
+  const [playerOrigin, setPlayerOrigin] = useState<"geography" | "stats">("geography");
   const [nicknameInput, setNicknameInput] = useState("");
   const [difficulty, setDifficulty] = useState<Difficulty>("normal");
   const [timerLimit, setTimerLimit] = useState(0);
@@ -234,6 +236,7 @@ export default function Home() {
       navigateTo("hub");
       return;
     }
+    setPlayerOrigin("geography");
     navigateTo("player");
   }
 
@@ -244,8 +247,8 @@ export default function Home() {
     sessionStorage.setItem("mundoquiz_player", JSON.stringify(selectedPlayer));
     setPlayer(selectedPlayer);
     setHasPlayerSession(true);
-    setHubCategory("geography");
-    setScreen("hub");
+    if (playerOrigin === "stats") setScreen("stats");
+    else { setHubCategory("geography"); setScreen("hub"); }
   }
 
   function continueAsGuest() {
@@ -253,8 +256,8 @@ export default function Home() {
     sessionStorage.setItem("mundoquiz_player", JSON.stringify(selectedPlayer));
     setPlayer(selectedPlayer);
     setHasPlayerSession(true);
-    setHubCategory("geography");
-    setScreen("hub");
+    if (playerOrigin === "stats") setScreen("stats");
+    else { setHubCategory("geography"); setScreen("hub"); }
   }
 
   function returnToHub() {
@@ -295,6 +298,10 @@ export default function Home() {
       <AppHeader onHome={() => setScreen("menu")} language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={() => setScreen("menu")} backLabel={text.mainMenu} />
       <HistoricalRanking language={language} modes={geographyModes} />
     </main>;
+  }
+
+  if (screen === "stats") {
+    return <main className="stats-page"><AppHeader onHome={() => setScreen("menu")} language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={() => setScreen("menu")} backLabel={text.mainMenu} /><PersonalStats language={language} nickname={player.nickname} isGuest={player.isGuest} dailyRecord={dailyRecord} onCreatePlayer={() => { setPlayerOrigin("stats"); navigateTo("player"); }} /></main>;
   }
 
   if (screen === "intro" && mode) {
@@ -586,9 +593,10 @@ function ExitConfirmation({ language, onCancel, onConfirm }: { language: Languag
   return <div className="exit-modal-backdrop" role="presentation" onMouseDown={onCancel}><section className="exit-modal" role="alertdialog" aria-modal="true" aria-labelledby="exit-title" onMouseDown={(event) => event.stopPropagation()}><div className="exit-modal-icon"><span>!</span></div><small>{copy.eyebrow}</small><h2 id="exit-title">{copy.title}</h2><p>{copy.body}</p><div className="exit-modal-actions"><button className="stay" onClick={onCancel}>{copy.cancel}</button><button className="leave" onClick={onConfirm}>{copy.confirm}</button></div></section></div>;
 }
 
-function MenuIcon({ kind }: { kind: "daily" | "geography" | "ranking" }) {
+function MenuIcon({ kind }: { kind: "daily" | "geography" | "ranking" | "stats" }) {
   if (kind === "daily") return <span className="menu-icon professional-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><rect className="icon-frame" x="10" y="13" width="44" height="40" rx="9"/><path d="M20 9v10M44 9v10M10 25h44"/><circle className="icon-accent" cx="32" cy="38" r="8"/><path className="icon-check" d="m28 38 3 3 6-7"/></svg><i /></span>;
   if (kind === "geography") return <span className="menu-icon professional-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><circle className="icon-frame" cx="32" cy="32" r="23"/><circle cx="32" cy="32" r="16"/><path d="M32 5v7M32 52v7M5 32h7M52 32h7"/><path className="icon-accent compass-needle" d="m38 19-3 13-9 13 3-13z"/><circle className="icon-center" cx="32" cy="32" r="3"/></svg><i /></span>;
+  if (kind === "stats") return <span className="menu-icon professional-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><circle className="icon-frame" cx="32" cy="32" r="23"/><path d="M20 43V31M32 43V20M44 43V26M16 47h32"/><path className="icon-accent" d="m18 26 11-9 10 4 8-9"/><circle className="icon-center" cx="18" cy="26" r="2.5"/></svg><i /></span>;
   return <span className="menu-icon professional-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><path className="icon-frame" d="M9 53h46M14 49V35h11v14M27 49V25h11v24M40 49V16h11v33"/><path className="icon-accent ranking-line" d="m17 27 12-9 10 2 10-12"/><path d="m44 8h5v5"/><circle className="ranking-dot" cx="17" cy="27" r="3"/><circle className="ranking-dot" cx="29" cy="18" r="3"/><circle className="ranking-dot" cx="39" cy="20" r="3"/></svg><i /></span>;
 }
 

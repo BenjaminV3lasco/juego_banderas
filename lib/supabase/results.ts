@@ -59,3 +59,17 @@ export async function getHistoricalRanking() {
   if (error) throw error;
   return (data || []) as RankingEntry[];
 }
+
+export async function getPlayerResults(nickname: string) {
+  const supabase = createClient();
+  if (!supabase || !nickname.trim()) return [];
+  const { data, error } = await supabase
+    .from("game_results")
+    .select("id,nickname,is_guest,mode,correct,wrong,total,created_at,duration_seconds,difficulty,timer_limit_seconds")
+    .eq("nickname", nickname.trim())
+    .eq("is_guest", false)
+    .order("created_at", { ascending: false })
+    .limit(500);
+  if (error) throw error;
+  return (data || []) as RankingEntry[];
+}
