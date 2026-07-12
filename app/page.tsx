@@ -597,7 +597,7 @@ function GamePreview({ mode }: { mode: GameMode }) {
   const isConnection = mode.customGame === "detective" || mode.customGame === "geo-connection";
   const isCapital = mode.customGame === "daily-capital" || mode.id === "capitals";
   const continentFlags: Partial<Record<GameMode["id"], [FlagCode, FlagCode]>> = {
-    americas: ["AR", "BR"], europe: ["ES", "FR"], asia: ["JP", "KR"], africa: ["ZA", "EG"],
+    americas: ["AR", "BR"], europe: ["ES", "FR"], asia: ["JP", "KR"], africa: ["NG", "GH"],
   };
   const featuredFlags = continentFlags[mode.id];
   return <div className={`mode-preview svg-preview preview-${mode.id}`}><svg viewBox="0 0 200 150" aria-hidden="true">
@@ -622,10 +622,13 @@ function QuickMatchSymbol() {
   return <div className="quick-review-symbol" aria-hidden="true"><svg viewBox="0 0 200 150"><circle cx="92" cy="75" r="42" fill="#397fa8" stroke="#8ac9df" strokeWidth="3"/><path d="M50 75h84M92 33c14 12 21 26 21 42s-7 30-21 42c-14-12-21-26-21-42s7-30 21-42Z" fill="none" stroke="#dff2f5" strokeWidth="2" opacity=".65"/><path d="M60 48c11-8 23-8 32-3l4 10-11 7-3 12-16 2-12-10zm52 12 15 6 8 14-12 8-10 17-12-10 4-14-7-9z" fill="#58b478" stroke="#2b714a" strokeWidth="2"/><path d="m130 29-18 37h17l-10 34 32-46h-18l14-25z" fill="#ffd04a" stroke="#9c7415" strokeWidth="2"/></svg></div>;
 }
 
-type FlagCode = "AR" | "BR" | "ES" | "FR" | "JP" | "KR" | "ZA" | "EG";
+type FlagCode = "AR" | "BR" | "ES" | "FR" | "JP" | "KR" | "ZA" | "EG" | "NG" | "CI" | "GH";
 
 function FlagSymbol({ code, x, y }: { code: FlagCode; x: number; y: number }) {
   const w = 58, h = 36;
+  if (code === "NG") return <g><rect x={x} y={y} width={w} height={h} rx="3" fill="#fff"/><path d={`M${x} ${y}h19v36H${x}zM${x+39} ${y}h19v36H${x+39}z`} fill="#008753"/></g>;
+  if (code === "GH") return <g><rect x={x} y={y} width={w} height={h} rx="3" fill="#ce1126"/><rect x={x} y={y+12} width={w} height="12" fill="#fcd116"/><rect x={x} y={y+24} width={w} height="12" fill="#006b3f"/><path d={`m${x+29} ${y+14} 2 5h5l-4 3 2 5-5-3-5 3 2-5-4-3h5z`} fill="#111"/></g>;
+  if (code === "CI") return <g><rect x={x} y={y} width={w} height={h} rx="3" fill="#fff"/><path d={`M${x} ${y}h19v36H${x}z`} fill="#f77f00"/><path d={`M${x+39} ${y}h19v36H${x+39}z`} fill="#009e60"/></g>;
   if (code === "AR") return <g><rect x={x} y={y} width={w} height={h} rx="3" fill="#74c6e7"/><rect x={x} y={y+12} width={w} height="12" fill="white"/><circle cx={x+29} cy={y+18} r="4" fill="#f6b91c"/></g>;
   if (code === "BR") return <g><rect x={x} y={y} width={w} height={h} rx="3" fill="#22974b"/><path d={`M${x+29} ${y+4}l23 14-23 14L${x+6} ${y+18}z`} fill="#f4ce2e"/><circle cx={x+29} cy={y+18} r="8" fill="#2454a4"/></g>;
   if (code === "ES") return <g><rect x={x} y={y} width={w} height={h} rx="3" fill="#bf2638"/><rect x={x} y={y+9} width={w} height="18" fill="#f5c928"/></g>;
