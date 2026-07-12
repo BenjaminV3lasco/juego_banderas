@@ -10,5 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="es"><body className={poppins.className}>{children}</body></html>;
+  return <html lang="es" suppressHydrationWarning><head><script dangerouslySetInnerHTML={{ __html: `try{document.documentElement.dataset.theme=localStorage.getItem('mundoquiz_theme')==='dark'?'dark':'light'}catch{}` }} /></head><body className={poppins.className}>{children}</body></html>;
 }

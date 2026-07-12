@@ -25,6 +25,7 @@ export default function Home() {
   const [mapCountryCodes, setMapCountryCodes] = useState<Set<string>>(new Set());
   const [screen, setScreen] = useState<Screen>("menu");
   const [hubCategory, setHubCategory] = useState<"daily" | "geography">("daily");
+  const [aboutOrigin, setAboutOrigin] = useState<"menu" | "hub">("menu");
   const [mode, setMode] = useState<GameMode | null>(null);
   const [language, setLanguage] = useState<Language>("es");
   const [gameLanguage, setGameLanguage] = useState<Language>("es");
@@ -267,7 +268,7 @@ export default function Home() {
 
   function handleLogoNavigation() {
     if (screen === "about") {
-      setScreen("hub");
+      setScreen(aboutOrigin);
       return;
     }
     if (["intro", "game", "detective", "wordle", "dailyGame", "countryMap", "neighbours", "results", "dailyReview"].includes(screen)) {
@@ -307,7 +308,7 @@ export default function Home() {
           <p>{copy.description}</p>
           <h2>{text.howToPlay}</h2>
           <ul>{copy.rules.map((rule) => <li key={rule}>{rule}</li>)}</ul>
-          {mode.daily && <div className="game-settings"><span>{language === "es" ? "Dificultad" : "Difficulty"}</span><div>{(["easy", "normal", "hard"] as Difficulty[]).map((value) => <button type="button" className={difficulty === value ? "active" : ""} onClick={() => setDifficulty(value)} key={value}>{language === "es" ? ({ easy: "Fácil", normal: "Normal", hard: "Difícil" }[value]) : value}</button>)}</div>{!["detective", "wordle", "capital-wordle"].includes(mode.customGame || "") && <><span>{language === "es" ? "Contador" : "Timer"}</span><div>{[0, 90, 60, 40].map((value) => <button type="button" className={timerLimit === value ? "active" : ""} onClick={() => setTimerLimit(value)} key={value}>{value ? `${value}s` : (language === "es" ? "Sin tiempo" : "No timer")}</button>)}</div></>}</div>}
+          {mode.daily && <div className="game-settings"><span>{language === "es" ? "Dificultad" : "Difficulty"}</span><div>{(["easy", "normal", "hard"] as Difficulty[]).map((value) => <button type="button" aria-pressed={difficulty === value} className={difficulty === value ? "active" : ""} onClick={() => setDifficulty(value)} key={value}>{language === "es" ? ({ easy: "Fácil", normal: "Normal", hard: "Difícil" }[value]) : value}</button>)}</div>{!["detective", "wordle", "capital-wordle"].includes(mode.customGame || "") && <><span>{language === "es" ? "Contador" : "Timer"}</span><div>{[0, 90, 60, 40].map((value) => <button type="button" aria-pressed={timerLimit === value} className={timerLimit === value ? "active" : ""} onClick={() => setTimerLimit(value)} key={value}>{value ? `${value}s` : (language === "es" ? "Sin tiempo" : "No timer")}</button>)}</div></>}</div>}
           <button className="start-game" onClick={() => startGame(mode)}>{text.start}</button>
         </div>
       </section>
@@ -385,7 +386,7 @@ export default function Home() {
     const visibleModes = MODES.filter((item) => hubCategory === "daily" ? item.daily : !item.daily);
     return <main className="home-page">
     <AppHeader onHome={() => setScreen("menu")} language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={() => setScreen("menu")} backLabel={text.mainMenu} showCounter={hubCategory === "daily"} />
-    <section className="hub"><div className="hub-heading"><span>{hubCategory === "daily" ? text.dailyChallenges : text.geographyLevel}</span>{hubCategory === "geography" && <small>{player.isGuest ? text.playAsGuest : player.nickname}</small>}</div><h1>{text.chooseGame}</h1><div className="mode-grid">{visibleModes.map((item) => {
+    <section className="hub" id="games"><div className="hub-heading"><span>{hubCategory === "daily" ? text.dailyChallenges : text.geographyLevel}</span>{hubCategory === "geography" && <small>{player.isGuest ? text.playAsGuest : player.nickname}</small>}</div><h1>{text.chooseGame}</h1><div className="mode-grid">{visibleModes.map((item) => {
       const copy = getModeCopy(item, language);
       const completed = item.daily && isDailyCompleted(item.id);
       const streak = item.customGame ? getDailyStreak(dailyRecord, item.id) : 0;
@@ -396,33 +397,108 @@ export default function Home() {
         <div className="play-band"><strong>{completed ? text.completed : text.play}</strong><small>{copy.title}</small></div>
       </button>;
     })}</div></section>
-    <footer><div className="logo footer-logo"><span>MUNDO</span>QUIZ</div><p>{text.footerText}</p><nav><a href="#top">{text.games}</a><button type="button" onClick={() => navigateTo("about")}>{text.about}</button><a href="https://github.com/BenjaminV3lasco" target="_blank" rel="noreferrer">GitHub</a></nav></footer>
+    <footer><BrandLogo compact /><p>{text.footerText}</p><nav><a href="#games">{text.games}</a><button type="button" onClick={() => { setAboutOrigin("hub"); navigateTo("about"); }}>{text.about}</button><a href="https://github.com/BenjaminV3lasco" target="_blank" rel="noreferrer">GitHub</a></nav></footer>
   </main>;
   }
 
   if (screen === "about") {
     return <main className="about-page">
-      <AppHeader onHome={handleLogoNavigation} language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={() => setScreen("hub")} backLabel={text.back} showCounter={hubCategory === "daily"} />
+      <AppHeader onHome={handleLogoNavigation} language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={() => setScreen(aboutOrigin)} backLabel={text.back} showCounter={aboutOrigin === "hub" && hubCategory === "daily"} />
       <AboutSection language={language} />
     </main>;
   }
 
   return <main className="menu-page">
     <AppHeader onHome={() => setScreen("menu")} language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} />
-    <section className="main-menu"><div className="menu-heading"><span className="eyebrow">MUNDOQUIZ</span><h1>{text.menuTitle}</h1></div><div className="menu-options">
+    <BouncingPlanet />
+    <section className="main-menu"><div className="menu-heading"><h1>{text.menuTitle}</h1><p>{text.menuIntro}</p></div><div className="menu-options">
       <button className="menu-option daily-option" onClick={openDailyHub}><MenuIcon kind="daily" /><div><span className="menu-number">01</span><h2>{text.dailyChallenges}</h2><p>{text.dailyDescription}</p></div><strong>→</strong></button>
       <button className="menu-option geography-option" onClick={openGeographySetup}><MenuIcon kind="geography" /><div><span className="menu-number">02</span><h2>{text.geographyLevel}</h2><p>{text.geographyDescription}</p></div><strong>→</strong></button>
       <button className="menu-option ranking-option" onClick={() => navigateTo("ranking")}><MenuIcon kind="ranking" /><div><span className="menu-number">03</span><h2>{text.historicalRanking}</h2><p>{text.rankingDescription}</p></div><strong>→</strong></button>
     </div></section>
+    <footer><BrandLogo compact /><p>{text.footerText}</p><nav><button type="button" onClick={openDailyHub}>{text.games}</button><button type="button" onClick={() => { setAboutOrigin("menu"); navigateTo("about"); }}>{text.about}</button><a href="https://github.com/BenjaminV3lasco" target="_blank" rel="noreferrer">GitHub</a></nav></footer>
   </main>;
 }
 
 function AppHeader({ language, dailyRecord, onLanguage, onHome, onBack, backLabel, showCounter = false }: { language: Language; dailyRecord: DailyRecord; onLanguage: () => void; onHome: () => void; onBack?: () => void; backLabel?: string; showCounter?: boolean }) {
   return <header className="topbar" id="top">
     {onBack ? <button className="back-button" onClick={onBack}>← {backLabel}</button> : showCounter ? <DailyCounter record={dailyRecord} language={language} /> : <span />}
-    <button type="button" className="logo-home-button" onClick={onHome} aria-label={language === "es" ? "Volver a los juegos" : "Back to games"}><div className="logo"><span>MUNDO</span>QUIZ</div></button>
-    <div className="top-actions">{onBack && showCounter && <DailyCounter record={dailyRecord} language={language} />}<button className="language-button" onClick={onLanguage} aria-label="Change language"><Image src={language === "es" ? "/flags/es.svg" : "/flags/gb.svg"} alt="" width={24} height={16} /> <span>{language === "es" ? "ES" : "EN"}</span></button></div>
+    <button type="button" className="logo-home-button" onClick={onHome} aria-label={language === "es" ? "Volver a los juegos" : "Back to games"}><BrandLogo compact /></button>
+    <div className="top-actions">{onBack && showCounter && <DailyCounter record={dailyRecord} language={language} />}<ThemeButton language={language} /><button className="language-button" onClick={onLanguage} aria-label="Change language"><Image src={language === "es" ? "/flags/es.svg" : "/flags/gb.svg"} alt="" width={24} height={16} /> <span>{language === "es" ? "ES" : "EN"}</span></button></div>
   </header>;
+}
+
+function ThemeButton({ language }: { language: Language }) {
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("mundoquiz_theme");
+    const currentTheme = storedTheme === "dark" ? "dark" : "light";
+    document.documentElement.dataset.theme = currentTheme;
+    const frame = window.requestAnimationFrame(() => setTheme(currentTheme));
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
+  function toggleTheme() {
+    const nextTheme = theme === "light" ? "dark" : "light";
+    setTheme(nextTheme);
+    localStorage.setItem("mundoquiz_theme", nextTheme);
+    document.documentElement.dataset.theme = nextTheme;
+  }
+
+  const label = language === "es" ? (theme === "light" ? "Activar modo oscuro" : "Activar modo claro") : (theme === "light" ? "Enable dark mode" : "Enable light mode");
+  return <button type="button" className="theme-button" onClick={toggleTheme} aria-label={label} title={label}><span aria-hidden="true">{theme === "light" ? "☾" : "☀"}</span></button>;
+}
+
+function BrandLogo({ compact = false }: { compact?: boolean }) {
+  return <span className={`brand-logo ${compact ? "compact" : ""}`} aria-label="MundoQuiz">
+    <svg viewBox="0 0 52 52" aria-hidden="true"><circle className="brand-ocean" cx="26" cy="26" r="22"/><path className="brand-grid" d="M4 26h44M26 4c7 6 11 14 11 22S33 42 26 48c-7-6-11-14-11-22S19 10 26 4Z"/><path className="brand-land" d="M10 17c5-6 11-8 17-7l4 5-3 5-6 2-2 6-7 1-5-5zm25-4 7 4 4 7-4 5-7 1-3 6-5-4-2-8 4-5zM29 36l6 1 3 6-6 4-5-5z"/><path className="brand-route" d="M9 38c8-7 15 4 26-7"/><circle className="brand-point" cx="40" cy="28" r="4"/></svg>
+    <span className="brand-word">Mundo<b>Quiz</b></span>
+  </span>;
+}
+
+function BouncingPlanet() {
+  const planetRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const planet = planetRef.current;
+    if (!planet) return;
+    let x = Math.max(18, window.innerWidth * .08);
+    let y = Math.max(78, window.innerHeight * .14);
+    let velocityX = .16;
+    let velocityY = .12;
+    let rotation = 0;
+    let previous = performance.now();
+    let frame = 0;
+
+    const move = (time: number) => {
+      const elapsed = Math.min(32, time - previous);
+      previous = time;
+      const width = planet.offsetWidth;
+      const height = planet.offsetHeight;
+      const viewportWidth = document.documentElement.clientWidth;
+      const viewportHeight = document.documentElement.clientHeight;
+      const footerTop = document.querySelector<HTMLElement>(".menu-page > footer")?.getBoundingClientRect().top;
+      const lowerBoundary = footerTop && footerTop < viewportHeight ? footerTop : viewportHeight;
+      const maxX = Math.max(0, viewportWidth - width);
+      const maxY = Math.max(68, lowerBoundary - height);
+      x += velocityX * elapsed;
+      y += velocityY * elapsed;
+      let collided = false;
+      if (x <= 0 || x >= maxX) { velocityX *= -1; x = Math.min(maxX, Math.max(0, x)); collided = true; }
+      if (y <= 68 || y >= maxY) { velocityY *= -1; y = Math.min(maxY, Math.max(68, y)); collided = true; }
+      if (collided) {
+        planet.querySelector("svg")?.animate([{ transform: "scale(1)" }, { transform: "scale(.86,1.12)" }, { transform: "scale(1)" }], { duration: 230, easing: "ease-out" });
+      }
+      rotation += velocityX * elapsed * .12;
+      planet.style.transform = `translate3d(${x}px,${y}px,0) rotate(${rotation}deg)`;
+      frame = window.requestAnimationFrame(move);
+    };
+    frame = window.requestAnimationFrame(move);
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
+  return <div ref={planetRef} className="menu-floating-world" aria-hidden="true"><svg viewBox="0 0 180 180"><circle className="planet-ocean" cx="90" cy="90" r="66"/><path className="planet-grid" d="M24 90h132M90 24c22 19 34 42 34 66s-12 47-34 66c-22-19-34-42-34-66s12-47 34-66Z"/><path className="planet-land" d="M37 51c13-12 31-17 46-13l12 13-7 13-15 4-5 15-19 5-18-13 3-15zm77-9 18 9 8 17 14 7-7 14-19 3-6 15-14-8-8-19 8-13-5-13zm-20 72 15 2 11 16-9 19-18 7-8-18z"/><ellipse className="planet-orbit" cx="90" cy="90" rx="85" ry="31" transform="rotate(-18 90 90)"/><circle className="planet-satellite" cx="170" cy="66" r="5"/></svg></div>;
 }
 
 function AboutSection({ language }: { language: Language }) {
@@ -506,9 +582,9 @@ function ExitConfirmation({ language, onCancel, onConfirm }: { language: Languag
 }
 
 function MenuIcon({ kind }: { kind: "daily" | "geography" | "ranking" }) {
-  if (kind === "daily") return <span className="menu-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="8"/><path d="M24 4v7M24 37v7M4 24h7M37 24h7M10 10l5 5M33 33l5 5M38 10l-5 5M15 33l-5 5"/></svg></span>;
-  if (kind === "geography") return <span className="menu-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="18"/><path d="M6 24h36M24 6c6 5 9 11 9 18s-3 13-9 18c-6-5-9-11-9-18s3-13 9-18z"/></svg></span>;
-  return <span className="menu-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 39h30M13 35h22l2-20-9 7-4-12-4 12-9-7 2 20z"/><circle cx="11" cy="12" r="2"/><circle cx="24" cy="7" r="2"/><circle cx="37" cy="12" r="2"/></svg></span>;
+  if (kind === "daily") return <span className="menu-icon professional-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><rect className="icon-frame" x="10" y="13" width="44" height="40" rx="9"/><path d="M20 9v10M44 9v10M10 25h44"/><circle className="icon-accent" cx="32" cy="38" r="8"/><path className="icon-check" d="m28 38 3 3 6-7"/></svg><i /></span>;
+  if (kind === "geography") return <span className="menu-icon professional-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><circle className="icon-frame" cx="32" cy="32" r="23"/><circle cx="32" cy="32" r="16"/><path d="M32 5v7M32 52v7M5 32h7M52 32h7"/><path className="icon-accent compass-needle" d="m38 19-3 13-9 13 3-13z"/><circle className="icon-center" cx="32" cy="32" r="3"/></svg><i /></span>;
+  return <span className="menu-icon professional-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><path className="icon-frame" d="M9 53h46M14 49V35h11v14M27 49V25h11v24M40 49V16h11v33"/><path className="icon-accent ranking-line" d="m17 27 12-9 10 2 10-12"/><path d="m44 8h5v5"/><circle className="ranking-dot" cx="17" cy="27" r="3"/><circle className="ranking-dot" cx="29" cy="18" r="3"/><circle className="ranking-dot" cx="39" cy="20" r="3"/></svg><i /></span>;
 }
 
 function GamePreview({ mode }: { mode: GameMode }) {
