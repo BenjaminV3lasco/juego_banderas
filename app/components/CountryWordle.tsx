@@ -111,8 +111,7 @@ export function CountryWordle({ target, countries, language, difficulty, variant
     {finished !== null && <div className="wordle-reveal">
       <span className={finished ? "win" : "lose"}>{finished ? copy.win : copy.lose}</span>
       <h2>{copy.answer}: {targetName}</h2>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={target.flag} alt={isCapital ? getCountryDisplayName(target, language) : targetName} />
+      <div className="standard-flag-frame">{/* eslint-disable-next-line @next/next/no-img-element */}<img src={target.flag} alt={isCapital ? getCountryDisplayName(target, language) : targetName} /></div>
       <button onClick={onContinue}>{copy.continue}</button>
     </div>}
   </section>;

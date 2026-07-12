@@ -35,6 +35,17 @@ export function getDailyCountry(countries: Country[], dateKey: string) {
   return sortedCountries[Math.abs(hash) % sortedCountries.length];
 }
 
+export function getDailyCountries(countries: Country[], dateKey: string, count: number) {
+  const remaining = [...countries];
+  const selected: Country[] = [];
+  while (remaining.length && selected.length < count) {
+    const country = getDailyCountry(remaining, `${dateKey}:${selected.length}`);
+    selected.push(country);
+    remaining.splice(remaining.indexOf(country), 1);
+  }
+  return selected;
+}
+
 export function readDailyRecord(): DailyRecord {
   try {
     const stored = localStorage.getItem(DAILY_RECORD_KEY);

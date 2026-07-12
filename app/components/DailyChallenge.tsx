@@ -57,7 +57,7 @@ export function DailyChallenge({ kind, target, countries, language, difficulty, 
     finish(ok);
   }
 
-  if (finished !== null) return <section className="daily-game-shell daily-finish"><span className={finished ? "win" : "lose"}>{finished ? copy.right : copy.wrong}</span><h1>{copy.was}: {kind.includes("capital") ? capitalName : countryName}</h1><div className="daily-answer-flag"><Image src={target.flag} alt={countryName} width={320} height={180} unoptimized /></div><button onClick={onContinue}>{copy.next}</button></section>;
+  if (finished !== null) return <section className="daily-game-shell daily-finish"><span className={finished ? "win" : "lose"}>{finished ? copy.right : copy.wrong}</span><h1>{copy.was}: {kind.includes("capital") ? capitalName : countryName}</h1><div className="daily-answer-flag standard-flag-frame"><Image src={target.flag} alt={countryName} width={320} height={180} unoptimized /></div><button onClick={onContinue}>{copy.next}</button></section>;
 
   if (kind === "flag-choice") return <section className="daily-game-shell"><h1>{countryName}</h1><p className="daily-prompt">{language === "es" ? "¿Cuál es su bandera?" : "Which is its flag?"}</p><div className={`flag-options options-${optionCount}`}>{flagOptions.map((country) => <button key={country.name} onClick={() => finish(country.name === target.name)}><Image src={country.flag} alt={language === "es" ? "Opción de bandera" : "Flag option"} width={180} height={100} unoptimized /></button>)}</div></section>;
 

@@ -1,7 +1,7 @@
 import { getCountryAliases, getSpanishCountryName, isSovereignCountry } from "@/lib/country-names";
 import { getCapitalAliases, getSpanishCapitalName } from "@/lib/capital-names";
 
-export type ModeId = "daily" | "detective" | "wordle" | "daily-capital" | "capital-wordle" | "flag-choice" | "geo-connection" | "country-map" | "neighbour-countries" | "world" | "sovereign" | "capitals" | "americas" | "europe" | "asia" | "africa";
+export type ModeId = "daily" | "quick-match" | "detective" | "wordle" | "daily-capital" | "capital-wordle" | "flag-choice" | "geo-connection" | "country-map" | "neighbour-countries" | "world" | "sovereign" | "capitals" | "americas" | "europe" | "asia" | "africa";
 export type Difficulty = "easy" | "normal" | "hard";
 
 export type RawCountry = {
@@ -40,7 +40,7 @@ export type GameMode = {
   region?: string;
   asksCapital?: boolean;
   daily?: boolean;
-  customGame?: "detective" | "wordle" | "daily-capital" | "capital-wordle" | "flag-choice" | "geo-connection" | "country-map" | "neighbour-countries";
+  customGame?: "quick-match" | "detective" | "wordle" | "daily-capital" | "capital-wordle" | "flag-choice" | "geo-connection" | "country-map" | "neighbour-countries";
   sovereignOnly?: boolean;
   copy: {
     es: { title: string; description: string; rules: string[] };
@@ -49,6 +49,7 @@ export type GameMode = {
 };
 
 export const MODES: GameMode[] = [
+  { id: "quick-match", kicker: "RÁPIDO", flags: ["🌍", "⚡"], badge: "NEW", daily: true, customGame: "quick-match", sovereignOnly: true, copy: { es: { title: "Partida rápida", description: "Reconoce 25 banderas antes de perder tus tres vidas.", rules: ["Aparecen 25 banderas según la dificultad elegida.", "Cada error resta una vida y avanza a la siguiente bandera.", "Completa el recorrido conservando al menos una vida."] }, en: { title: "Quick match", description: "Identify 25 flags before losing all three lives.", rules: ["You will see 25 flags based on your chosen difficulty.", "Each mistake costs one life and advances to the next flag.", "Complete the journey with at least one life remaining."] } } },
   { id: "country-map", kicker: "MAP", flags: ["🌍", "📍"], badge: "NEW", daily: true, customGame: "country-map", sovereignOnly: true, copy: { es: { title: "¿Dónde está el país?", description: "Encuentra en el mapa la ubicación del país del día.", rules: ["Selecciona el país directamente en el mapa.", "La dificultad determina los intentos y las ayudas.", "Al terminar se revela la ubicación correcta."] }, en: { title: "Where is the country?", description: "Find today's country on the map.", rules: ["Select the country directly on the map.", "Difficulty controls attempts and hints.", "The correct location is revealed at the end."] } } },
   { id: "neighbour-countries", kicker: "BORDERS", flags: ["🔗", "🌐"], badge: "NEW", daily: true, customGame: "neighbour-countries", sovereignOnly: true, copy: { es: { title: "Países vecinos", description: "Descubre el país oculto a partir de sus fronteras terrestres.", rules: ["Observa los países limítrofes mostrados.", "Las dificultades altas ofrecen menos vecinos.", "Escribe el país antes de agotar tus oportunidades."] }, en: { title: "Neighbouring countries", description: "Discover the hidden country from its land borders.", rules: ["Study the displayed neighbouring countries.", "Higher difficulties reveal fewer neighbours.", "Enter the country before running out of attempts."] } } },
   { id: "daily-capital", kicker: "CAPITAL", flags: ["🏛️", "📍"], badge: "NEW", daily: true, customGame: "daily-capital", copy: { es: { title: "Capital del día", description: "Cada día, un país nuevo y una oportunidad para recordar su capital.", rules: ["Adiviná la capital del país mostrado.", "Tenés un intento diario.", "La dificultad modifica las pistas disponibles."] }, en: { title: "Capital of the day", description: "A new country every day and one chance to remember its capital.", rules: ["Guess the capital of the displayed country.", "You have one daily attempt.", "Difficulty changes the available clues."] } } },

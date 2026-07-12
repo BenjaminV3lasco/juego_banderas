@@ -119,8 +119,7 @@ export function CountryDetective({ target, countries, language, onResolved, onCo
     </> : <div className="detective-reveal">
       <span className={finished ? "win" : "lose"}>{finished ? copy.win : copy.lose}</span>
       <h2>{copy.answer}: {targetName}</h2>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={target.flag} alt={targetName} />
+      <div className="standard-flag-frame">{/* eslint-disable-next-line @next/next/no-img-element */}<img src={target.flag} alt={targetName} /></div>
       <button onClick={onContinue}>{copy.continue}</button>
     </div>}
   </section>;

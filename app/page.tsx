@@ -8,15 +8,16 @@ import { HistoricalRanking } from "@/app/components/HistoricalRanking";
 import { DailyChallenge } from "@/app/components/DailyChallenge";
 import { CountryMap } from "@/app/components/CountryMap";
 import { NeighbourCountries } from "@/app/components/NeighbourCountries";
-import { addDailyOutcome, DailyRecord, EMPTY_DAILY_RECORD, getDailyCountry, getDailyStreak, getTodayKey, readDailyRecord } from "@/lib/daily";
+import { addDailyOutcome, DailyRecord, EMPTY_DAILY_RECORD, getDailyCountries, getDailyCountry, getDailyStreak, getTodayKey, readDailyRecord } from "@/lib/daily";
 import { Country, Difficulty, GameMode, getCapitalDisplayName, getCountryDisplayName, mapCountries, MODES, normalize, RawCountry, shuffle } from "@/lib/game";
 import { Language, UI_TEXT } from "@/lib/i18n";
 import { saveGameResult } from "@/lib/supabase/results";
 import { filterCountriesByDifficulty } from "@/lib/difficulty";
 import { createGameSessionId, saveCompetitiveAnswerEvent } from "@/lib/supabase/answer-events";
 import { LoadingState } from "@/app/components/LoadingState";
+import { QuickMatch } from "@/app/components/QuickMatch";
 
-type Screen = "menu" | "hub" | "about" | "player" | "ranking" | "intro" | "game" | "detective" | "wordle" | "dailyGame" | "countryMap" | "neighbours" | "results" | "dailyReview";
+type Screen = "menu" | "hub" | "about" | "player" | "ranking" | "intro" | "game" | "quickMatch" | "detective" | "wordle" | "dailyGame" | "countryMap" | "neighbours" | "results" | "dailyReview";
 type Score = { correct: number; wrong: number };
 type Player = { nickname: string; isGuest: boolean };
 
@@ -84,7 +85,7 @@ export default function Home() {
   const resultPercent = useMemo(() => totalAnswered ? Math.round((score.correct / totalAnswered) * 100) : 0, [score, totalAnswered]);
 
   useEffect(() => {
-    if (!["game", "detective", "wordle", "dailyGame", "countryMap", "neighbours"].includes(screen)) return;
+    if (!["game", "quickMatch", "detective", "wordle", "dailyGame", "countryMap", "neighbours"].includes(screen)) return;
     if (!startedAt.current) startedAt.current = Date.now();
     const update = () => setElapsedSeconds(Math.floor((Date.now() - (startedAt.current || Date.now())) / 1000));
     update();
@@ -131,7 +132,7 @@ export default function Home() {
   }
 
   function openMode(selected: GameMode) {
-    if (["detective", "wordle", "capital-wordle"].includes(selected.customGame || "")) setTimerLimit(0);
+    if (["quick-match", "detective", "wordle", "capital-wordle"].includes(selected.customGame || "")) setTimerLimit(0);
     if (selected.daily && isDailyCompleted(selected.id)) {
       const recordKey = `${todayKey}:${selected.id}`;
       const outcome = dailyRecord.outcomes[recordKey] || dailyRecord.outcomes[todayKey];
@@ -165,7 +166,7 @@ export default function Home() {
     if (selected.daily && isDailyCompleted(selected.id)) return;
     const eligiblePool = getEligiblePool(selected);
     const dailySeed = `${todayKey}:${selected.id}`;
-    const pool = selected.daily ? [getDailyCountry(eligiblePool, dailySeed)] : shuffle(eligiblePool);
+    const pool = selected.customGame === "quick-match" ? getDailyCountries(eligiblePool, dailySeed, 25) : selected.daily ? [getDailyCountry(eligiblePool, dailySeed)] : shuffle(eligiblePool);
     setMode(selected);
     setGameLanguage(language);
     setQuestions(pool.filter(Boolean));
@@ -180,7 +181,7 @@ export default function Home() {
     startedAt.current = null;
     gameSessionId.current = selected.daily ? null : createGameSessionId();
     questionStartedAt.current = null;
-    navigateTo(selected.customGame === "detective" ? "detective" : selected.customGame === "wordle" || selected.customGame === "capital-wordle" ? "wordle" : selected.customGame === "country-map" ? "countryMap" : selected.customGame === "neighbour-countries" ? "neighbours" : selected.customGame ? "dailyGame" : "game");
+    navigateTo(selected.customGame === "quick-match" ? "quickMatch" : selected.customGame === "detective" ? "detective" : selected.customGame === "wordle" || selected.customGame === "capital-wordle" ? "wordle" : selected.customGame === "country-map" ? "countryMap" : selected.customGame === "neighbour-countries" ? "neighbours" : selected.customGame ? "dailyGame" : "game");
   }
 
   function nextQuestion() {
@@ -271,7 +272,7 @@ export default function Home() {
       setScreen(aboutOrigin);
       return;
     }
-    if (["intro", "game", "detective", "wordle", "dailyGame", "countryMap", "neighbours", "results", "dailyReview"].includes(screen)) {
+    if (["intro", "game", "quickMatch", "detective", "wordle", "dailyGame", "countryMap", "neighbours", "results", "dailyReview"].includes(screen)) {
       returnToHub();
       return;
     }
@@ -308,7 +309,7 @@ export default function Home() {
           <p>{copy.description}</p>
           <h2>{text.howToPlay}</h2>
           <ul>{copy.rules.map((rule) => <li key={rule}>{rule}</li>)}</ul>
-          {mode.daily && <div className="game-settings"><span>{language === "es" ? "Dificultad" : "Difficulty"}</span><div>{(["easy", "normal", "hard"] as Difficulty[]).map((value) => <button type="button" aria-pressed={difficulty === value} className={difficulty === value ? "active" : ""} onClick={() => setDifficulty(value)} key={value}>{language === "es" ? ({ easy: "Fácil", normal: "Normal", hard: "Difícil" }[value]) : value}</button>)}</div>{!["detective", "wordle", "capital-wordle"].includes(mode.customGame || "") && <><span>{language === "es" ? "Contador" : "Timer"}</span><div>{[0, 90, 60, 40].map((value) => <button type="button" aria-pressed={timerLimit === value} className={timerLimit === value ? "active" : ""} onClick={() => setTimerLimit(value)} key={value}>{value ? `${value}s` : (language === "es" ? "Sin tiempo" : "No timer")}</button>)}</div></>}</div>}
+          {mode.daily && <div className="game-settings"><span>{language === "es" ? "Dificultad" : "Difficulty"}</span><div>{(["easy", "normal", "hard"] as Difficulty[]).map((value) => <button type="button" aria-pressed={difficulty === value} className={difficulty === value ? "active" : ""} onClick={() => setDifficulty(value)} key={value}>{language === "es" ? ({ easy: "Fácil", normal: "Normal", hard: "Difícil" }[value]) : value}</button>)}</div>{!["quick-match", "detective", "wordle", "capital-wordle"].includes(mode.customGame || "") && <><span>{language === "es" ? "Contador" : "Timer"}</span><div>{[0, 90, 60, 40].map((value) => <button type="button" aria-pressed={timerLimit === value} className={timerLimit === value ? "active" : ""} onClick={() => setTimerLimit(value)} key={value}>{value ? `${value}s` : (language === "es" ? "Sin tiempo" : "No timer")}</button>)}</div></>}</div>}
           <button className="start-game" onClick={() => startGame(mode)}>{text.start}</button>
         </div>
       </section>
@@ -353,6 +354,10 @@ export default function Home() {
     </main>;
   }
 
+  if (screen === "quickMatch" && mode && questions.length) {
+    return <main className="game-page"><AppHeader onHome={handleLogoNavigation} language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter /><QuickMatch countries={questions} language={gameLanguage} onResolved={(correct) => resolveCustomDaily(mode.id, correct)} onContinue={() => setScreen("results")} /></main>;
+  }
+
   if (screen === "countryMap" && mode && current) {
     return <main className="game-page"><AppHeader onHome={handleLogoNavigation} language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter /><CountryMap target={current} language={gameLanguage} difficulty={difficulty} onResolved={(correct) => resolveCustomDaily(mode.id, correct)} onContinue={() => setScreen("results")} /></main>;
   }
@@ -378,7 +383,7 @@ export default function Home() {
     const streak = getDailyStreak(dailyRecord, mode.id);
     return <main className="daily-review-page">
       <AppHeader onHome={handleLogoNavigation} language={language} dailyRecord={dailyRecord} onLanguage={toggleLanguage} onBack={returnToHub} backLabel={text.back} showCounter={mode.daily} />
-      <section className="daily-review-card"><span className={`review-status ${correct ? "correct" : "wrong"}`}>{language === "es" ? (correct ? "DESAFÍO SUPERADO" : "DESAFÍO NO SUPERADO") : (correct ? "CHALLENGE COMPLETED" : "CHALLENGE MISSED")}</span><h1>{getModeCopy(mode, language).title}</h1><div className="review-flag">{/* eslint-disable-next-line @next/next/no-img-element */}<img src={current.flag} alt={countryName} /></div><h2>{countryName}</h2>{streak > 0 && <div className="review-streak">🔥 {streak} {language === "es" ? "días de racha" : "day streak"}</div>}<button onClick={returnToHub}>{text.viewModes}</button></section>
+      <section className="daily-review-card"><span className={`review-status ${correct ? "correct" : "wrong"}`}>{language === "es" ? (correct ? "DESAFÍO SUPERADO" : "DESAFÍO NO SUPERADO") : (correct ? "CHALLENGE COMPLETED" : "CHALLENGE MISSED")}</span><h1>{getModeCopy(mode, language).title}</h1>{mode.customGame === "quick-match" ? <QuickMatchSymbol /> : <><div className="review-flag">{/* eslint-disable-next-line @next/next/no-img-element */}<img src={current.flag} alt={countryName} /></div><h2>{countryName}</h2></>}{streak > 0 && <div className="review-streak">🔥 {streak} {language === "es" ? "días de racha" : "day streak"}</div>}<button onClick={returnToHub}>{text.viewModes}</button></section>
     </main>;
   }
 
@@ -391,7 +396,7 @@ export default function Home() {
       const completed = item.daily && isDailyCompleted(item.id);
       const streak = item.customGame ? getDailyStreak(dailyRecord, item.id) : 0;
       const badge = item.customGame ? (streak ? `${streak} 🔥` : completed ? undefined : item.badge) : item.badge;
-      return <button className={`mode-card ${completed ? "completed" : ""}`} key={item.id} onClick={() => openMode(item)} disabled={!countries.length || (item.id === "country-map" && !mapCountryCodes.size)}>
+      return <button className={`mode-card mode-${item.id} ${completed ? "completed" : ""}`} key={item.id} onClick={() => openMode(item)} disabled={!countries.length || (item.id === "country-map" && !mapCountryCodes.size)}>
         {badge && <span className={`badge ${item.id === "capitals" ? "yellow" : ""}`}>{localizeGameLabel(badge, language)}</span>}
         <GamePreview mode={item} />
         <div className="play-band"><strong>{completed ? text.completed : text.play}</strong><small>{copy.title}</small></div>
@@ -598,6 +603,7 @@ function GamePreview({ mode }: { mode: GameMode }) {
   return <div className={`mode-preview svg-preview preview-${mode.id}`}><svg viewBox="0 0 200 150" aria-hidden="true">
     <defs><linearGradient id={`panel-${mode.id}`} x1="0" y1="0" x2="1" y2="1"><stop stopColor="#0e4051"/><stop offset="1" stopColor="#061923"/></linearGradient><filter id={`glow-${mode.id}`}><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
     <rect x="18" y="15" width="164" height="120" rx="14" fill={`url(#panel-${mode.id})`} stroke="#236078"/>
+    {mode.customGame === "quick-match" && <g><circle cx="92" cy="75" r="42" fill="#397fa8" stroke="#8ac9df" strokeWidth="3"/><path d="M50 75h84M92 33c14 12 21 26 21 42s-7 30-21 42c-14-12-21-26-21-42s7-30 21-42Z" fill="none" stroke="#dff2f5" strokeWidth="2" opacity=".65"/><path d="M60 48c11-8 23-8 32-3l4 10-11 7-3 12-16 2-12-10zm52 12 15 6 8 14-12 8-10 17-12-10 4-14-7-9z" fill="#58b478" stroke="#2b714a" strokeWidth="2"/><path d="m130 29-18 37h17l-10 34 32-46h-18l14-25z" fill="#ffd04a" stroke="#9c7415" strokeWidth="2"/></g>}
     {isWordle && <g>{[[54,42,"M","#2eaa73"],[82,42,"U","#273b45"],[110,42,"N","#c59610"],[138,42,"D","#273b45"],[54,72,"Q","#273b45"],[82,72,"U","#2eaa73"],[110,72,"I","#2eaa73"],[138,72,"Z","#273b45"]].map(([x,y,l,c]) => <g key={`${x}-${y}`}><rect x={Number(x)} y={Number(y)} width="24" height="24" rx="4" fill={String(c)} stroke="#77909a" strokeOpacity=".5"/><text x={Number(x)+12} y={Number(y)+17} textAnchor="middle" fill="white" fontSize="11" fontWeight="800">{l}</text></g>)}<rect x="65" y="108" width="70" height="6" rx="3" fill="#1f5365"/></g>}
     {mode.customGame === "country-map" && <g><path d="M43 45h114v69H43z" fill="#082b39" stroke="#3a7890" strokeWidth="3"/><path d="M47 63c15-8 23-3 32-12l14 7 10-5 13 10 16-2 18 12-8 12-17 1-10 14-18-8-14 7-12-10-18-4z" fill="#43b879" stroke="#15705a" strokeWidth="2"/><path d="M116 42c0 14-14 29-14 29S88 56 88 42a14 14 0 1 1 28 0Z" fill="#ffbf00" stroke="#ffda63"/><circle cx="102" cy="42" r="4" fill="#132a32"/><path d="M52 105h41M119 105h29" stroke="#50c8e5" strokeWidth="3" strokeLinecap="round"/><circle cx="102" cy="105" r="10" fill="#113f50" stroke="#50c8e5"/><path d="m98 105 3 3 6-7" fill="none" stroke="#42d99a" strokeWidth="2.5"/></g>}
     {mode.customGame === "neighbour-countries" && <g><path d="M100 75 62 48M100 75l39-27M100 75l-33 39M100 75l38 38" stroke="#42b7d3" strokeWidth="3"/><circle cx="100" cy="75" r="25" fill="#ffbf00" stroke="#ffe078" strokeWidth="3"/><path d="m88 76 8 8 17-20" fill="none" stroke="#17313a" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/>{[[62,48],[139,48],[67,114],[138,113]].map(([x,y],index)=><g key={`${x}-${y}`}><circle cx={x} cy={y} r="15" fill={index%2 ? "#17495b" : "#15523f"} stroke={index%2 ? "#44c4e2" : "#45d69a"} strokeWidth="3"/><path d={`M${x-7} ${y-2}h14M${x-5} ${y+4}h10`} stroke="#d9edf2" strokeWidth="2" strokeLinecap="round"/></g>)}</g>}
@@ -610,6 +616,10 @@ function GamePreview({ mode }: { mode: GameMode }) {
     {mode.id === "sovereign" && <g><circle cx="100" cy="74" r="43" fill="#0b3544" stroke="#42d99a" strokeWidth="3"/><circle cx="100" cy="74" r="27" fill="none" stroke="#2b7e77" strokeWidth="2"/><path d="M100 47v54M73 74h54M82 54c7 6 11 12 11 20s-4 15-11 21M118 54c-7 6-11 12-11 20s4 15 11 21" fill="none" stroke="#72c6bb" strokeWidth="2"/><path d="M65 42l4 3-2 5-5-3zM135 42l-4 3 2 5 5-3zM61 100l5-1 2 5-6 1zM139 100l-5-1-2 5 6 1z" fill="#ffbf00"/><circle cx="137" cy="108" r="14" fill="#3bd18f"/><path d="m130 108 5 5 10-12" fill="none" stroke="#05261a" strokeWidth="3"/></g>}
     {!featuredFlags && mode.id !== "world" && mode.id !== "sovereign" && !isWordle && !isConnection && !isCapital && mode.customGame !== "flag-choice" && mode.customGame !== "country-map" && mode.customGame !== "neighbour-countries" && mode.id !== "daily" && <g transform="rotate(-5 100 75)"><rect x="45" y="45" width="78" height="51" rx="7" fill="#f1eee5" stroke="#b9c9cf" strokeWidth="4"/><path d="M45 62h78M45 79h78" stroke="#39936a" strokeWidth="17"/><rect x="78" y="55" width="78" height="51" rx="7" fill="#e9edf0" stroke="#d2dce0" strokeWidth="4"/><path d="M78 72h78M78 89h78" stroke="#347da4" strokeWidth="17"/><circle cx="151" cy="104" r="15" fill="#3bd18f" filter={`url(#glow-${mode.id})`}/><path d="m144 104 5 5 10-12" fill="none" stroke="#05261a" strokeWidth="3"/></g>}
   </svg></div>;
+}
+
+function QuickMatchSymbol() {
+  return <div className="quick-review-symbol" aria-hidden="true"><svg viewBox="0 0 200 150"><circle cx="92" cy="75" r="42" fill="#397fa8" stroke="#8ac9df" strokeWidth="3"/><path d="M50 75h84M92 33c14 12 21 26 21 42s-7 30-21 42c-14-12-21-26-21-42s7-30 21-42Z" fill="none" stroke="#dff2f5" strokeWidth="2" opacity=".65"/><path d="M60 48c11-8 23-8 32-3l4 10-11 7-3 12-16 2-12-10zm52 12 15 6 8 14-12 8-10 17-12-10 4-14-7-9z" fill="#58b478" stroke="#2b714a" strokeWidth="2"/><path d="m130 29-18 37h17l-10 34 32-46h-18l14-25z" fill="#ffd04a" stroke="#9c7415" strokeWidth="2"/></svg></div>;
 }
 
 type FlagCode = "AR" | "BR" | "ES" | "FR" | "JP" | "KR" | "ZA" | "EG";
