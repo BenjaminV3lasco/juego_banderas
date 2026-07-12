@@ -352,3 +352,23 @@ html[data-theme="dark"] .quick-complete-symbol{background:#243a33;box-shadow:ins
 .standard-flag-frame img,.review-flag img{display:block;width:min(280px,80%)!important;height:min(140px,80%)!important;max-width:80%!important;max-height:80%!important;margin:auto;object-fit:contain!important;object-position:center!important;filter:drop-shadow(0 8px 14px #0006)}
 html[data-theme="dark"] .standard-flag-frame,html[data-theme="dark"] .review-flag{border-color:#465a53;background:#111a18}
 @media(max-width:520px){.standard-flag-frame,.review-flag{height:190px;padding:14px}}
+
+/* Competitive answer feedback */
+.game-shell .feedback.ok,.game-shell .feedback.bad{display:flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:11px 16px;border-radius:14px;font-weight:800;animation:correctFeedback .32s cubic-bezier(.2,.9,.25,1.2)}
+.game-shell .feedback.ok{border:1px solid #83bda4;background:linear-gradient(135deg,#e4f3eb,#d7ede2);color:#176b4e;box-shadow:0 4px 0 #bad8c9}
+.game-shell .feedback.bad{border:1px solid #dfa2aa;background:linear-gradient(135deg,#f8e7e9,#f3dadd);color:#a63b4a;box-shadow:0 4px 0 #dfbec2}
+.game-shell .feedback.ok::before,.game-shell .feedback.bad::before{width:24px;height:24px;display:grid;place-items:center;flex:0 0 auto;border-radius:50%;color:#fff;font-size:.8rem;box-shadow:0 0 0 4px #176b5b16}
+.game-shell .feedback.ok::before{content:"✓";background:var(--atlas-forest)}
+.game-shell .feedback.bad::before{content:"×";background:var(--red);font-size:1rem;box-shadow:0 0 0 4px #c94d5d16}
+@keyframes correctFeedback{from{opacity:0;transform:translateY(6px) scale(.97)}to{opacity:1;transform:none}}
+html[data-theme="dark"] .game-shell .feedback.ok{border-color:#466f60;background:linear-gradient(135deg,#20382f,#1b3029);color:#9de0c1;box-shadow:0 4px 0 #0b1511}html[data-theme="dark"] .game-shell .feedback.ok::before{background:#69bd8d;color:#0b2118;box-shadow:0 0 0 4px #69bd8d18}html[data-theme="dark"] .game-shell .feedback.bad{border-color:#75434a;background:linear-gradient(135deg,#3b2428,#321e22);color:#ff9aa7;box-shadow:0 4px 0 #130a0c}html[data-theme="dark"] .game-shell .feedback.bad::before{background:#d85a6b;color:#21080d;box-shadow:0 0 0 4px #d85a6b18}
+
+/* Larger flags during competitive rounds. */
+.game-shell .flag-stage{height:240px;padding:10px}
+.game-shell .flag-stage img{width:92%!important;height:92%!important;max-width:92%!important;max-height:92%!important;object-fit:contain;object-position:center}
+@media(max-width:520px){.game-shell .flag-stage{height:210px;padding:9px}.game-shell .flag-stage img{width:90%!important;height:90%!important;max-width:90%!important;max-height:90%!important}}
+
+/* Atlas-style backdrop for every flag presentation. */
+.flag-stage,.standard-flag-frame,.review-flag,.daily-answer-flag,.quick-flag{border-style:solid;background-color:#e4ebe6;background-image:linear-gradient(#47706412 1px,transparent 1px),linear-gradient(90deg,#47706412 1px,transparent 1px),radial-gradient(circle at 50% 45%,#fffdf7 0,#edf1ec 52%,#dce6e0 100%);background-size:24px 24px,24px 24px,auto;box-shadow:inset 0 0 0 1px #ffffff80,inset 0 -18px 35px #37594d0b}
+.flag-stage img,.standard-flag-frame img,.review-flag img,.daily-answer-flag img,.quick-flag img{filter:drop-shadow(0 10px 12px #233b3338)}
+html[data-theme="dark"] .flag-stage,html[data-theme="dark"] .standard-flag-frame,html[data-theme="dark"] .review-flag,html[data-theme="dark"] .daily-answer-flag,html[data-theme="dark"] .quick-flag{background-color:#1d2d28;background-image:linear-gradient(#a7c8ba0b 1px,transparent 1px),linear-gradient(90deg,#a7c8ba0b 1px,transparent 1px),radial-gradient(circle at 50% 45%,#293b35 0,#1d2c28 58%,#15221e 100%);box-shadow:inset 0 0 0 1px #9cc4b416,inset 0 -18px 35px #0002}
