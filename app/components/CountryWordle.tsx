@@ -45,8 +45,8 @@ export function CountryWordle({ target, countries, language, difficulty, variant
   const [error, setError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const copy = language === "es"
-    ? { title: isCapital ? "Capital Wordle" : "País Wordle", invalid: `Introduce ${isCapital ? "una capital" : "un país"} válido con la cantidad correcta de letras.`, win: isCapital ? "¡Capital descubierta!" : "¡País descubierto!", lose: "No quedan intentos", answer: isCapital ? "La capital era" : "El país era", continue: "Ver resultado", input: "Escribe con el teclado" }
-    : { title: isCapital ? "Capital Wordle" : "Country Wordle", invalid: `Enter a valid ${isCapital ? "capital" : "country"} with the correct number of letters.`, win: isCapital ? "Capital discovered!" : "Country discovered!", lose: "No tries left", answer: isCapital ? "The capital was" : "The country was", continue: "View result", input: "Type with your keyboard" };
+    ? { title: isCapital ? "Capital Wordle" : "País Wordle", invalidLength: `Completa las ${answer.length} casillas antes de confirmar.`, invalidWord: `En difícil debes escribir ${isCapital ? "una capital" : "un país"} real.`, win: isCapital ? "¡Capital descubierta!" : "¡País descubierto!", lose: "No quedan intentos", answer: isCapital ? "La capital era" : "El país era", continue: "Ver resultado", input: "Escribe con el teclado" }
+    : { title: isCapital ? "Capital Wordle" : "Country Wordle", invalidLength: `Complete all ${answer.length} cells before confirming.`, invalidWord: `Hard mode requires a real ${isCapital ? "capital" : "country"}.`, win: isCapital ? "Capital discovered!" : "Country discovered!", lose: "No tries left", answer: isCapital ? "The capital was" : "The country was", continue: "View result", input: "Type with your keyboard" };
 
   const validWords = useMemo(() => new Set(countries.map((country) => toWord(isCapital ? getCapitalDisplayName(country, language) : getCountryDisplayName(country, language))).filter((word) => word.length === answer.length)), [answer.length, countries, isCapital, language]);
   const keyboardStatuses = useMemo(() => {
@@ -73,8 +73,14 @@ export function CountryWordle({ target, countries, language, difficulty, variant
   function submitGuess(event: FormEvent) {
     event.preventDefault();
     if (finished !== null) return;
-    if (input.length !== answer.length || (difficulty !== "easy" && !validWords.has(input))) {
-      setError(copy.invalid);
+    if (input.length !== answer.length) {
+      setError(copy.invalidLength);
+      inputRef.current?.focus();
+      return;
+    }
+    if (difficulty === "hard" && !validWords.has(input)) {
+      setError(copy.invalidWord);
+      inputRef.current?.focus();
       return;
     }
     const evaluated = { word: input, statuses: evaluateGuess(input, answer) };
@@ -87,6 +93,8 @@ export function CountryWordle({ target, countries, language, difficulty, variant
     } else if (nextGuesses.length === 6) {
       setFinished(false);
       onResolved(false);
+    } else {
+      window.requestAnimationFrame(() => inputRef.current?.focus());
     }
   }
 
@@ -103,7 +111,7 @@ export function CountryWordle({ target, countries, language, difficulty, variant
   return <section className="wordle-shell">
     <h1>{copy.title}</h1>
     <form onSubmit={submitGuess} className="wordle-form">
-      <input ref={inputRef} className="wordle-input-capture" value={input} onChange={(event) => changeInput(event.target.value)} aria-label={copy.input} autoFocus autoComplete="off" />
+      <input ref={inputRef} className="wordle-input-capture" value={input} onChange={(event) => changeInput(event.target.value)} aria-label={copy.input} maxLength={answer.length} autoFocus autoComplete="off" />
       <div className="wordle-board" style={boardStyle}>{rows.map((row, rowIndex) => <div className="wordle-row" key={rowIndex}>{row.map((cell, cellIndex) => <div className={`wordle-cell ${cell.status || ""}`} key={cellIndex}>{cell.letter}</div>)}</div>)}</div>
       {error && <p className="wordle-error">{error}</p>}
       {finished === null && <div className="wordle-keyboard">{KEYBOARD.map((row, rowIndex) => <div className="keyboard-row" key={row}>{rowIndex === 2 && <button type="submit" className="wide-key">ENTER</button>}{row.split("").map((letter) => <button type="button" className={keyboardStatuses[letter] || ""} onClick={() => pressKey(letter)} key={letter}>{letter}</button>)}{rowIndex === 2 && <button type="button" className="wide-key" onClick={() => pressKey("BACKSPACE")}>⌫</button>}</div>)}</div>}

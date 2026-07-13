@@ -172,6 +172,7 @@ body { background:radial-gradient(circle at 50% -20%,#073448 0,#00111a 38%); }
   .geography-option p,.ranking-option p { line-height:1.42; }
 }
 
+
 /* Unified SVG game artwork */
 .svg-preview { display:grid; place-items:center; padding:7px; }
 .svg-preview svg { position:relative; z-index:1; width:100%; height:100%; overflow:visible; filter:drop-shadow(0 10px 16px #0006); transition:transform .25s ease,filter .25s ease; }
@@ -267,6 +268,9 @@ html[data-theme="dark"] .game-settings button,html[data-theme="dark"] .player-gu
 html[data-theme="dark"] .ranking-table,html[data-theme="dark"] .ranking-message,html[data-theme="dark"] .ranking-row,html[data-theme="dark"] .mode-dropdown-trigger,html[data-theme="dark"] .detective-select-trigger,html[data-theme="dark"] .mode-dropdown-menu,html[data-theme="dark"] .detective-select-menu,html[data-theme="dark"] .answer-suggestions,html[data-theme="dark"] .country-suggestions,html[data-theme="dark"] .neighbour-suggestions{background:#1a2522!important;border-color:#3a4944!important;color:#edf1e9!important;box-shadow:0 6px 0 #080d0b}
 html[data-theme="dark"] .ranking-labels,html[data-theme="dark"] .connection-clues div,html[data-theme="dark"] .neighbour-grid article,html[data-theme="dark"] .clue-row{background:#24332f!important;border-color:#40514b!important;color:#edf1e9}html[data-theme="dark"] .ranking-row{border-bottom-color:#33423d}
 html[data-theme="dark"] .question-builder,html[data-theme="dark"] .clue-board{background:#1a2522;border-color:#3a4944;box-shadow:0 7px 0 #080d0b}html[data-theme="dark"] .keyboard-row button{background:#34413d;color:#edf1e9;box-shadow:0 3px 0 #111917}html[data-theme="dark"] .wordle-cell{background:#1b2422;border-color:#52635d;color:#edf1e9}
+html[data-theme="dark"] .wordle-cell.correct,html[data-theme="dark"] .wordle-keyboard button.correct{background:#2ea66f;border-color:#2ea66f;color:#fff}
+html[data-theme="dark"] .wordle-cell.present,html[data-theme="dark"] .wordle-keyboard button.present{background:#d5a514;border-color:#d5a514;color:#171100}
+html[data-theme="dark"] .wordle-cell.absent,html[data-theme="dark"] .wordle-keyboard button.absent{background:#3b414b;border-color:#3b414b;color:#edf1e9}
 html[data-theme="dark"] footer{background:#151f1c;border-color:#35443f}html[data-theme="dark"] .about-grid article::after{border-color:#527267}
 
 /* Brand system and flagship main menu */
@@ -395,3 +399,7 @@ html[data-theme="dark"] .personal-stats-shell>header{background:linear-gradient(
   .menu-page .menu-option p{max-width:100%}
 }
 @media(max-width:820px){.menu-page .menu-options{grid-template-columns:1fr}}
+
+/* Flag choices should float over the game surface without white tiles. */
+.daily-game-shell .flag-options button{background:transparent!important;border-color:transparent!important;padding:4px;box-shadow:none}
+.daily-game-shell .flag-options button:hover,.daily-game-shell .flag-options button:focus-visible{border-color:var(--atlas-forest)!important;background:#176b5b0a!important;outline:none}

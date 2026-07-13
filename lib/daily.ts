@@ -17,6 +17,7 @@ export const EMPTY_DAILY_RECORD: DailyRecord = {
 };
 
 export const DAILY_RECORD_KEY = "mundoquiz_daily_record_v2";
+const COUNTRY_MAP_RESET_KEY = "mundoquiz_country_map_reset_v1";
 
 export function getTodayKey(date = new Date()) {
   const year = date.getFullYear();
@@ -51,11 +52,19 @@ export function readDailyRecord(): DailyRecord {
     const stored = localStorage.getItem(DAILY_RECORD_KEY);
     if (!stored) return EMPTY_DAILY_RECORD;
     const parsed = JSON.parse(stored) as DailyRecord;
-    const outcomes = parsed.outcomes || {};
+    let outcomes = parsed.outcomes || {};
+    let difficulties = parsed.difficulties || {};
+    if (!localStorage.getItem(COUNTRY_MAP_RESET_KEY)) {
+      const mapKey = `${getTodayKey()}:country-map`;
+      outcomes = Object.fromEntries(Object.entries(outcomes).filter(([key]) => key !== mapKey));
+      difficulties = Object.fromEntries(Object.entries(difficulties).filter(([key]) => key !== mapKey));
+      localStorage.setItem(COUNTRY_MAP_RESET_KEY, "1");
+      localStorage.setItem(DAILY_RECORD_KEY, JSON.stringify({ ...parsed, outcomes, difficulties }));
+    }
     return {
       ...getDailyScore(outcomes, getTodayKey()),
       outcomes,
-      difficulties: parsed.difficulties || {},
+      difficulties,
     };
   } catch {
     return EMPTY_DAILY_RECORD;
