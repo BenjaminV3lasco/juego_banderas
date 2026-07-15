@@ -7,9 +7,9 @@ import { getHistoricalRanking, RankingEntry } from "@/lib/supabase/results";
 import { LoadingState } from "@/app/components/LoadingState";
 import Image from "next/image";
 
-export function HistoricalRanking({ language, modes }: { language: Language; modes: GameMode[] }) {
+export function HistoricalRanking({ language, modes, initialMode }: { language: Language; modes: GameMode[]; initialMode?: ModeId }) {
   const [entries, setEntries] = useState<RankingEntry[]>([]);
-  const [selectedMode, setSelectedMode] = useState<ModeId>(modes[0]?.id || "world");
+  const [selectedMode, setSelectedMode] = useState<ModeId>(() => modes.some((mode) => mode.id === initialMode) ? initialMode! : (modes[0]?.id || "world"));
   const [menuOpen, setMenuOpen] = useState(false);
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   const copy = language === "es"
@@ -42,7 +42,8 @@ export function HistoricalRanking({ language, modes }: { language: Language; mod
 
 function RankingModeIcon({ mode }: { mode: ModeId }) {
   if (mode === "africa") return <span className="ranking-real-flag" aria-hidden="true"><Image src="/flags/za.svg" alt="" width={22} height={15} /></span>;
-  if (["americas", "europe", "asia", "africa"].includes(mode)) return <span className={`ranking-flag-icon flag-${mode}`} aria-hidden="true"><i /></span>;
+  if (mode === "oceania") return <span className="ranking-real-flag" aria-hidden="true"><Image src="/flags/au.svg" alt="" width={22} height={15} /></span>;
+  if (["americas", "europe", "asia", "africa", "oceania"].includes(mode)) return <span className={`ranking-flag-icon flag-${mode}`} aria-hidden="true"><i /></span>;
   const icon = mode === "world" ? "🌎" : mode === "sovereign" ? "◎" : mode === "capitals" ? "⌖" : "◆";
   return <span className="ranking-symbol-icon" aria-hidden="true">{icon}</span>;
 }
