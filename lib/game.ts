@@ -1,7 +1,7 @@
 import { getCountryAliases, getSpanishCountryName, isSovereignCountry } from "@/lib/country-names";
 import { getCapitalAliases, getSpanishCapitalName } from "@/lib/capital-names";
 
-export type ModeId = "daily" | "quick-match" | "detective" | "wordle" | "daily-capital" | "capital-wordle" | "flag-choice" | "geo-connection" | "country-map" | "neighbour-countries" | "world" | "sovereign" | "capitals" | "americas" | "europe" | "asia" | "africa";
+export type ModeId = "daily" | "quick-match" | "detective" | "wordle" | "daily-capital" | "capital-wordle" | "flag-choice" | "geo-connection" | "country-map" | "neighbour-countries" | "world" | "sovereign" | "capitals" | "americas" | "europe" | "asia" | "africa" | "oceania";
 export type Difficulty = "easy" | "normal" | "hard";
 
 export type RawCountry = {
@@ -66,6 +66,7 @@ export const MODES: GameMode[] = [
   { id: "europe", kicker: "REGION", flags: ["🇪🇸", "🇫🇷", "🇮🇹", "🇩🇪"], region: "Europe", copy: { es: { title: "Europa", description: "Un clásico con algunas de las banderas más reconocibles del mundo.", rules: ["Solo aparecen países y territorios de Europa.", "Escribí el nombre del país.", "Podés saltar las banderas que no reconozcas."] }, en: { title: "Europe", description: "A classic featuring some of the world's most recognizable flags.", rules: ["Only European countries and territories appear.", "Type the country name.", "You can skip flags you don't recognize."] } } },
   { id: "asia", kicker: "REGION", flags: ["🇯🇵", "🇮🇳", "🇰🇷", "🇹🇭"], region: "Asia", copy: { es: { title: "Asia", description: "El continente más grande y uno de los desafíos más variados.", rules: ["Solo aparecen países y territorios de Asia.", "Escribí el nombre del país.", "Tus respuestas ayudan a clasificar la dificultad."] }, en: { title: "Asia", description: "The largest continent and one of the most varied challenges.", rules: ["Only Asian countries and territories appear.", "Type the country name.", "Your answers help classify flag difficulty."] } } },
   { id: "africa", kicker: "REGION", flags: ["🇿🇦", "🇪🇬", "🇰🇪", "🇬🇭"], region: "Africa", copy: { es: { title: "África", description: "Colores, símbolos e historias de todo el continente africano.", rules: ["Solo aparecen países y territorios de África.", "Escribí el nombre del país.", "Completá todas las banderas para terminar."] }, en: { title: "Africa", description: "Colors, symbols and stories from across the African continent.", rules: ["Only African countries and territories appear.", "Type the country name.", "Complete every flag to finish the game."] } } },
+  { id: "oceania", kicker: "REGION", flags: ["🇳🇿", "🇵🇬", "🇦🇺", "🇫🇯"], region: "Oceania", copy: { es: { title: "Oceanía", description: "Islas, archipiélagos y banderas del continente más pequeño del planeta.", rules: ["Aparecen todos los países y territorios de Oceanía.", "Escribe el nombre correspondiente a cada bandera.", "Completa la región para registrar tu resultado en el ranking."] }, en: { title: "Oceania", description: "Islands, archipelagos and flags from the planet's smallest continent.", rules: ["All Oceanian countries and territories can appear.", "Type the name that matches each flag.", "Complete the region to record your result in the ranking."] } } },
 ];
 
 export const normalize = (value: string) =>
